@@ -25,19 +25,20 @@ interface Server {
     stripeAccountId: string
     stripeOnboardingComplete: boolean
   }
-  donations: Array<{
+  pledges: Array<{
     id: string
     amount: number
-    message: string
+    optimizedAmount: number | null
     createdAt: string
-    donor: {
+    user: {
       id: string
       name: string
       image: string
-    } | null
+    }
   }>
-  totalDonations: number
-  donorCount: number
+  totalPledged: number
+  totalOptimized: number
+  pledgerCount: number
 }
 
 export default function ServerPage({ params }: { params: Promise<{ id: string }> }) {
@@ -122,9 +123,8 @@ export default function ServerPage({ params }: { params: Promise<{ id: string }>
     )
   }
 
-  const progressPercentage = server.goal && server.goal > 0
-    ? Math.min((server.totalDonations / server.goal) * 100, 100)
-    : 0
+  const progressPercentage = Math.min((server.totalPledged / server.cost) * 100, 100)
+  const maxPledgers = Math.floor(server.cost / 2) // $2 minimum
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -179,42 +179,46 @@ export default function ServerPage({ params }: { params: Promise<{ id: string }>
               )}
             </div>
 
-            {/* Recent Donations */}
+            {/* Active Pledgers */}
             <div className="bg-white rounded-lg shadow-md p-6">
-              <h2 className="text-xl font-bold text-gray-900 mb-4">Recent Supporters</h2>
-              {server.donations.length === 0 ? (
-                <p className="text-gray-500 text-center py-8">No donations yet. Be the first!</p>
+              <h2 className="text-xl font-bold text-gray-900 mb-4">Active Pledgers</h2>
+              {server.pledges.length === 0 ? (
+                <p className="text-gray-500 text-center py-8">No pledges yet. Be the first!</p>
               ) : (
                 <div className="space-y-4">
-                  {server.donations.map((donation) => (
-                    <div key={donation.id} className="flex items-start space-x-3 pb-4 border-b border-gray-200 last:border-0">
-                      {donation.donor?.image ? (
+                  {server.pledges.map((pledge) => (
+                    <div key={pledge.id} className="flex items-start space-x-3 pb-4 border-b border-gray-200 last:border-0">
+                      {pledge.user.image ? (
                         <Image
-                          src={donation.donor.image}
-                          alt={donation.donor.name}
+                          src={pledge.user.image}
+                          alt={pledge.user.name}
                           width={40}
                           height={40}
                           className="rounded-full"
                         />
                       ) : (
                         <div className="w-10 h-10 bg-indigo-600 rounded-full flex items-center justify-center text-white font-semibold">
-                          {donation.donor?.name?.[0]?.toUpperCase() || "?"}
+                          {pledge.user.name?.[0]?.toUpperCase() || "?"}
                         </div>
                       )}
                       <div className="flex-1">
                         <div className="flex items-center justify-between">
                           <span className="font-semibold text-gray-900">
-                            {donation.donor?.name || "Anonymous"}
+                            {pledge.user.name || "Anonymous"}
                           </span>
-                          <span className="text-indigo-600 font-semibold">
-                            ${donation.amount.toFixed(2)}
-                          </span>
+                          <div className="text-right">
+                            <span className="text-indigo-600 font-semibold block">
+                              ${pledge.amount.toFixed(2)}/mo
+                            </span>
+                            {pledge.optimizedAmount && pledge.optimizedAmount < pledge.amount && (
+                              <span className="text-green-600 text-xs">
+                                pays ${pledge.optimizedAmount.toFixed(2)}
+                              </span>
+                            )}
+                          </div>
                         </div>
-                        {donation.message && (
-                          <p className="text-sm text-gray-600 mt-1">{donation.message}</p>
-                        )}
                         <p className="text-xs text-gray-400 mt-1">
-                          {new Date(donation.createdAt).toLocaleDateString()}
+                          Pledged {new Date(pledge.createdAt).toLocaleDateString()}
                         </p>
                       </div>
                     </div>
@@ -226,33 +230,39 @@ export default function ServerPage({ params }: { params: Promise<{ id: string }>
 
           {/* Sidebar */}
           <div className="space-y-6">
-            {/* Donation Card */}
+            {/* Pledge Card */}
             <div className="bg-white rounded-lg shadow-md p-6 sticky top-6">
               {/* Stats */}
               <div className="mb-6">
                 <div className="text-3xl font-bold text-gray-900 mb-1">
-                  ${server.totalDonations.toFixed(2)}
+                  ${server.totalPledged.toFixed(2)}
                 </div>
                 <p className="text-sm text-gray-600">
-                  raised from {server.donorCount} {server.donorCount === 1 ? "donor" : "donors"}
+                  pledged by {server.pledgerCount} {server.pledgerCount === 1 ? "person" : "people"}
                 </p>
+                {server.totalOptimized > 0 && server.totalOptimized < server.totalPledged && (
+                  <p className="text-sm text-green-600 font-semibold mt-1">
+                    💰 Optimized to ${server.totalOptimized.toFixed(2)}/mo
+                  </p>
+                )}
               </div>
 
               {/* Progress Bar */}
-              {server.goal && server.goal > 0 && (
-                <div className="mb-6">
-                  <div className="flex justify-between text-sm text-gray-600 mb-2">
-                    <span>{progressPercentage.toFixed(0)}% of goal</span>
-                    <span>${server.goal.toFixed(2)}</span>
-                  </div>
-                  <div className="w-full bg-gray-200 rounded-full h-3">
-                    <div
-                      className="bg-indigo-600 h-3 rounded-full transition-all"
-                      style={{ width: `${progressPercentage}%` }}
-                    />
-                  </div>
+              <div className="mb-6">
+                <div className="flex justify-between text-sm text-gray-600 mb-2">
+                  <span>{progressPercentage.toFixed(0)}% funded</span>
+                  <span>${server.cost.toFixed(2)}/mo needed</span>
                 </div>
-              )}
+                <div className="w-full bg-gray-200 rounded-full h-3">
+                  <div
+                    className="bg-indigo-600 h-3 rounded-full transition-all"
+                    style={{ width: `${progressPercentage}%` }}
+                  />
+                </div>
+                <p className="text-xs text-gray-500 mt-2">
+                  {server.pledgerCount}/{maxPledgers} slots filled
+                </p>
+              </div>
 
               {/* Pledge Button */}
               {server.owner.stripeOnboardingComplete ? (
