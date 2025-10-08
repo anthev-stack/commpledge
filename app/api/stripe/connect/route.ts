@@ -68,6 +68,11 @@ export async function POST(request: Request) {
         country: user.country,
         email: user.email || undefined,
         business_type: "individual", // Personal account, not business
+        business_profile: {
+          mcc: "8398", // Charitable and Social Service Organizations - Membership Organizations
+          product_description: "Receiving donations for game server hosting",
+          url: process.env.NEXTAUTH_URL || undefined,
+        },
         capabilities: {
           card_payments: { requested: true },
           transfers: { requested: true },
