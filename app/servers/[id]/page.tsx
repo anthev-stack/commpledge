@@ -4,7 +4,7 @@ import { useEffect, useState } from "react"
 import { useSearchParams } from "next/navigation"
 import Link from "next/link"
 import Image from "next/image"
-import DonateModal from "@/components/DonateModal"
+import PledgeModal from "@/components/PledgeModal"
 
 export const dynamic = 'force-dynamic'
 
@@ -15,7 +15,8 @@ interface Server {
   gameType: string
   serverIp: string
   playerCount: number
-  goal: number
+  cost: number
+  withdrawalDay: number
   imageUrl: string
   owner: {
     id: string
@@ -44,7 +45,7 @@ export default function ServerPage({ params }: { params: Promise<{ id: string }>
   const [server, setServer] = useState<Server | null>(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState("")
-  const [showDonateModal, setShowDonateModal] = useState(false)
+  const [showPledgeModal, setShowPledgeModal] = useState(false)
   const [serverId, setServerId] = useState("")
 
   useEffect(() => {
@@ -316,13 +317,13 @@ export default function ServerPage({ params }: { params: Promise<{ id: string }>
         </div>
       </div>
 
-      {/* Donate Modal */}
-      <DonateModal
+      {/* Pledge Modal */}
+      <PledgeModal
         server={server}
-        isOpen={showDonateModal}
-        onClose={() => setShowDonateModal(false)}
+        isOpen={showPledgeModal}
+        onClose={() => setShowPledgeModal(false)}
         onSuccess={() => {
-          // Refresh server data to show new donation
+          // Refresh server data to show new pledge
           fetchServer()
         }}
       />

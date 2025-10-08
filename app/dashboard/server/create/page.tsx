@@ -33,7 +33,8 @@ export default function CreateServerPage() {
     gameType: "",
     serverIp: "",
     playerCount: "",
-    goal: "",
+    cost: "",
+    withdrawalDay: "15",
     imageUrl: "",
   })
 
@@ -273,27 +274,51 @@ export default function CreateServerPage() {
               />
             </div>
 
-            {/* Monthly Goal */}
+            {/* Monthly Cost */}
             <div>
-              <label htmlFor="goal" className="block text-sm font-medium text-gray-700 mb-1">
-                Monthly Goal (USD)
+              <label htmlFor="cost" className="block text-sm font-medium text-gray-700 mb-1">
+                Monthly Server Cost (USD) <span className="text-red-600">*</span>
               </label>
               <div className="relative">
                 <span className="absolute left-3 top-2 text-gray-500">$</span>
                 <input
                   type="number"
-                  id="goal"
-                  name="goal"
-                  min="0"
+                  id="cost"
+                  name="cost"
+                  min="1"
                   step="0.01"
-                  value={formData.goal}
+                  required
+                  value={formData.cost}
                   onChange={handleChange}
                   className="w-full pl-7 pr-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
-                  placeholder="0.00"
+                  placeholder="30.00"
                 />
               </div>
               <p className="text-xs text-gray-500 mt-1">
-                Optional - Set a monthly funding goal for server costs
+                How much does your server cost per month? (e.g., $30)
+              </p>
+            </div>
+
+            {/* Withdrawal Day */}
+            <div>
+              <label htmlFor="withdrawalDay" className="block text-sm font-medium text-gray-700 mb-1">
+                Payment Collection Day
+              </label>
+              <select
+                id="withdrawalDay"
+                name="withdrawalDay"
+                value={formData.withdrawalDay}
+                onChange={handleChange}
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+              >
+                {Array.from({ length: 28 }, (_, i) => i + 1).map(day => (
+                  <option key={day} value={day}>
+                    Day {day} of each month
+                  </option>
+                ))}
+              </select>
+              <p className="text-xs text-gray-500 mt-1">
+                When do you need the money? Pledgers will be charged 2 days before this date.
               </p>
             </div>
 
@@ -342,12 +367,13 @@ export default function CreateServerPage() {
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
             </svg>
             <div className="text-sm text-blue-800">
-              <p className="font-semibold mb-1">About Donations</p>
+              <p className="font-semibold mb-1">About Monthly Pledges</p>
               <ul className="list-disc list-inside space-y-1">
-                <li>Donations go directly to your connected Stripe account</li>
-                <li>Platform takes 5% to cover costs (Stripe fee separate)</li>
-                <li>You&apos;ll receive payouts automatically (daily/weekly)</li>
-                <li>Donors can leave optional messages with their donation</li>
+                <li>Players pledge $2-$30/month to support your server</li>
+                <li>Smart optimization: When pledges exceed cost, everyone pays LESS!</li>
+                <li>Automatic charging 2 days before your chosen date</li>
+                <li>Platform takes 2% fee (Stripe fees separate)</li>
+                <li>Money goes directly to your connected Stripe account</li>
               </ul>
             </div>
           </div>
