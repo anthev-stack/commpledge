@@ -22,17 +22,16 @@ export async function GET(
             stripeOnboardingComplete: true,
           },
         },
-        donations: {
+        pledges: {
           where: {
-            stripeStatus: "succeeded",
-            isAnonymous: false,
+            status: "ACTIVE",
           },
           take: 10,
           orderBy: {
             createdAt: "desc",
           },
           include: {
-            donor: {
+            user: {
               select: {
                 id: true,
                 name: true,
@@ -51,22 +50,24 @@ export async function GET(
       )
     }
 
-    // Calculate total donations
-    const donationStats = await prisma.donation.aggregate({
+    // Calculate pledge stats
+    const pledgeStats = await prisma.pledge.aggregate({
       where: {
         serverId: id,
-        stripeStatus: "succeeded",
+        status: "ACTIVE",
       },
       _sum: {
         amount: true,
+        optimizedAmount: true,
       },
       _count: true,
     })
 
     return NextResponse.json({
       ...server,
-      totalDonations: donationStats._sum.amount || 0,
-      donorCount: donationStats._count,
+      totalPledged: pledgeStats._sum.amount || 0,
+      totalOptimized: pledgeStats._sum.optimizedAmount || 0,
+      pledgerCount: pledgeStats._count,
     })
   } catch (error) {
     console.error("Error fetching server:", error)

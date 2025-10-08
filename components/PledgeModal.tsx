@@ -36,6 +36,7 @@ export default function PledgeModal({ server, isOpen, onClose, onSuccess }: Pled
       setError("")
       setMessage("")
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isOpen])
 
   const fetchPledgeStatus = async () => {
