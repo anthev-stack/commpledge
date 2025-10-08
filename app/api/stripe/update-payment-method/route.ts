@@ -15,7 +15,7 @@ export async function POST(request: Request) {
     }
 
     const body = await request.json()
-    const { paymentMethodId, customerId } = body
+    const { paymentMethodId } = body
 
     if (!paymentMethodId) {
       return NextResponse.json(
@@ -24,12 +24,17 @@ export async function POST(request: Request) {
       )
     }
 
+    // Get user to check if they have a customer ID
+    const user = await prisma.user.findUnique({
+      where: { id: session.user.id },
+      select: { stripeCustomerId: true },
+    })
+
     // Update user with payment method info
     await prisma.user.update({
       where: { id: session.user.id },
       data: {
         stripePaymentMethodId: paymentMethodId,
-        stripeCustomerId: customerId || undefined,
         hasPaymentMethod: true,
       },
     })

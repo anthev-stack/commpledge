@@ -42,7 +42,6 @@ function SetupForm({ onSuccess, onCancel }: any) {
               headers: { "Content-Type": "application/json" },
               body: JSON.stringify({ 
                 paymentMethodId: setupIntent.payment_method,
-                customerId: setupIntent.customer,
               }),
             })
           } catch (err) {
