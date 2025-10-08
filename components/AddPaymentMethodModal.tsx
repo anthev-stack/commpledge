@@ -23,7 +23,7 @@ function SetupForm({ onSuccess, onCancel }: any) {
     setError("")
 
     try {
-      const { error: submitError } = await stripe.confirmSetup({
+      const { error: submitError, setupIntent } = await stripe.confirmSetup({
         elements,
         confirmParams: {
           return_url: `${window.location.origin}/settings?payment_method=added`,
@@ -33,10 +33,8 @@ function SetupForm({ onSuccess, onCancel }: any) {
 
       if (submitError) {
         setError(submitError.message || "Failed to save payment method")
-      } else if (result?.setupIntent) {
+      } else if (setupIntent) {
         // Update user in database with payment method
-        const setupIntent = result.setupIntent
-        
         if (setupIntent.payment_method) {
           try {
             await fetch("/api/stripe/update-payment-method", {
