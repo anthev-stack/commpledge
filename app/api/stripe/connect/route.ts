@@ -67,6 +67,10 @@ export async function POST(request: Request) {
         type: "express",
         country: user.country,
         email: user.email || undefined,
+        business_type: "individual", // For personal use, not business
+        individual: {
+          email: user.email || undefined,
+        },
         capabilities: {
           card_payments: { requested: true },
           transfers: { requested: true },
