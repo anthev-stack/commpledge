@@ -36,35 +36,15 @@ export async function POST(request: Request) {
     switch (event.type) {
       case "payment_intent.succeeded": {
         const paymentIntent = event.data.object as Stripe.PaymentIntent
-
-        // Update donation status to succeeded
-        await prisma.donation.updateMany({
-          where: {
-            stripePaymentId: paymentIntent.id,
-          },
-          data: {
-            stripeStatus: "succeeded",
-          },
-        })
-
         console.log("Payment succeeded:", paymentIntent.id)
+        // Payment tracking is handled by the cron job for pledges
         break
       }
 
       case "payment_intent.payment_failed": {
         const paymentIntent = event.data.object as Stripe.PaymentIntent
-
-        // Update donation status to failed
-        await prisma.donation.updateMany({
-          where: {
-            stripePaymentId: paymentIntent.id,
-          },
-          data: {
-            stripeStatus: "failed",
-          },
-        })
-
         console.log("Payment failed:", paymentIntent.id)
+        // Payment failures are handled by the cron job for pledges
         break
       }
 
