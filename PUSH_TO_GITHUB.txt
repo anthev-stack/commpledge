@@ -1,0 +1,39 @@
+=================================================================
+  QUICK GUIDE: Push to GitHub
+=================================================================
+
+Your local Git repository is ready! Follow these steps:
+
+-----------------------------------------------------------------
+STEP 1: Create Repository on GitHub
+-----------------------------------------------------------------
+
+1. Go to: https://github.com/new
+2. Repository name: commpledge
+3. Description: Community Pledges web application
+4. Choose: Public or Private
+5. DO NOT initialize with README
+6. Click "Create repository"
+
+-----------------------------------------------------------------
+STEP 2: Push Your Code
+-----------------------------------------------------------------
+
+Run these commands in PowerShell (from community-pledges folder):
+
+git remote add origin https://github.com/YOUR_USERNAME/commpledge.git
+git push -u origin master
+
+(Replace YOUR_USERNAME with your actual GitHub username)
+
+-----------------------------------------------------------------
+DONE! 
+-----------------------------------------------------------------
+
+Your repository will be at:
+https://github.com/YOUR_USERNAME/commpledge
+
+=================================================================
+
+For detailed instructions, see GITHUB_SETUP.md
+
