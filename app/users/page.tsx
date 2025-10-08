@@ -60,9 +60,9 @@ export default async function UsersPage() {
                   )}
                   <div className="flex-1 min-w-0">
                     <h2 className="text-lg font-semibold text-gray-900 truncate">
-                      {user.name || "Anonymous"}
+                      {user.name || "Anonymous User"}
                     </h2>
-                    <p className="text-sm text-gray-600 truncate">{user.email}</p>
+                    <p className="text-sm text-gray-600">Community Member</p>
                   </div>
                 </div>
                 <div className="border-t border-gray-200 pt-4">

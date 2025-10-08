@@ -66,7 +66,7 @@ export default async function UserProfilePage({ params }: UserProfilePageProps) 
                 <h1 className="text-3xl font-bold text-gray-900">
                   {user.name || "Anonymous User"}
                 </h1>
-                <p className="text-gray-600 mt-1">{user.email}</p>
+                <p className="text-gray-600 mt-1">Community Member</p>
               </div>
             </div>
 
