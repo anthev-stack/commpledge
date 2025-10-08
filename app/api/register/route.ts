@@ -5,7 +5,7 @@ import { prisma } from "@/lib/prisma"
 export async function POST(request: Request) {
   try {
     const body = await request.json()
-    const { email, password, name, captchaToken } = body
+    const { email, password, name, country, captchaToken } = body
 
     // Verify hCaptcha
     if (!captchaToken) {
@@ -62,6 +62,7 @@ export async function POST(request: Request) {
         email,
         password: hashedPassword,
         name,
+        country: country || null,
       },
     })
 

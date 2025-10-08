@@ -4,6 +4,7 @@ import { useSession } from "next-auth/react"
 import { useState, useEffect } from "react"
 import { useRouter } from "next/navigation"
 import Image from "next/image"
+import { SUPPORTED_COUNTRIES } from "@/lib/countries"
 
 export default function SettingsPage() {
   const { data: session, update } = useSession()
@@ -17,10 +18,29 @@ export default function SettingsPage() {
   const [stripeStatus, setStripeStatus] = useState<any>(null)
   const [stripeLoading, setStripeLoading] = useState(true)
   const [connectingStripe, setConnectingStripe] = useState(false)
+  
+  // Country selection
+  const [country, setCountry] = useState("")
+  const [userCountry, setUserCountry] = useState("")
+  const [savingCountry, setSavingCountry] = useState(false)
 
   useEffect(() => {
     checkStripeStatus()
+    fetchUserData()
   }, [])
+
+  const fetchUserData = async () => {
+    try {
+      const response = await fetch("/api/user/me")
+      const data = await response.json()
+      if (data.country) {
+        setUserCountry(data.country)
+        setCountry(data.country)
+      }
+    } catch (error) {
+      console.error("Error fetching user data:", error)
+    }
+  }
 
   const checkStripeStatus = async () => {
     try {
@@ -34,18 +54,65 @@ export default function SettingsPage() {
     }
   }
 
+  const handleSaveCountry = async () => {
+    if (!country) {
+      setError("Please select a country")
+      return
+    }
+
+    setSavingCountry(true)
+    setError("")
+    setMessage("")
+
+    try {
+      const response = await fetch("/api/user/country", {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ country }),
+      })
+
+      const data = await response.json()
+
+      if (!response.ok) {
+        setError(data.error || "Failed to save country")
+        return
+      }
+
+      setUserCountry(country)
+      setMessage("Country saved! You can now connect Stripe.")
+    } catch (error) {
+      setError("Something went wrong")
+    } finally {
+      setSavingCountry(false)
+    }
+  }
+
   const handleConnectStripe = async () => {
+    if (!userCountry) {
+      setError("Please select and save your country first")
+      return
+    }
+
     setConnectingStripe(true)
+    setError("")
+
     try {
       const response = await fetch("/api/stripe/connect", {
         method: "POST",
       })
       const data = await response.json()
       
+      if (!response.ok) {
+        setError(data.error || "Failed to connect Stripe")
+        return
+      }
+
       if (data.url) {
         window.location.href = data.url
       } else {
-        setError("Failed to connect Stripe")
+        setError("Failed to get onboarding URL")
       }
     } catch (error) {
       setError("Failed to connect Stripe")

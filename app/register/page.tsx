@@ -5,6 +5,7 @@ import { useState, useRef } from "react"
 import { useRouter } from "next/navigation"
 import Link from "next/link"
 import HCaptcha from "@hcaptcha/react-hcaptcha"
+import { SUPPORTED_COUNTRIES } from "@/lib/countries"
 
 export default function RegisterPage() {
   const router = useRouter()
@@ -12,6 +13,7 @@ export default function RegisterPage() {
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
   const [confirmPassword, setConfirmPassword] = useState("")
+  const [country, setCountry] = useState("")
   const [error, setError] = useState("")
   const [loading, setLoading] = useState(false)
   const [captchaToken, setCaptchaToken] = useState<string | null>(null)
@@ -48,6 +50,7 @@ export default function RegisterPage() {
           name,
           email,
           password,
+          country,
           captchaToken,
         }),
       })
@@ -184,6 +187,29 @@ export default function RegisterPage() {
                 className="mt-1 appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-lg focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
                 placeholder="Confirm your password"
               />
+            </div>
+            <div>
+              <label htmlFor="country" className="block text-sm font-medium text-gray-700">
+                Country
+              </label>
+              <select
+                id="country"
+                name="country"
+                required
+                value={country}
+                onChange={(e) => setCountry(e.target.value)}
+                className="mt-1 appearance-none relative block w-full px-3 py-2 border border-gray-300 text-gray-900 rounded-lg focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+              >
+                <option value="">Select your country</option>
+                {SUPPORTED_COUNTRIES.map((c) => (
+                  <option key={c.code} value={c.code}>
+                    {c.flag} {c.name}
+                  </option>
+                ))}
+              </select>
+              <p className="mt-1 text-xs text-gray-500">
+                Required for receiving donations (cannot be changed later)
+              </p>
             </div>
           </div>
 

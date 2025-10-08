@@ -29,11 +29,19 @@ export async function POST(request: Request) {
 
     let accountId = user.stripeAccountId
 
+    // Check if user has selected a country
+    if (!user.country) {
+      return NextResponse.json(
+        { error: "Please select your country first" },
+        { status: 400 }
+      )
+    }
+
     // Create Stripe Connect account if doesn't exist
     if (!accountId) {
       const account = await stripe.accounts.create({
         type: "express",
-        country: "AU", // Australia
+        country: user.country,
         email: user.email || undefined,
         capabilities: {
           card_payments: { requested: true },

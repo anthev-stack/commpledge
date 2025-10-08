@@ -50,6 +50,7 @@ model User {
   stripeAccountId       String?   @unique
   stripeAccountStatus   String?   // 'pending', 'active', 'restricted'
   stripeOnboardingComplete Boolean @default(false)
+  country               String?   // ISO country code for Stripe Connect
   
   accounts              Account[]
   sessions              Session[]
