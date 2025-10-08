@@ -240,7 +240,7 @@ export default function SettingsPage() {
                           You need to connect a payout method before you can create a server and receive donations.
                         </p>
                         <p className="mb-3">
-                          <strong>What you'll need:</strong>
+                          <strong>What you&apos;ll need:</strong>
                         </p>
                         <ul className="list-disc list-inside space-y-1 mb-4">
                           <li>Bank account information</li>
