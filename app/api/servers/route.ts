@@ -20,7 +20,7 @@ export async function GET() {
         },
         _count: {
           select: {
-            donations: true,
+            pledges: true,
           },
         },
       },
@@ -29,23 +29,25 @@ export async function GET() {
       },
     })
 
-    // Calculate total donations for each server
+    // Calculate pledge stats for each server
     const serversWithStats = await Promise.all(
       servers.map(async (server) => {
-        const donations = await prisma.donation.aggregate({
+        const pledgeStats = await prisma.pledge.aggregate({
           where: {
             serverId: server.id,
-            stripeStatus: "succeeded",
+            status: "ACTIVE",
           },
           _sum: {
             amount: true,
+            optimizedAmount: true,
           },
         })
 
         return {
           ...server,
-          totalDonations: donations._sum.amount || 0,
-          donorCount: server._count.donations,
+          totalPledged: pledgeStats._sum.amount || 0,
+          totalOptimized: pledgeStats._sum.optimizedAmount || 0,
+          pledgerCount: server._count.pledges,
         }
       })
     )
