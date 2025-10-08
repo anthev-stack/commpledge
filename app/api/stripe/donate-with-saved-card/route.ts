@@ -79,6 +79,7 @@ export async function POST(request: Request) {
       payment_method: paymentMethodId,
       off_session: false, // User is present, they clicked donate
       confirm: true, // Confirm immediately
+      return_url: `${process.env.NEXTAUTH_URL}/servers/${serverId}?donation=success`, // Required for 3D Secure redirects
       application_fee_amount: Math.round(amountFloat * 100 * 0.05), // 5% platform fee
       transfer_data: {
         destination: server.owner.stripeAccountId,
