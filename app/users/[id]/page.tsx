@@ -3,6 +3,8 @@ import { notFound } from "next/navigation"
 import Image from "next/image"
 import Link from "next/link"
 
+export const dynamic = 'force-dynamic'
+
 interface UserProfilePageProps {
   params: Promise<{
     id: string
