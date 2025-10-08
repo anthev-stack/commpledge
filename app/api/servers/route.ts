@@ -73,11 +73,27 @@ export async function POST(request: Request) {
     }
 
     const body = await request.json()
-    const { name, description, gameType, serverIp, playerCount, goal, imageUrl } = body
+    const { name, description, gameType, serverIp, playerCount, cost, withdrawalDay, imageUrl } = body
 
-    if (!name || !gameType) {
+    if (!name || !gameType || !cost) {
       return NextResponse.json(
-        { error: "Name and game type are required" },
+        { error: "Name, game type, and monthly cost are required" },
+        { status: 400 }
+      )
+    }
+
+    const monthlyCost = parseFloat(cost)
+    if (isNaN(monthlyCost) || monthlyCost < 1) {
+      return NextResponse.json(
+        { error: "Monthly cost must be at least $1" },
+        { status: 400 }
+      )
+    }
+
+    const withdrawalDayNum = withdrawalDay ? parseInt(withdrawalDay) : 15
+    if (withdrawalDayNum < 1 || withdrawalDayNum > 31) {
+      return NextResponse.json(
+        { error: "Withdrawal day must be between 1 and 31" },
         { status: 400 }
       )
     }
@@ -102,7 +118,8 @@ export async function POST(request: Request) {
         gameType,
         serverIp,
         playerCount: playerCount ? parseInt(playerCount) : null,
-        goal: goal ? parseFloat(goal) : null,
+        cost: monthlyCost,
+        withdrawalDay: withdrawalDayNum,
         imageUrl,
         ownerId: session.user.id,
       },

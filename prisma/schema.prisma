@@ -3,10 +3,194 @@
 
 generator client {
   provider = "prisma-client-js"
-  output   = "../app/generated/prisma"
 }
 
 datasource db {
-  provider = "sqlite"
+  provider = "postgresql"
   url      = env("DATABASE_URL")
+}
+
+enum UserRole {
+  USER
+  MODERATOR
+  ADMIN
+  SUSPENDED
+  BANNED
+}
+
+enum PledgeStatus {
+  ACTIVE
+  PENDING
+  COMPLETED
+  FAILED
+  CANCELLED
+}
+
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model User {
+  id                    String    @id @default(cuid())
+  name                  String?
+  email                 String?   @unique
+  emailVerified         DateTime?
+  password              String?
+  image                 String?
+  createdAt             DateTime  @default(now())
+  role                  UserRole  @default(USER)
+  
+  // Stripe Connect fields (for receiving payouts as server owner)
+  stripeAccountId       String?   @unique
+  stripeAccountStatus   String?   // 'pending', 'active', 'restricted'
+  stripeOnboardingComplete Boolean @default(false)
+  country               String?   // ISO country code for Stripe Connect
+  
+  // Stripe Customer fields (for making pledges/donations)
+  stripeCustomerId      String?   @unique
+  stripePaymentMethodId String?   // Default payment method
+  hasPaymentMethod      Boolean   @default(false)
+  
+  // Payment failure tracking
+  failedPayments        Int       @default(0)
+  lastFailedPayment     DateTime?
+  suspendedAt           DateTime?
+  suspensionReason      String?
+  
+  accounts              Account[]
+  sessions              Session[]
+  servers               Server[]
+  pledges               Pledge[]
+  activityLogs          ActivityLog[]
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+}
+
+model Server {
+  id             String   @id @default(cuid())
+  name           String
+  description    String?
+  gameType       String   // e.g., "Minecraft", "Rust", "ARK", etc.
+  serverIp       String?
+  playerCount    Int?
+  cost           Float    @default(30) // Monthly server cost (e.g., $30/month)
+  withdrawalDay  Int      @default(15) // Day of month to charge pledgers (1-31)
+  imageUrl       String?
+  isActive       Boolean  @default(true) // Can accept pledges
+  status         String   @default("active") // 'active', 'inactive', 'archived'
+  
+  ownerId        String
+  owner          User     @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+  
+  pledges        Pledge[]
+  withdrawals    Withdrawal[]
+  activityLogs   ActivityLog[]
+  
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+  
+  @@index([ownerId])
+  @@index([status])
+  @@index([isActive])
+}
+
+model Pledge {
+  id                String        @id @default(cuid())
+  amount            Float         // Pledged amount ($2-$30)
+  optimizedAmount   Float?        // Actual amount to be charged (after optimization)
+  status            PledgeStatus  @default(ACTIVE)
+  
+  // Relationships
+  userId            String
+  user              User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  serverId          String
+  server            Server        @relation(fields: [serverId], references: [id], onDelete: Cascade)
+  
+  createdAt         DateTime      @default(now())
+  updatedAt         DateTime      @updatedAt
+  lastChargedAt     DateTime?
+  nextChargeDate    DateTime?
+  
+  @@unique([userId, serverId]) // One pledge per user per server
+  @@index([userId])
+  @@index([serverId])
+  @@index([status])
+}
+
+model Withdrawal {
+  id                String   @id @default(cuid())
+  serverId          String
+  server            Server   @relation(fields: [serverId], references: [id], onDelete: Cascade)
+  
+  scheduledDate     DateTime // When pledgers will be charged
+  withdrawalDate    DateTime // When server owner receives funds
+  totalAmount       Float    // Total to be collected
+  collectedAmount   Float    @default(0) // Actually collected
+  platformFee       Float    // 2% fee
+  netAmount         Float    // Amount server owner receives
+  
+  status            String   @default("pending") // 'pending', 'processing', 'completed', 'failed'
+  
+  pledgeCount       Int      // Number of pledges involved
+  successfulCharges Int      @default(0)
+  failedCharges     Int      @default(0)
+  
+  stripeTransferId  String?  // Stripe transfer ID to server owner
+  
+  createdAt         DateTime @default(now())
+  completedAt       DateTime?
+  
+  @@index([serverId])
+  @@index([scheduledDate])
+  @@index([status])
+}
+
+model ActivityLog {
+  id          String   @id @default(cuid())
+  userId      String?
+  user        User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
+  
+  serverId    String?
+  server      Server?  @relation(fields: [serverId], references: [id], onDelete: SetNull)
+  
+  action      String   // 'pledge_created', 'pledge_cancelled', 'payment_success', 'payment_failed', etc.
+  details     String?  // JSON string with additional details
+  ipAddress   String?
+  
+  createdAt   DateTime @default(now())
+  
+  @@index([userId])
+  @@index([serverId])
+  @@index([action])
+  @@index([createdAt])
 }
