@@ -264,6 +264,22 @@ export default function ServerPage({ params }: { params: Promise<{ id: string }>
                 </p>
               </div>
 
+              {/* Payment Schedule */}
+              <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6">
+                <h3 className="text-sm font-semibold text-blue-900 mb-2">📅 Payment Schedule</h3>
+                <div className="space-y-1 text-xs text-blue-800">
+                  <p>
+                    <strong>Charge Date:</strong> Day {server.withdrawalDay - 2} of each month
+                  </p>
+                  <p>
+                    <strong>Payment Due:</strong> Day {server.withdrawalDay} of each month
+                  </p>
+                  <p className="text-blue-700 mt-2">
+                    Pledgers are charged 2 days before the server payment is due, ensuring funds arrive on time.
+                  </p>
+                </div>
+              </div>
+
               {/* Pledge Button */}
               {server.owner.stripeOnboardingComplete ? (
                 <button
