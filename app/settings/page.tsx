@@ -259,6 +259,62 @@ export default function SettingsPage() {
               </form>
             </div>
 
+            {/* Country Selection */}
+            <div className="mb-8 border-t border-gray-200 pt-6">
+              <h2 className="text-lg font-semibold text-gray-900 mb-4">
+                Country/Region
+                <span className="ml-2 text-sm font-normal text-red-600">* Required for payouts</span>
+              </h2>
+
+              <div className="space-y-4">
+                <div>
+                  <label htmlFor="country" className="block text-sm font-medium text-gray-700 mb-1">
+                    Select Your Country
+                  </label>
+                  <select
+                    id="country"
+                    value={country}
+                    onChange={(e) => setCountry(e.target.value)}
+                    disabled={!!userCountry && !!stripeStatus?.connected}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 disabled:bg-gray-50 disabled:cursor-not-allowed"
+                  >
+                    <option value="">Select your country</option>
+                    {SUPPORTED_COUNTRIES.map((c) => (
+                      <option key={c.code} value={c.code}>
+                        {c.flag} {c.name}
+                      </option>
+                    ))}
+                  </select>
+                  {userCountry && stripeStatus?.connected ? (
+                    <p className="text-xs text-gray-500 mt-1">
+                      Country cannot be changed after connecting Stripe
+                    </p>
+                  ) : (
+                    <p className="text-xs text-gray-500 mt-1">
+                      Choose the country where you&apos;ll receive payouts
+                    </p>
+                  )}
+                </div>
+
+                {!userCountry || country !== userCountry ? (
+                  <button
+                    onClick={handleSaveCountry}
+                    disabled={savingCountry || !country}
+                    className="bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-2 rounded-lg font-medium transition disabled:opacity-50 disabled:cursor-not-allowed"
+                  >
+                    {savingCountry ? "Saving..." : "Save Country"}
+                  </button>
+                ) : (
+                  <div className="flex items-center text-sm text-green-600">
+                    <svg className="w-5 h-5 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                    </svg>
+                    Country saved
+                  </div>
+                )}
+              </div>
+            </div>
+
             {/* Payout Method (Stripe Connect) */}
             <div className="mb-8 border-t border-gray-200 pt-6">
               <h2 className="text-lg font-semibold text-gray-900 mb-4">
