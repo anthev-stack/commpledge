@@ -46,3 +46,7 @@ next-env.d.ts
 # database
 *.db
 *.db-journal
+
+# Stripe keys (never commit!)
+STRIPE_KEYS.*
+*stripe*keys*

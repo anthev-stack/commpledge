@@ -1,7 +1,7 @@
 "use client"
 
 import { useSession } from "next-auth/react"
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { useRouter } from "next/navigation"
 import Image from "next/image"
 
@@ -12,6 +12,47 @@ export default function SettingsPage() {
   const [loading, setLoading] = useState(false)
   const [message, setMessage] = useState("")
   const [error, setError] = useState("")
+  
+  // Stripe Connect status
+  const [stripeStatus, setStripeStatus] = useState<any>(null)
+  const [stripeLoading, setStripeLoading] = useState(true)
+  const [connectingStripe, setConnectingStripe] = useState(false)
+
+  useEffect(() => {
+    checkStripeStatus()
+  }, [])
+
+  const checkStripeStatus = async () => {
+    try {
+      const response = await fetch("/api/stripe/connect")
+      const data = await response.json()
+      setStripeStatus(data)
+    } catch (error) {
+      console.error("Error checking Stripe status:", error)
+    } finally {
+      setStripeLoading(false)
+    }
+  }
+
+  const handleConnectStripe = async () => {
+    setConnectingStripe(true)
+    try {
+      const response = await fetch("/api/stripe/connect", {
+        method: "POST",
+      })
+      const data = await response.json()
+      
+      if (data.url) {
+        window.location.href = data.url
+      } else {
+        setError("Failed to connect Stripe")
+      }
+    } catch (error) {
+      setError("Failed to connect Stripe")
+    } finally {
+      setConnectingStripe(false)
+    }
+  }
 
   if (!session) {
     router.push("/login")
@@ -149,6 +190,96 @@ export default function SettingsPage() {
                   </button>
                 </div>
               </form>
+            </div>
+
+            {/* Payout Method (Stripe Connect) */}
+            <div className="mb-8 border-t border-gray-200 pt-6">
+              <h2 className="text-lg font-semibold text-gray-900 mb-4">
+                Payout Method
+                <span className="ml-2 text-sm font-normal text-red-600">* Required to create servers</span>
+              </h2>
+
+              {stripeLoading ? (
+                <div className="flex items-center space-x-2 text-gray-600">
+                  <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-indigo-600"></div>
+                  <span className="text-sm">Checking Stripe status...</span>
+                </div>
+              ) : stripeStatus?.onboardingComplete ? (
+                <div className="bg-green-50 border border-green-200 rounded-lg p-4">
+                  <div className="flex items-start">
+                    <div className="flex-shrink-0">
+                      <svg className="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                      </svg>
+                    </div>
+                    <div className="ml-3 flex-1">
+                      <h3 className="text-sm font-medium text-green-800">Stripe Connected</h3>
+                      <div className="mt-2 text-sm text-green-700">
+                        <p>Your payout method is set up and ready to receive donations!</p>
+                        <p className="mt-2">
+                          <strong>Status:</strong> Active<br />
+                          <strong>Charges:</strong> {stripeStatus.chargesEnabled ? "Enabled" : "Disabled"}<br />
+                          <strong>Payouts:</strong> {stripeStatus.payoutsEnabled ? "Enabled" : "Disabled"}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              ) : (
+                <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4 mb-4">
+                  <div className="flex items-start">
+                    <div className="flex-shrink-0">
+                      <svg className="w-6 h-6 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                      </svg>
+                    </div>
+                    <div className="ml-3 flex-1">
+                      <h3 className="text-sm font-medium text-yellow-800">Payout Method Required</h3>
+                      <div className="mt-2 text-sm text-yellow-700">
+                        <p className="mb-3">
+                          You need to connect a payout method before you can create a server and receive donations.
+                        </p>
+                        <p className="mb-3">
+                          <strong>What you'll need:</strong>
+                        </p>
+                        <ul className="list-disc list-inside space-y-1 mb-4">
+                          <li>Bank account information</li>
+                          <li>Personal identification (for verification)</li>
+                          <li>Tax information (for compliance)</li>
+                        </ul>
+                        <p className="text-xs">
+                          <strong>Note:</strong> You don't need a business account! Stripe Connect Express allows you to receive donations as an individual.
+                        </p>
+                      </div>
+                      <button
+                        onClick={handleConnectStripe}
+                        disabled={connectingStripe}
+                        className="mt-4 bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-2 rounded-lg font-medium transition disabled:opacity-50 disabled:cursor-not-allowed flex items-center"
+                      >
+                        {connectingStripe ? (
+                          <>
+                            <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
+                            Connecting...
+                          </>
+                        ) : (
+                          <>
+                            <svg className="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 24 24">
+                              <path d="M13.976 9.15c-2.172-.806-3.356-1.426-3.356-2.409 0-.831.683-1.305 1.901-1.305 2.227 0 4.515.858 6.09 1.631l.89-5.494C18.252.975 15.697 0 12.165 0 9.667 0 7.589.654 6.104 1.872 4.56 3.147 3.757 4.992 3.757 7.218c0 4.039 2.467 5.76 6.476 7.219 2.585.92 3.445 1.574 3.445 2.583 0 .98-.84 1.545-2.354 1.545-1.875 0-4.965-.921-6.99-2.109l-.9 5.555C5.175 22.99 8.385 24 11.714 24c2.641 0 4.843-.624 6.328-1.813 1.664-1.305 2.525-3.236 2.525-5.732 0-4.128-2.524-5.851-6.594-7.305h.003z"/>
+                            </svg>
+                            Connect Stripe Account
+                          </>
+                        )}
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              <div className="mt-4 text-xs text-gray-500">
+                <p>
+                  <strong>Powered by Stripe Connect.</strong> Stripe is a secure payment platform trusted by millions. Your financial information is safe and protected.
+                </p>
+              </div>
             </div>
 
             {/* Account Details */}
