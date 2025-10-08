@@ -38,15 +38,23 @@ model Session {
 }
 
 model User {
-  id            String    @id @default(cuid())
-  name          String?
-  email         String?   @unique
-  emailVerified DateTime?
-  password      String?
-  image         String?
-  createdAt     DateTime  @default(now())
-  accounts      Account[]
-  sessions      Session[]
+  id                    String    @id @default(cuid())
+  name                  String?
+  email                 String?   @unique
+  emailVerified         DateTime?
+  password              String?
+  image                 String?
+  createdAt             DateTime  @default(now())
+  
+  // Stripe Connect fields
+  stripeAccountId       String?   @unique
+  stripeAccountStatus   String?   // 'pending', 'active', 'restricted'
+  stripeOnboardingComplete Boolean @default(false)
+  
+  accounts              Account[]
+  sessions              Session[]
+  servers               Server[]
+  donations             Donation[]
 }
 
 model VerificationToken {
@@ -55,4 +63,53 @@ model VerificationToken {
   expires    DateTime
 
   @@unique([identifier, token])
+}
+
+model Server {
+  id          String   @id @default(cuid())
+  name        String
+  description String?
+  gameType    String   // e.g., "Minecraft", "Rust", "ARK", etc.
+  serverIp    String?
+  playerCount Int?
+  goal        Float?   // Optional monthly goal
+  imageUrl    String?
+  status      String   @default("active") // 'active', 'inactive', 'archived'
+  
+  ownerId     String
+  owner       User     @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+  
+  donations   Donation[]
+  
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  @@index([ownerId])
+  @@index([status])
+}
+
+model Donation {
+  id                String   @id @default(cuid())
+  amount            Float    // Amount in dollars
+  currency          String   @default("usd")
+  message           String?  // Optional message from donor
+  isAnonymous       Boolean  @default(false)
+  
+  // Stripe fields
+  stripePaymentId   String   @unique
+  stripeStatus      String   // 'pending', 'succeeded', 'failed', 'refunded'
+  
+  // Relationships
+  donorId           String?  // Nullable for anonymous donations
+  donor             User?    @relation(fields: [donorId], references: [id], onDelete: SetNull)
+  
+  serverId          String
+  server            Server   @relation(fields: [serverId], references: [id], onDelete: Cascade)
+  
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+  
+  @@index([donorId])
+  @@index([serverId])
+  @@index([stripePaymentId])
 }
