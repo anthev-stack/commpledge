@@ -34,13 +34,17 @@ export async function PATCH(request: Request) {
       )
     }
 
-    // Check if user already has a Stripe account
+    // Check if user has completed Stripe onboarding
     const user = await prisma.user.findUnique({
       where: { id: session.user.id },
-      select: { stripeAccountId: true },
+      select: { 
+        stripeAccountId: true,
+        stripeOnboardingComplete: true,
+      },
     })
 
-    if (user?.stripeAccountId) {
+    // Only block if Stripe onboarding is actually complete
+    if (user?.stripeAccountId && user?.stripeOnboardingComplete) {
       return NextResponse.json(
         { error: "Cannot change country after connecting Stripe" },
         { status: 400 }
