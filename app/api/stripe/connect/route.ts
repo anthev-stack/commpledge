@@ -37,6 +37,30 @@ export async function POST(request: Request) {
       )
     }
 
+    // If account exists but onboarding not complete, check if country matches
+    if (accountId && !user.stripeOnboardingComplete) {
+      try {
+        const existingAccount = await stripe.accounts.retrieve(accountId)
+        
+        // If country doesn't match, delete old account and create new one
+        if (existingAccount.country !== user.country) {
+          console.log(`Country mismatch: ${existingAccount.country} vs ${user.country}. Deleting old account.`)
+          
+          try {
+            await stripe.accounts.del(accountId)
+          } catch (deleteError) {
+            console.log("Failed to delete account, may not exist:", deleteError)
+          }
+          
+          accountId = null // Will create new account below
+        }
+      } catch (error) {
+        // Account doesn't exist in Stripe, clear from database
+        console.log("Account doesn't exist in Stripe, clearing from database")
+        accountId = null
+      }
+    }
+
     // Create Stripe Connect account if doesn't exist
     if (!accountId) {
       const account = await stripe.accounts.create({
@@ -57,6 +81,7 @@ export async function POST(request: Request) {
         data: {
           stripeAccountId: accountId,
           stripeAccountStatus: "pending",
+          stripeOnboardingComplete: false,
         },
       })
     }
