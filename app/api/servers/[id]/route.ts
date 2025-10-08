@@ -117,7 +117,8 @@ export async function PATCH(
         gameType: body.gameType,
         serverIp: body.serverIp,
         playerCount: body.playerCount ? parseInt(body.playerCount) : null,
-        goal: body.goal ? parseFloat(body.goal) : null,
+        cost: body.cost ? parseFloat(body.cost) : undefined,
+        withdrawalDay: body.withdrawalDay ? parseInt(body.withdrawalDay) : undefined,
         imageUrl: body.imageUrl,
       },
     })
