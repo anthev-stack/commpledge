@@ -230,6 +230,11 @@ export default function ServerPage({ params }: { params: Promise<{ id: string }>
 
           {/* Sidebar */}
           <div className="space-y-6">
+            {/* Live Server Stats */}
+            {server.serverIp && (
+              <ServerStats serverId={server.id} gameType={server.gameType} />
+            )}
+
             {/* Pledge Card */}
             <div className="bg-white rounded-lg shadow-md p-6 sticky top-6">
               {/* Stats */}
