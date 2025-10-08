@@ -4,20 +4,7 @@ import { useState, useEffect } from "react"
 import { useRouter } from "next/navigation"
 import { useSession } from "next-auth/react"
 import Link from "next/link"
-
-const GAME_TYPES = [
-  "Minecraft",
-  "Rust",
-  "ARK: Survival Evolved",
-  "Valheim",
-  "7 Days to Die",
-  "Terraria",
-  "Garry's Mod",
-  "Counter-Strike",
-  "Team Fortress 2",
-  "Left 4 Dead 2",
-  "Other",
-]
+import { SUPPORTED_GAMES } from "@/lib/supported-games"
 
 export default function CreateServerPage() {
   const router = useRouter()
@@ -213,12 +200,53 @@ export default function CreateServerPage() {
                 onChange={handleChange}
                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
               >
-                <option value="">Select a game</option>
-                {GAME_TYPES.map((game) => (
-                  <option key={game} value={game}>
-                    {game}
-                  </option>
-                ))}
+                <option value="">Select a game...</option>
+                <optgroup label="FPS Games">
+                  <option value="Counter-Strike 2">Counter-Strike 2</option>
+                  <option value="Counter-Strike: Global Offensive">CS:GO</option>
+                  <option value="Counter-Strike: Source">CS: Source</option>
+                  <option value="Team Fortress 2">Team Fortress 2</option>
+                  <option value="Left 4 Dead 2">Left 4 Dead 2</option>
+                  <option value="Insurgency: Sandstorm">Insurgency: Sandstorm</option>
+                  <option value="Squad">Squad</option>
+                  <option value="Hell Let Loose">Hell Let Loose</option>
+                  <option value="Pavlov VR">Pavlov VR</option>
+                </optgroup>
+                <optgroup label="Survival/Sandbox">
+                  <option value="Minecraft: Java Edition">Minecraft: Java Edition</option>
+                  <option value="Minecraft: Bedrock Edition">Minecraft: Bedrock Edition</option>
+                  <option value="Rust">Rust</option>
+                  <option value="ARK: Survival Evolved">ARK: Survival Evolved</option>
+                  <option value="ARK: Survival Ascended">ARK: Survival Ascended</option>
+                  <option value="7 Days to Die">7 Days to Die</option>
+                  <option value="Valheim">Valheim</option>
+                  <option value="V Rising">V Rising</option>
+                  <option value="Conan Exiles">Conan Exiles</option>
+                  <option value="DayZ">DayZ</option>
+                  <option value="SCUM">SCUM</option>
+                  <option value="The Forest">The Forest</option>
+                  <option value="Sons of The Forest">Sons of The Forest</option>
+                  <option value="Terraria">Terraria</option>
+                </optgroup>
+                <optgroup label="Racing">
+                  <option value="Assetto Corsa">Assetto Corsa</option>
+                  <option value="Assetto Corsa Competizione">Assetto Corsa Competizione</option>
+                  <option value="BeamMP (BeamNG.drive)">BeamMP (BeamNG.drive)</option>
+                </optgroup>
+                <optgroup label="Tactical/Mil-Sim">
+                  <option value="ArmA 3">ArmA 3</option>
+                  <option value="Rising Storm 2: Vietnam">Rising Storm 2: Vietnam</option>
+                </optgroup>
+                <optgroup label="Other">
+                  <option value="Garry's Mod">Garry&apos;s Mod</option>
+                  <option value="Unturned">Unturned</option>
+                  <option value="Project Zomboid">Project Zomboid</option>
+                  <option value="Space Engineers">Space Engineers</option>
+                  <option value="FiveM (GTA V)">FiveM (GTA V)</option>
+                  <option value="Killing Floor 2">Killing Floor 2</option>
+                  <option value="Mordhau">Mordhau</option>
+                  <option value="Chivalry 2">Chivalry 2</option>
+                </optgroup>
               </select>
             </div>
 
