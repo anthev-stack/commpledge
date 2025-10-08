@@ -67,13 +67,17 @@ export async function POST(request: Request) {
         type: "express",
         country: user.country,
         email: user.email || undefined,
-        business_type: "individual", // For personal use, not business
-        individual: {
-          email: user.email || undefined,
-        },
+        business_type: "individual", // Personal account, not business
         capabilities: {
           card_payments: { requested: true },
           transfers: { requested: true },
+        },
+        settings: {
+          payouts: {
+            schedule: {
+              interval: "daily", // Automatic daily payouts
+            },
+          },
         },
       })
 
