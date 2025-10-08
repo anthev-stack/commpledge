@@ -33,7 +33,7 @@ export async function POST(request: Request) {
     if (!accountId) {
       const account = await stripe.accounts.create({
         type: "express",
-        country: "US", // Change based on your users
+        country: "AU", // Australia
         email: user.email || undefined,
         capabilities: {
           card_payments: { requested: true },
