@@ -346,7 +346,7 @@ export default function CreateServerPage() {
               <ul className="list-disc list-inside space-y-1">
                 <li>Donations go directly to your connected Stripe account</li>
                 <li>Platform takes 5% to cover costs (Stripe fee separate)</li>
-                <li>You'll receive payouts automatically (daily/weekly)</li>
+                <li>You&apos;ll receive payouts automatically (daily/weekly)</li>
                 <li>Donors can leave optional messages with their donation</li>
               </ul>
             </div>

@@ -248,7 +248,7 @@ export default function SettingsPage() {
                           <li>Tax information (for compliance)</li>
                         </ul>
                         <p className="text-xs">
-                          <strong>Note:</strong> You don't need a business account! Stripe Connect Express allows you to receive donations as an individual.
+                          <strong>Note:</strong> You don&apos;t need a business account! Stripe Connect Express allows you to receive donations as an individual.
                         </p>
                       </div>
                       <button

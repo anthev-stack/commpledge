@@ -59,6 +59,7 @@ export default function ServerPage({ params }: { params: Promise<{ id: string }>
     if (serverId) {
       fetchServer()
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [serverId])
 
   useEffect(() => {
@@ -266,7 +267,7 @@ export default function ServerPage({ params }: { params: Promise<{ id: string }>
               ) : (
                 <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4 text-center">
                   <p className="text-sm text-yellow-800">
-                    Server owner hasn't set up donations yet
+                    Server owner hasn&apos;t set up donations yet
                   </p>
                 </div>
               )}

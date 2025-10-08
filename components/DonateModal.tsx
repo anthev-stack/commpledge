@@ -235,7 +235,7 @@ export default function DonateModal({ server, isOpen, onClose }: DonateModalProp
                     className="mt-1 mr-2"
                   />
                   <label htmlFor="anonymous" className="text-sm text-gray-700">
-                    Donate anonymously (your name won't be shown)
+                    Donate anonymously (your name won&apos;t be shown)
                   </label>
                 </div>
               )}
@@ -243,7 +243,7 @@ export default function DonateModal({ server, isOpen, onClose }: DonateModalProp
               {!session && (
                 <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-3">
                   <p className="text-xs text-yellow-800">
-                    You're donating as a guest. Your donation will be anonymous.
+                    You&apos;re donating as a guest. Your donation will be anonymous.
                   </p>
                 </div>
               )}
