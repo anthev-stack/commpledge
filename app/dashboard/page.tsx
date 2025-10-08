@@ -69,12 +69,12 @@ export default async function DashboardPage() {
             <p className="text-gray-600 text-sm mb-4">
               Create and manage your game server listings
             </p>
-            <a
+            <Link
               href="/dashboard/server/create"
               className="text-pink-600 hover:text-pink-700 font-medium text-sm"
             >
               Create Server →
-            </a>
+            </Link>
           </div>
         </div>
 
