@@ -34,19 +34,27 @@ function SetupForm({ onSuccess, onCancel }: any) {
       if (submitError) {
         setError(submitError.message || "Failed to save payment method")
       } else {
-        // Notify backend that payment method was saved
-        try {
-          const setupIntentId = new URL(window.location.href).searchParams.get("setup_intent")
-          if (setupIntentId) {
-            await fetch("/api/stripe/payment-method-saved", {
+        // Get the setup intent and payment method from the result
+        const { setupIntent } = await stripe.retrieveSetupIntent(
+          elements.options?.clientSecret as string
+        )
+        
+        if (setupIntent?.payment_method) {
+          // Update user in database with payment method
+          try {
+            await fetch("/api/stripe/update-payment-method", {
               method: "POST",
               headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({ setupIntentId }),
+              body: JSON.stringify({ 
+                paymentMethodId: setupIntent.payment_method,
+                customerId: setupIntent.customer,
+              }),
             })
+          } catch (err) {
+            console.error("Error updating payment method:", err)
           }
-        } catch (err) {
-          console.error("Error notifying backend:", err)
         }
+        
         onSuccess()
       }
     } catch (err) {
