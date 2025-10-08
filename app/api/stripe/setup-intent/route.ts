@@ -33,17 +33,9 @@ export async function POST(request: Request) {
     }
 
     // Create or get Stripe customer
-    let customerId: string | null = null
+    let customerId: string | null = user.stripeCustomerId
     
-    // Check if customer already exists (we'll store this in User model)
-    const customers = await stripe.customers.list({
-      email: user.email || undefined,
-      limit: 1,
-    })
-
-    if (customers.data.length > 0) {
-      customerId = customers.data[0].id
-    } else {
+    if (!customerId) {
       // Create new customer
       const customer = await stripe.customers.create({
         email: user.email || undefined,
@@ -53,6 +45,12 @@ export async function POST(request: Request) {
         },
       })
       customerId = customer.id
+      
+      // Save to database
+      await prisma.user.update({
+        where: { id: user.id },
+        data: { stripeCustomerId: customerId },
+      })
     }
 
     // Create SetupIntent
