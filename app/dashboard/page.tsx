@@ -61,17 +61,20 @@ export default async function DashboardPage() {
 
           <div className="bg-white rounded-lg shadow-md p-6">
             <div className="flex items-center justify-between mb-4">
-              <h2 className="text-xl font-semibold text-gray-900">Pledges</h2>
+              <h2 className="text-xl font-semibold text-gray-900">My Servers</h2>
               <svg className="w-8 h-8 text-pink-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 12h14M5 12a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v4a2 2 0 01-2 2M5 12a2 2 0 00-2 2v4a2 2 0 002 2h14a2 2 0 002-2v-4a2 2 0 00-2-2m-2-4h.01M17 16h.01" />
               </svg>
             </div>
             <p className="text-gray-600 text-sm mb-4">
-              Create and track your community pledges
+              Create and manage your game server listings
             </p>
-            <span className="text-gray-400 font-medium text-sm">
-              Coming Soon
-            </span>
+            <a
+              href="/dashboard/server/create"
+              className="text-pink-600 hover:text-pink-700 font-medium text-sm"
+            >
+              Create Server →
+            </a>
           </div>
         </div>
 

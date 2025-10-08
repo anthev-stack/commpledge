@@ -24,6 +24,12 @@ export default function Navbar() {
               >
                 Home
               </Link>
+              <Link
+                href="/servers"
+                className="text-gray-700 hover:text-indigo-600 px-3 py-2 rounded-md text-sm font-medium transition"
+              >
+                Servers
+              </Link>
               {session && (
                 <>
                   <Link
