@@ -490,6 +490,356 @@ export default function StripeSetupHelpPage() {
               </div>
             </section>
 
+            {/* Payout Information */}
+            <section>
+              <h2 className="text-2xl font-bold text-gray-900 mb-4">💰 Understanding Payouts</h2>
+              
+              <div className="bg-gradient-to-r from-green-50 to-emerald-50 border border-green-200 rounded-lg p-6 mb-6">
+                <h3 className="text-xl font-semibold text-gray-900 mb-3">How Payouts Work</h3>
+                <p className="text-gray-700 mb-4">
+                  When someone donates to your server, the money goes through this process:
+                </p>
+                <div className="space-y-3">
+                  <div className="flex items-start">
+                    <div className="flex-shrink-0 w-8 h-8 bg-green-600 text-white rounded-full flex items-center justify-center text-sm font-bold">
+                      1
+                    </div>
+                    <div className="ml-3">
+                      <p className="text-sm font-semibold text-gray-900">Donation Made</p>
+                      <p className="text-sm text-gray-600">Player donates via saved card → Payment captured by Stripe</p>
+                    </div>
+                  </div>
+                  <div className="flex items-start">
+                    <div className="flex-shrink-0 w-8 h-8 bg-green-600 text-white rounded-full flex items-center justify-center text-sm font-bold">
+                      2
+                    </div>
+                    <div className="ml-3">
+                      <p className="text-sm font-semibold text-gray-900">Platform Fee Deducted</p>
+                      <p className="text-sm text-gray-600">5% platform fee taken (Stripe fees separate)</p>
+                    </div>
+                  </div>
+                  <div className="flex items-start">
+                    <div className="flex-shrink-0 w-8 h-8 bg-green-600 text-white rounded-full flex items-center justify-center text-sm font-bold">
+                      3
+                    </div>
+                    <div className="ml-3">
+                      <p className="text-sm font-semibold text-gray-900">Added to Balance</p>
+                      <p className="text-sm text-gray-600">95% of donation added to your Stripe balance</p>
+                    </div>
+                  </div>
+                  <div className="flex items-start">
+                    <div className="flex-shrink-0 w-8 h-8 bg-green-600 text-white rounded-full flex items-center justify-center text-sm font-bold">
+                      4
+                    </div>
+                    <div className="ml-3">
+                      <p className="text-sm font-semibold text-gray-900">Automatic Payout</p>
+                      <p className="text-sm text-gray-600">Stripe automatically transfers to your bank account</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Payout Timeline */}
+              <div className="mb-6">
+                <h3 className="text-xl font-semibold text-gray-900 mb-4">⏱️ Payout Timeline</h3>
+                
+                <div className="space-y-4">
+                  <div className="border border-amber-200 bg-amber-50 rounded-lg p-4">
+                    <h4 className="font-semibold text-amber-900 mb-2">🆕 New Accounts (First 2-4 weeks)</h4>
+                    <p className="text-sm text-amber-800 mb-2">
+                      When you first connect Stripe, there&apos;s an initial holding period for security:
+                    </p>
+                    <ul className="list-disc list-inside text-sm text-amber-800 space-y-1 ml-2">
+                      <li><strong>First payout:</strong> 7-14 days after first donation</li>
+                      <li><strong>Reason:</strong> Fraud protection and account verification</li>
+                      <li><strong>What happens:</strong> Funds accumulate, then first payout includes everything</li>
+                    </ul>
+                  </div>
+
+                  <div className="border border-green-200 bg-green-50 rounded-lg p-4">
+                    <h4 className="font-semibold text-green-900 mb-2">✅ Established Accounts (After Initial Period)</h4>
+                    <p className="text-sm text-green-800 mb-2">
+                      Once your account is established, payouts become automatic and fast:
+                    </p>
+                    <ul className="list-disc list-inside text-sm text-green-800 space-y-1 ml-2">
+                      <li><strong>Schedule:</strong> Daily automatic payouts</li>
+                      <li><strong>Timeline:</strong> 2-3 business days to your bank</li>
+                      <li><strong>Example:</strong> Donation Monday → In your bank Wednesday/Thursday</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+
+              {/* Country Payout Times */}
+              <div className="mb-6">
+                <h3 className="text-xl font-semibold text-gray-900 mb-4">🌍 Payout Times by Country</h3>
+                <div className="overflow-x-auto">
+                  <table className="min-w-full divide-y divide-gray-200 border border-gray-200 rounded-lg">
+                    <thead className="bg-gray-50">
+                      <tr>
+                        <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Country</th>
+                        <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Payout Time</th>
+                        <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Method</th>
+                      </tr>
+                    </thead>
+                    <tbody className="bg-white divide-y divide-gray-200">
+                      <tr>
+                        <td className="px-4 py-3 text-sm text-gray-900">🇦🇺 Australia</td>
+                        <td className="px-4 py-3 text-sm text-gray-700">2-3 business days</td>
+                        <td className="px-4 py-3 text-sm text-gray-700">Direct deposit</td>
+                      </tr>
+                      <tr>
+                        <td className="px-4 py-3 text-sm text-gray-900">🇺🇸 United States</td>
+                        <td className="px-4 py-3 text-sm text-gray-700">2 business days</td>
+                        <td className="px-4 py-3 text-sm text-gray-700">ACH transfer</td>
+                      </tr>
+                      <tr>
+                        <td className="px-4 py-3 text-sm text-gray-900">🇬🇧 United Kingdom</td>
+                        <td className="px-4 py-3 text-sm text-gray-700">2-3 business days</td>
+                        <td className="px-4 py-3 text-sm text-gray-700">Faster Payments</td>
+                      </tr>
+                      <tr>
+                        <td className="px-4 py-3 text-sm text-gray-900">🇨🇦 Canada</td>
+                        <td className="px-4 py-3 text-sm text-gray-700">3-5 business days</td>
+                        <td className="px-4 py-3 text-sm text-gray-700">EFT transfer</td>
+                      </tr>
+                      <tr>
+                        <td className="px-4 py-3 text-sm text-gray-900">🇪🇺 EU Countries</td>
+                        <td className="px-4 py-3 text-sm text-gray-700">2-4 business days</td>
+                        <td className="px-4 py-3 text-sm text-gray-700">SEPA transfer</td>
+                      </tr>
+                      <tr>
+                        <td className="px-4 py-3 text-sm text-gray-900">🇸🇬 Singapore</td>
+                        <td className="px-4 py-3 text-sm text-gray-700">3-7 business days</td>
+                        <td className="px-4 py-3 text-sm text-gray-700">PayNow/GIRO</td>
+                      </tr>
+                      <tr>
+                        <td className="px-4 py-3 text-sm text-gray-900">Other countries</td>
+                        <td className="px-4 py-3 text-sm text-gray-700">3-7 business days</td>
+                        <td className="px-4 py-3 text-sm text-gray-700">Local transfer</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+
+              {/* How to Check Payouts */}
+              <div className="mb-6">
+                <h3 className="text-xl font-semibold text-gray-900 mb-4">📊 How to Check Your Payouts</h3>
+                
+                <div className="space-y-4">
+                  <div className="border border-gray-200 rounded-lg p-4">
+                    <h4 className="font-semibold text-gray-900 mb-2">Method 1: Stripe Dashboard (Most Detailed)</h4>
+                    <ol className="list-decimal list-inside text-sm text-gray-700 space-y-2 ml-2">
+                      <li>Go to <a href="https://dashboard.stripe.com/connect/accounts" target="_blank" rel="noopener noreferrer" className="text-indigo-600 hover:underline">Stripe Dashboard</a></li>
+                      <li>Sign in with your Stripe Express account</li>
+                      <li>Click <strong>&quot;Balance&quot;</strong> in the sidebar</li>
+                      <li>You&apos;ll see:
+                        <ul className="list-disc list-inside mt-1 ml-4">
+                          <li><strong>Available balance:</strong> Ready to be paid out</li>
+                          <li><strong>Pending balance:</strong> Being processed</li>
+                          <li><strong>Payout schedule:</strong> Next payout date</li>
+                        </ul>
+                      </li>
+                      <li>Click <strong>&quot;Payouts&quot;</strong> to see history of bank transfers</li>
+                    </ol>
+                  </div>
+
+                  <div className="border border-gray-200 rounded-lg p-4">
+                    <h4 className="font-semibold text-gray-900 mb-2">Method 2: Email Notifications</h4>
+                    <p className="text-sm text-gray-700 mb-2">
+                      Stripe automatically sends email notifications for:
+                    </p>
+                    <ul className="list-disc list-inside text-sm text-gray-700 space-y-1 ml-2">
+                      <li>✅ When a donation is received</li>
+                      <li>✅ When a payout is initiated</li>
+                      <li>✅ When money arrives in your bank</li>
+                      <li>✅ If there are any issues with payouts</li>
+                    </ul>
+                  </div>
+
+                  <div className="border border-gray-200 rounded-lg p-4">
+                    <h4 className="font-semibold text-gray-900 mb-2">Method 3: Your Bank Account</h4>
+                    <p className="text-sm text-gray-700 mb-2">
+                      Check your bank statement for deposits from:
+                    </p>
+                    <ul className="list-disc list-inside text-sm text-gray-700 space-y-1 ml-2">
+                      <li><strong>Descriptor:</strong> &quot;STRIPE&quot; or &quot;Stripe Payments&quot;</li>
+                      <li><strong>Reference:</strong> May include your platform name</li>
+                      <li><strong>Amount:</strong> Net amount after fees</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+
+              {/* What You'll Receive */}
+              <div className="mb-6 bg-indigo-50 border border-indigo-200 rounded-lg p-6">
+                <h3 className="text-xl font-semibold text-gray-900 mb-3">💵 What You&apos;ll Actually Receive</h3>
+                <div className="space-y-3">
+                  <div>
+                    <p className="text-sm text-gray-700 mb-2">Example: Player donates <strong>$10.00 USD</strong></p>
+                    <div className="bg-white rounded-lg p-4 space-y-2 text-sm">
+                      <div className="flex justify-between">
+                        <span className="text-gray-600">Donation amount:</span>
+                        <span className="font-semibold">$10.00</span>
+                      </div>
+                      <div className="flex justify-between text-red-600">
+                        <span>Platform fee (5%):</span>
+                        <span className="font-semibold">-$0.50</span>
+                      </div>
+                      <div className="flex justify-between text-red-600">
+                        <span>Stripe processing fee (~2.9% + $0.30):</span>
+                        <span className="font-semibold">-$0.59</span>
+                      </div>
+                      <div className="border-t border-gray-200 pt-2 flex justify-between text-green-600 font-bold">
+                        <span>You receive:</span>
+                        <span>$8.91</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="text-xs text-gray-600 mt-3">
+                    <p><strong>Note:</strong> Stripe fees vary by card type and country. International cards may have higher fees (~3.9% + $0.30).</p>
+                  </div>
+                </div>
+              </div>
+
+              {/* Payout Schedule Explained */}
+              <div className="mb-6">
+                <h3 className="text-xl font-semibold text-gray-900 mb-4">📅 Payout Schedule Explained</h3>
+                
+                <div className="space-y-4">
+                  <div className="bg-white border border-gray-200 rounded-lg p-4">
+                    <h4 className="font-semibold text-gray-900 mb-2">Daily Payouts (Standard)</h4>
+                    <p className="text-sm text-gray-700 mb-2">
+                      Our platform is configured for <strong>daily automatic payouts</strong>:
+                    </p>
+                    <ul className="list-disc list-inside text-sm text-gray-700 space-y-1 ml-2">
+                      <li>Stripe initiates payout once per day</li>
+                      <li>Includes all donations from previous day</li>
+                      <li>Takes 2-5 business days to reach bank</li>
+                      <li>No action needed - completely automatic</li>
+                    </ul>
+                    <div className="mt-3 bg-gray-50 rounded p-3">
+                      <p className="text-xs text-gray-700">
+                        <strong>Example Timeline:</strong><br />
+                        Monday: $20 in donations → Payout initiated Tuesday → Money in bank Thursday
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="bg-white border border-gray-200 rounded-lg p-4">
+                    <h4 className="font-semibold text-gray-900 mb-2">Rolling Reserve (New Accounts)</h4>
+                    <p className="text-sm text-gray-700 mb-2">
+                      For the first 2-4 weeks, Stripe uses a <strong>rolling reserve</strong>:
+                    </p>
+                    <ul className="list-disc list-inside text-sm text-gray-700 space-y-1 ml-2">
+                      <li>Payouts delayed by 7-14 days initially</li>
+                      <li>Protects against fraud and chargebacks</li>
+                      <li>Automatically switches to daily schedule after building history</li>
+                      <li>Completely normal - happens to all new accounts</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+
+              {/* Minimum Payout */}
+              <div className="mb-6">
+                <h3 className="text-xl font-semibold text-gray-900 mb-4">💵 Minimum Payout Amounts</h3>
+                <p className="text-sm text-gray-700 mb-3">
+                  Stripe won&apos;t send a payout until your balance reaches a minimum threshold:
+                </p>
+                <div className="grid md:grid-cols-2 gap-3">
+                  <div className="border border-gray-200 rounded p-3">
+                    <p className="text-sm"><strong>🇦🇺 Australia:</strong> $1 AUD</p>
+                  </div>
+                  <div className="border border-gray-200 rounded p-3">
+                    <p className="text-sm"><strong>🇺🇸 United States:</strong> $1 USD</p>
+                  </div>
+                  <div className="border border-gray-200 rounded p-3">
+                    <p className="text-sm"><strong>🇬🇧 UK:</strong> £1 GBP</p>
+                  </div>
+                  <div className="border border-gray-200 rounded p-3">
+                    <p className="text-sm"><strong>🇪🇺 EU:</strong> €1 EUR</p>
+                  </div>
+                  <div className="border border-gray-200 rounded p-3">
+                    <p className="text-sm"><strong>🇨🇦 Canada:</strong> $1 CAD</p>
+                  </div>
+                  <div className="border border-gray-200 rounded p-3">
+                    <p className="text-sm"><strong>Other:</strong> $1-25 USD equiv.</p>
+                  </div>
+                </div>
+              </div>
+
+              {/* Viewing Payouts */}
+              <div className="mb-6 bg-blue-50 border border-blue-200 rounded-lg p-6">
+                <h3 className="text-xl font-semibold text-gray-900 mb-3">👀 How to View Your Earnings</h3>
+                <div className="space-y-4">
+                  <div>
+                    <h4 className="font-semibold text-gray-900 mb-2">In Stripe Dashboard:</h4>
+                    <ol className="list-decimal list-inside text-sm text-gray-700 space-y-2 ml-2">
+                      <li>Visit <a href="https://dashboard.stripe.com" target="_blank" rel="noopener noreferrer" className="text-indigo-600 hover:underline">dashboard.stripe.com</a></li>
+                      <li>Log in with your Stripe account</li>
+                      <li>View <strong>Balance</strong> - See available and pending funds</li>
+                      <li>View <strong>Payouts</strong> - See transfer history to bank</li>
+                      <li>View <strong>Payments</strong> - See individual donations received</li>
+                    </ol>
+                  </div>
+
+                  <div>
+                    <h4 className="font-semibold text-gray-900 mb-2">Understanding Your Balance:</h4>
+                    <ul className="list-disc list-inside text-sm text-gray-700 space-y-1 ml-2">
+                      <li><strong>Available:</strong> Ready to be paid out (will go out on next payout)</li>
+                      <li><strong>Pending:</strong> Being processed (will become available soon)</li>
+                      <li><strong>In transit:</strong> On the way to your bank</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+
+              {/* Instant Payouts */}
+              <div className="mb-6">
+                <h3 className="text-xl font-semibold text-gray-900 mb-4">⚡ Instant Payouts (Optional)</h3>
+                <div className="border border-purple-200 bg-purple-50 rounded-lg p-4">
+                  <p className="text-sm text-gray-700 mb-2">
+                    Some countries support <strong>Instant Payouts</strong> for eligible accounts:
+                  </p>
+                  <ul className="list-disc list-inside text-sm text-gray-700 space-y-1 ml-2 mb-3">
+                    <li><strong>Speed:</strong> Money in your bank within minutes</li>
+                    <li><strong>Cost:</strong> 0.5-1% fee per payout</li>
+                    <li><strong>Eligibility:</strong> Must have debit card linked (not all banks supported)</li>
+                    <li><strong>Availability:</strong> US, UK, EU, SG, AU (limited banks)</li>
+                  </ul>
+                  <p className="text-xs text-purple-800">
+                    <strong>Note:</strong> Most users stick with free daily payouts. Instant is optional for urgent needs.
+                  </p>
+                </div>
+              </div>
+
+              {/* Tax Information */}
+              <div className="mb-6 bg-yellow-50 border border-yellow-200 rounded-lg p-6">
+                <h3 className="text-xl font-semibold text-gray-900 mb-3">📋 Tax Reporting</h3>
+                <p className="text-sm text-gray-700 mb-3">
+                  <strong>Important:</strong> Donations you receive are considered income for tax purposes.
+                </p>
+                <div className="space-y-2 text-sm text-gray-700">
+                  <p><strong>What Stripe Does:</strong></p>
+                  <ul className="list-disc list-inside ml-2 space-y-1">
+                    <li>Reports your earnings to tax authorities (IRS, ATO, HMRC, etc.)</li>
+                    <li>Sends you tax forms (1099-K in US, similar in other countries)</li>
+                    <li>Usually only if you earn over threshold (e.g., $600/year in US)</li>
+                  </ul>
+                  <p className="mt-3"><strong>What You Should Do:</strong></p>
+                  <ul className="list-disc list-inside ml-2 space-y-1">
+                    <li>Keep records of donations received</li>
+                    <li>Declare as income on tax return</li>
+                    <li>Consult a tax professional for specific advice</li>
+                    <li>Deduct server hosting costs (may be applicable)</li>
+                  </ul>
+                </div>
+              </div>
+            </section>
+
             {/* Troubleshooting */}
             <section>
               <h2 className="text-2xl font-bold text-gray-900 mb-4">🔧 Troubleshooting</h2>
