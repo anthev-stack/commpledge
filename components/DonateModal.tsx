@@ -2,10 +2,7 @@
 
 import { useState, useEffect } from "react"
 import { useSession } from "next-auth/react"
-import { loadStripe } from "@stripe/stripe-js"
-import { Elements, PaymentElement, useStripe, useElements } from "@stripe/react-stripe-js"
-
-const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!)
+import Link from "next/link"
 
 interface DonateModalProps {
   server: {
@@ -17,86 +14,50 @@ interface DonateModalProps {
   }
   isOpen: boolean
   onClose: () => void
+  onSuccess: () => void
 }
 
-function CheckoutForm({ serverId, serverName, onSuccess }: any) {
-  const stripe = useStripe()
-  const elements = useElements()
-  const [loading, setLoading] = useState(false)
-  const [error, setError] = useState("")
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-
-    if (!stripe || !elements) {
-      return
-    }
-
-    setLoading(true)
-    setError("")
-
-    try {
-      const { error: submitError } = await stripe.confirmPayment({
-        elements,
-        confirmParams: {
-          return_url: `${window.location.origin}/servers/${serverId}?donation=success`,
-        },
-      })
-
-      if (submitError) {
-        setError(submitError.message || "Payment failed")
-      }
-    } catch (err) {
-      setError("Something went wrong")
-    } finally {
-      setLoading(false)
-    }
-  }
-
-  return (
-    <form onSubmit={handleSubmit} className="space-y-4">
-      <PaymentElement />
-
-      {error && (
-        <div className="bg-red-50 border border-red-200 text-red-600 px-4 py-3 rounded-lg text-sm">
-          {error}
-        </div>
-      )}
-
-      <button
-        type="submit"
-        disabled={!stripe || loading}
-        className="w-full bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-3 rounded-lg font-medium transition disabled:opacity-50 disabled:cursor-not-allowed"
-      >
-        {loading ? "Processing..." : "Complete Donation"}
-      </button>
-    </form>
-  )
-}
-
-export default function DonateModal({ server, isOpen, onClose }: DonateModalProps) {
+export default function DonateModal({ server, isOpen, onClose, onSuccess }: DonateModalProps) {
   const { data: session } = useSession()
   const [amount, setAmount] = useState("5")
   const [message, setMessage] = useState("")
   const [isAnonymous, setIsAnonymous] = useState(false)
-  const [clientSecret, setClientSecret] = useState("")
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState("")
-  const [step, setStep] = useState<"amount" | "payment">("amount")
+  const [paymentMethods, setPaymentMethods] = useState<any[]>([])
+  const [selectedPaymentMethod, setSelectedPaymentMethod] = useState("")
+  const [loadingPaymentMethods, setLoadingPaymentMethods] = useState(true)
 
   useEffect(() => {
-    if (!isOpen) {
+    if (isOpen) {
+      fetchPaymentMethods()
+    } else {
       // Reset when closed
-      setStep("amount")
       setAmount("5")
       setMessage("")
       setIsAnonymous(false)
-      setClientSecret("")
       setError("")
+      setSelectedPaymentMethod("")
     }
   }, [isOpen])
 
-  const handleCreatePayment = async () => {
+  const fetchPaymentMethods = async () => {
+    setLoadingPaymentMethods(true)
+    try {
+      const response = await fetch("/api/stripe/payment-methods")
+      const data = await response.json()
+      setPaymentMethods(data.paymentMethods || [])
+      if (data.paymentMethods && data.paymentMethods.length > 0) {
+        setSelectedPaymentMethod(data.paymentMethods[0].id)
+      }
+    } catch (error) {
+      console.error("Error fetching payment methods:", error)
+    } finally {
+      setLoadingPaymentMethods(false)
+    }
+  }
+
+  const handleDonate = async () => {
     const amountFloat = parseFloat(amount)
     
     if (isNaN(amountFloat) || amountFloat < 1) {
@@ -104,11 +65,16 @@ export default function DonateModal({ server, isOpen, onClose }: DonateModalProp
       return
     }
 
+    if (!selectedPaymentMethod) {
+      setError("Please select a payment method")
+      return
+    }
+
     setLoading(true)
     setError("")
 
     try {
-      const response = await fetch("/api/stripe/donate", {
+      const response = await fetch("/api/stripe/donate-with-saved-card", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -118,18 +84,23 @@ export default function DonateModal({ server, isOpen, onClose }: DonateModalProp
           amount: amountFloat,
           message,
           isAnonymous,
+          paymentMethodId: selectedPaymentMethod,
         }),
       })
 
       const data = await response.json()
 
       if (!response.ok) {
-        setError(data.error || "Failed to create payment")
+        setError(data.error || "Failed to process donation")
         return
       }
 
-      setClientSecret(data.clientSecret)
-      setStep("payment")
+      // Success!
+      setMessage("Donation successful! Thank you for your support!")
+      setTimeout(() => {
+        onSuccess()
+        onClose()
+      }, 2000)
     } catch (err) {
       setError("Something went wrong")
     } finally {
@@ -144,9 +115,7 @@ export default function DonateModal({ server, isOpen, onClose }: DonateModalProp
       <div className="bg-white rounded-lg max-w-md w-full max-h-[90vh] overflow-y-auto">
         {/* Header */}
         <div className="px-6 py-4 border-b border-gray-200 flex items-center justify-between sticky top-0 bg-white">
-          <h2 className="text-xl font-bold text-gray-900">
-            {step === "amount" ? "Make a Donation" : "Complete Payment"}
-          </h2>
+          <h2 className="text-xl font-bold text-gray-900">Make a Donation</h2>
           <button
             onClick={onClose}
             className="text-gray-400 hover:text-gray-600"
@@ -158,7 +127,33 @@ export default function DonateModal({ server, isOpen, onClose }: DonateModalProp
         </div>
 
         <div className="p-6">
-          {step === "amount" ? (
+          {loadingPaymentMethods ? (
+            <div className="text-center py-8">
+              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-600 mx-auto mb-4"></div>
+              <p className="text-gray-600">Loading...</p>
+            </div>
+          ) : paymentMethods.length === 0 ? (
+            <div className="space-y-4">
+              <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-6 text-center">
+                <svg className="w-12 h-12 text-yellow-600 mx-auto mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
+                </svg>
+                <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                  No Payment Method Found
+                </h3>
+                <p className="text-sm text-gray-700 mb-4">
+                  You need to add a payment method before you can make a donation. This makes future donations quick and easy!
+                </p>
+                <Link
+                  href="/settings"
+                  onClick={onClose}
+                  className="inline-block bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-3 rounded-lg font-medium transition"
+                >
+                  Add Payment Method in Settings
+                </Link>
+              </div>
+            </div>
+          ) : (
             <div className="space-y-4">
               {/* Server Info */}
               <div className="bg-indigo-50 border border-indigo-200 rounded-lg p-4">
@@ -248,45 +243,49 @@ export default function DonateModal({ server, isOpen, onClose }: DonateModalProp
                 </div>
               )}
 
-              {/* Continue Button */}
+              {/* Payment Method Selection */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Payment Method
+                </label>
+                <select
+                  value={selectedPaymentMethod}
+                  onChange={(e) => setSelectedPaymentMethod(e.target.value)}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                >
+                  {paymentMethods.map((pm) => (
+                    <option key={pm.id} value={pm.id}>
+                      {pm.brand.charAt(0).toUpperCase() + pm.brand.slice(1)} •••• {pm.last4} (Exp: {pm.expMonth}/{pm.expYear})
+                    </option>
+                  ))}
+                </select>
+                <Link
+                  href="/settings"
+                  onClick={onClose}
+                  className="text-xs text-indigo-600 hover:text-indigo-700 mt-2 inline-block"
+                >
+                  Manage payment methods →
+                </Link>
+              </div>
+
+              {message && (
+                <div className="bg-green-50 border border-green-200 text-green-600 px-4 py-3 rounded-lg text-sm">
+                  {message}
+                </div>
+              )}
+
+              {/* Donate Button */}
               <button
-                onClick={handleCreatePayment}
+                onClick={handleDonate}
                 disabled={loading}
                 className="w-full bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-3 rounded-lg font-medium transition disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                {loading ? "Processing..." : "Continue to Payment"}
+                {loading ? "Processing..." : `Donate $${amount}`}
               </button>
 
               <p className="text-xs text-gray-500 text-center">
-                Powered by Stripe • Secure payment processing
+                💳 Secure payment via Stripe • Your card is never charged without confirmation
               </p>
-            </div>
-          ) : (
-            <div>
-              {clientSecret && (
-                <Elements
-                  stripe={stripePromise}
-                  options={{
-                    clientSecret,
-                    appearance: {
-                      theme: "stripe",
-                    },
-                  }}
-                >
-                  <CheckoutForm
-                    serverId={server.id}
-                    serverName={server.name}
-                    onSuccess={onClose}
-                  />
-                </Elements>
-              )}
-
-              <button
-                onClick={() => setStep("amount")}
-                className="mt-4 w-full text-center text-sm text-gray-600 hover:text-gray-800"
-              >
-                ← Back to donation details
-              </button>
             </div>
           )}
         </div>

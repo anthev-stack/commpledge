@@ -321,6 +321,10 @@ export default function ServerPage({ params }: { params: Promise<{ id: string }>
         server={server}
         isOpen={showDonateModal}
         onClose={() => setShowDonateModal(false)}
+        onSuccess={() => {
+          // Refresh server data to show new donation
+          fetchServer()
+        }}
       />
     </div>
   )
