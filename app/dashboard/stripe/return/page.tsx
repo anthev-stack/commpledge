@@ -53,7 +53,7 @@ export default function StripeReturnPage() {
           </p>
           <div className="space-y-3">
             <Link
-              href="/dashboard/servers/new"
+              href="/dashboard/server/create"
               className="block w-full bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-3 rounded-lg font-medium transition"
             >
               Create Your First Server
