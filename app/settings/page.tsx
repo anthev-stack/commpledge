@@ -4,7 +4,9 @@ import { useSession } from "next-auth/react"
 import { useState, useEffect } from "react"
 import { useRouter } from "next/navigation"
 import Image from "next/image"
+import Link from "next/link"
 import { SUPPORTED_COUNTRIES } from "@/lib/countries"
+import AddPaymentMethodModal from "@/components/AddPaymentMethodModal"
 
 export default function SettingsPage() {
   const { data: session, update } = useSession()
@@ -24,9 +26,16 @@ export default function SettingsPage() {
   const [userCountry, setUserCountry] = useState("")
   const [savingCountry, setSavingCountry] = useState(false)
 
+  // Payment methods
+  const [paymentMethods, setPaymentMethods] = useState<any[]>([])
+  const [loadingPaymentMethods, setLoadingPaymentMethods] = useState(true)
+  const [showAddPaymentModal, setShowAddPaymentModal] = useState(false)
+  const [deletingPaymentMethod, setDeletingPaymentMethod] = useState<string | null>(null)
+
   useEffect(() => {
     checkStripeStatus()
     fetchUserData()
+    fetchPaymentMethods()
   }, [])
 
   const fetchUserData = async () => {
@@ -40,6 +49,48 @@ export default function SettingsPage() {
     } catch (error) {
       console.error("Error fetching user data:", error)
     }
+  }
+
+  const fetchPaymentMethods = async () => {
+    try {
+      const response = await fetch("/api/stripe/payment-methods")
+      const data = await response.json()
+      setPaymentMethods(data.paymentMethods || [])
+    } catch (error) {
+      console.error("Error fetching payment methods:", error)
+    } finally {
+      setLoadingPaymentMethods(false)
+    }
+  }
+
+  const handleDeletePaymentMethod = async (paymentMethodId: string) => {
+    if (!confirm("Are you sure you want to remove this payment method?")) {
+      return
+    }
+
+    setDeletingPaymentMethod(paymentMethodId)
+
+    try {
+      const response = await fetch(`/api/stripe/payment-methods?id=${paymentMethodId}`, {
+        method: "DELETE",
+      })
+
+      if (response.ok) {
+        setPaymentMethods(prev => prev.filter(pm => pm.id !== paymentMethodId))
+        setMessage("Payment method removed successfully")
+      } else {
+        setError("Failed to remove payment method")
+      }
+    } catch (error) {
+      setError("Something went wrong")
+    } finally {
+      setDeletingPaymentMethod(null)
+    }
+  }
+
+  const handlePaymentMethodAdded = () => {
+    setMessage("Payment method added successfully!")
+    fetchPaymentMethods()
   }
 
   const checkStripeStatus = async () => {
@@ -417,6 +468,87 @@ export default function SettingsPage() {
               </div>
             </div>
 
+            {/* Payment Methods */}
+            <div className="mb-8 border-t border-gray-200 pt-6">
+              <h2 className="text-lg font-semibold text-gray-900 mb-4">
+                Payment Methods
+              </h2>
+              <p className="text-sm text-gray-600 mb-4">
+                Save a payment method for quick and easy donations. Perfect for monthly pledges to your favorite servers.
+              </p>
+
+              {loadingPaymentMethods ? (
+                <div className="flex items-center space-x-2 text-gray-600">
+                  <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-indigo-600"></div>
+                  <span className="text-sm">Loading payment methods...</span>
+                </div>
+              ) : (
+                <div className="space-y-4">
+                  {paymentMethods.length === 0 ? (
+                    <div className="bg-gray-50 border border-gray-200 rounded-lg p-6 text-center">
+                      <svg className="w-12 h-12 text-gray-400 mx-auto mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
+                      </svg>
+                      <p className="text-sm text-gray-600 mb-3">No payment methods saved</p>
+                      <button
+                        onClick={() => setShowAddPaymentModal(true)}
+                        className="bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-2 rounded-lg font-medium transition"
+                      >
+                        Add Payment Method
+                      </button>
+                    </div>
+                  ) : (
+                    <>
+                      <div className="space-y-3">
+                        {paymentMethods.map((pm) => (
+                          <div
+                            key={pm.id}
+                            className="flex items-center justify-between border border-gray-200 rounded-lg p-4"
+                          >
+                            <div className="flex items-center space-x-3">
+                              <div className="w-10 h-10 bg-indigo-100 rounded flex items-center justify-center">
+                                <svg className="w-6 h-6 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
+                                </svg>
+                              </div>
+                              <div>
+                                <p className="font-semibold text-gray-900 capitalize">
+                                  {pm.brand} •••• {pm.last4}
+                                </p>
+                                <p className="text-sm text-gray-600">
+                                  Expires {pm.expMonth}/{pm.expYear}
+                                </p>
+                              </div>
+                            </div>
+                            <button
+                              onClick={() => handleDeletePaymentMethod(pm.id)}
+                              disabled={deletingPaymentMethod === pm.id}
+                              className="text-red-600 hover:text-red-700 text-sm font-medium disabled:opacity-50"
+                            >
+                              {deletingPaymentMethod === pm.id ? "Removing..." : "Remove"}
+                            </button>
+                          </div>
+                        ))}
+                      </div>
+
+                      <button
+                        onClick={() => setShowAddPaymentModal(true)}
+                        className="w-full border-2 border-dashed border-gray-300 rounded-lg p-4 text-gray-600 hover:border-indigo-500 hover:text-indigo-600 transition"
+                      >
+                        + Add Another Card
+                      </button>
+                    </>
+                  )}
+                </div>
+              )}
+
+              <div className="mt-4 bg-blue-50 border border-blue-200 rounded-lg p-3">
+                <p className="text-xs text-blue-800">
+                  <strong>💳 Secure Storage:</strong> Your card details are securely stored by Stripe. We never see or store your card information. You can use saved cards for quick donations and future monthly pledges.
+                </p>
+              </div>
+            </div>
+
             {/* Account Details */}
             <div className="border-t border-gray-200 pt-6">
               <h2 className="text-lg font-semibold text-gray-900 mb-4">Account Details</h2>
@@ -436,6 +568,13 @@ export default function SettingsPage() {
           </div>
         </div>
       </div>
+
+      {/* Add Payment Method Modal */}
+      <AddPaymentMethodModal
+        isOpen={showAddPaymentModal}
+        onClose={() => setShowAddPaymentModal(false)}
+        onSuccess={handlePaymentMethodAdded}
+      />
     </div>
   )
 }
