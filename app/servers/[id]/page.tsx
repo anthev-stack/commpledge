@@ -254,21 +254,21 @@ export default function ServerPage({ params }: { params: Promise<{ id: string }>
                 </div>
               )}
 
-              {/* Donate Button */}
+              {/* Pledge Button */}
               {server.owner.stripeOnboardingComplete ? (
                 <button
-                  onClick={() => setShowDonateModal(true)}
+                  onClick={() => setShowPledgeModal(true)}
                   className="w-full bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-3 rounded-lg font-medium transition flex items-center justify-center"
                 >
                   <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                   </svg>
-                  Donate Now
+                  Make a Pledge
                 </button>
               ) : (
                 <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4 text-center">
                   <p className="text-sm text-yellow-800">
-                    Server owner hasn&apos;t set up donations yet
+                    Server owner hasn&apos;t set up payouts yet
                   </p>
                 </div>
               )}
