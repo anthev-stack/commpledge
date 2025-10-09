@@ -142,6 +142,8 @@ export async function PATCH(
         cost: body.cost ? parseFloat(body.cost) : undefined,
         withdrawalDay: body.withdrawalDay ? parseInt(body.withdrawalDay) : undefined,
         imageUrl: body.imageUrl,
+        region: body.region !== undefined ? body.region : undefined,
+        tags: body.tags !== undefined ? body.tags : undefined,
       },
     })
 
