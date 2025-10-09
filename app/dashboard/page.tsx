@@ -35,11 +35,11 @@ interface Activity {
     id: string
     name: string
     image: string
-  }
-  server: {
+  } | null
+  server?: {
     id: string
     name: string
-  }
+  } | null
 }
 
 export default function DashboardPage() {
@@ -183,17 +183,17 @@ export default function DashboardPage() {
 
   const formatActivityMessage = (activity: Activity) => {
     const amount = activity.metadata?.amount
-    const userName = activity.user?.name || "Someone"
+    const serverName = activity.server?.name || "a server"
 
     switch (activity.action) {
       case "server_created":
-        return `You created server "${activity.server.name}"`
+        return `You created server "${serverName}"`
       case "pledge_created":
-        return `You pledged $${amount}/month towards "${activity.server.name}"`
+        return `You pledged $${amount}/month towards "${serverName}"`
       case "pledge_updated":
-        return `You updated your pledge to "${activity.server.name}" ($${amount}/month)`
+        return `You updated your pledge to "${serverName}" ($${amount}/month)`
       case "pledge_cancelled":
-        return `You removed your pledge from "${activity.server.name}"`
+        return `You removed your pledge from "${serverName}"`
       default:
         return activity.action
     }
@@ -202,14 +202,15 @@ export default function DashboardPage() {
   const formatServerActivityMessage = (activity: Activity) => {
     const amount = activity.metadata?.amount
     const userName = activity.user?.name || "Someone"
+    const serverName = activity.server?.name || "a server"
 
     switch (activity.action) {
       case "pledge_created":
-        return `${userName} pledged $${amount}/month towards "${activity.server.name}"`
+        return `${userName} pledged $${amount}/month towards "${serverName}"`
       case "pledge_updated":
-        return `${userName} updated their pledge to "${activity.server.name}" ($${amount}/month)`
+        return `${userName} updated their pledge to "${serverName}" ($${amount}/month)`
       case "pledge_cancelled":
-        return `${userName} removed their pledge from "${activity.server.name}"`
+        return `${userName} removed their pledge from "${serverName}"`
       default:
         return activity.action
     }
@@ -439,12 +440,14 @@ export default function DashboardPage() {
                           {new Date(activity.createdAt).toLocaleString()}
                         </p>
                       </div>
-                      <Link
-                        href={`/servers/${activity.server.id}`}
-                        className="flex-shrink-0 text-sm text-indigo-600 hover:text-indigo-700"
-                      >
-                        View →
-                      </Link>
+                      {activity.server?.id && (
+                        <Link
+                          href={`/servers/${activity.server.id}`}
+                          className="flex-shrink-0 text-sm text-indigo-600 hover:text-indigo-700"
+                        >
+                          View →
+                        </Link>
+                      )}
                     </div>
                   ))}
                 </div>
