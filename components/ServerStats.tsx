@@ -9,16 +9,15 @@ interface ServerStatsProps {
 
 interface ServerState {
   online: boolean
-  name?: string
-  map?: string
   players?: {
-    current: number
+    online: number
     max: number
   }
   version?: string
-  description?: string
-  password?: boolean
-  ping?: number
+  motd?: string
+  map?: string
+  gamemode?: string
+  serverType?: string
   error?: string
 }
 
@@ -91,25 +90,12 @@ export default function ServerStats({ serverId, gameType }: ServerStatsProps) {
                 Players:
               </span>
               <span className="font-semibold text-gray-900">
-                {stats.players.current} / {stats.players.max}
+                {stats.players.online} / {stats.players.max}
               </span>
             </div>
           )}
 
-          {/* Map (for games that have it) */}
-          {stats.map && (
-            <div className="flex items-center justify-between">
-              <span className="text-gray-600 flex items-center">
-                <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7" />
-                </svg>
-                Map:
-              </span>
-              <span className="font-semibold text-gray-900">{stats.map}</span>
-            </div>
-          )}
-
-          {/* Version (for Minecraft, etc) */}
+          {/* Version (for Minecraft) */}
           {stats.version && (
             <div className="flex items-center justify-between">
               <span className="text-gray-600 flex items-center">
@@ -122,26 +108,32 @@ export default function ServerStats({ serverId, gameType }: ServerStatsProps) {
             </div>
           )}
 
-          {/* Ping */}
-          {stats.ping !== undefined && (
-            <div className="flex items-center justify-between">
-              <span className="text-gray-600 flex items-center">
-                <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
-                </svg>
-                Ping:
-              </span>
-              <span className="font-semibold text-gray-900">{stats.ping}ms</span>
+          {/* MOTD (for Minecraft) */}
+          {stats.motd && (
+            <div className="pt-2 border-t border-gray-200">
+              <span className="text-xs text-gray-500">MOTD:</span>
+              <p className="text-sm text-gray-700 mt-1">{stats.motd}</p>
             </div>
           )}
 
-          {/* Password Protected */}
-          {stats.password && (
-            <div className="flex items-center space-x-1 text-yellow-700 bg-yellow-100 px-2 py-1 rounded">
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
-              </svg>
-              <span className="text-xs font-medium">Password Protected</span>
+          {/* Map (for CS, etc) */}
+          {stats.map && (
+            <div className="flex items-center justify-between">
+              <span className="text-gray-600 flex items-center">
+                <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7" />
+                </svg>
+                Map:
+              </span>
+              <span className="font-semibold text-gray-900">{stats.map}</span>
+            </div>
+          )}
+
+          {/* Gamemode */}
+          {stats.gamemode && (
+            <div className="flex items-center justify-between">
+              <span className="text-gray-600">Mode:</span>
+              <span className="font-semibold text-gray-900">{stats.gamemode}</span>
             </div>
           )}
         </div>
