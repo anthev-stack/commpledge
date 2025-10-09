@@ -183,21 +183,57 @@ model Withdrawal {
 }
 
 model ActivityLog {
-  id          String   @id @default(cuid())
-  userId      String?
-  user        User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
-  
-  serverId    String?
-  server      Server?  @relation(fields: [serverId], references: [id], onDelete: SetNull)
-  
-  action      String   // 'pledge_created', 'pledge_cancelled', 'payment_success', 'payment_failed', etc.
-  details     String?  // JSON string with additional details
-  ipAddress   String?
-  
-  createdAt   DateTime @default(now())
-  
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  serverId  String?
+  server    Server?  @relation(fields: [serverId], references: [id], onDelete: SetNull)
+  action    String   // e.g., "pledge_created", "server_created", etc.
+  metadata  Json?    // Additional data like amounts, server names, etc.
+  createdAt DateTime @default(now())
+
   @@index([userId])
   @@index([serverId])
-  @@index([action])
-  @@index([createdAt])
+}
+
+model Ticket {
+  id          String   @id @default(cuid())
+  title       String
+  description String
+  category    String   // "bug_report", "feature_request", "support", "report_user_server", "other"
+  priority    String   // "low", "medium", "high", "urgent"
+  status      String   @default("open") // "open", "in_progress", "resolved", "closed"
+  
+  userId      String
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  assignedTo  String?  // Staff member who is handling the ticket
+  assignedUser User?   @relation("AssignedTickets", fields: [assignedTo], references: [id])
+  
+  responses   TicketResponse[]
+  
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([userId])
+  @@index([status])
+  @@index([category])
+  @@index([assignedTo])
+}
+
+model TicketResponse {
+  id        String   @id @default(cuid())
+  content   String
+  isStaff   Boolean  @default(false) // true if response is from staff
+  
+  ticketId  String
+  ticket    Ticket   @relation(fields: [ticketId], references: [id], onDelete: Cascade)
+  
+  userId    String   // Who wrote the response
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  createdAt DateTime @default(now())
+
+  @@index([ticketId])
+  @@index([userId])
 }
