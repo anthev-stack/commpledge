@@ -119,7 +119,7 @@ export async function POST(request: Request) {
         description,
         gameType,
         serverIp,
-        playerCount: playerCount ? parseInt(playerCount) : null,
+        playerCount: null, // Will be updated by live stats
         cost: monthlyCost,
         withdrawalDay: withdrawalDayNum,
         imageUrl,
