@@ -3,7 +3,8 @@
 import { useState, useEffect } from "react"
 import Link from "next/link"
 import Image from "next/image"
-import { REGIONS, getAllGameTypes } from "@/lib/game-tags"
+import { REGIONS } from "@/lib/game-tags"
+import { SUPPORTED_GAMES } from "@/lib/supported-games"
 
 interface Server {
   id: string
@@ -150,9 +151,9 @@ export default function ServersPage() {
                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
               >
                 <option value="">All Games</option>
-                {getAllGameTypes().map((game) => (
-                  <option key={game} value={game}>
-                    {game}
+                {SUPPORTED_GAMES.map((game) => (
+                  <option key={game.name} value={game.name}>
+                    {game.name}
                   </option>
                 ))}
               </select>
