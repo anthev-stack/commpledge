@@ -20,6 +20,7 @@ export default function CreateServerPage() {
     description: "",
     gameType: "",
     serverIp: "",
+    serverPort: "",
     playerCount: "",
     cost: "",
     withdrawalDay: "15",
@@ -315,22 +316,39 @@ export default function CreateServerPage() {
               </p>
             </div>
 
-            {/* Server IP */}
+            {/* Server IP and Port */}
             <div>
-              <label htmlFor="serverIp" className="block text-sm font-medium text-gray-700 mb-1">
-                Server IP/Address
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Server Address (for live stats)
               </label>
-              <input
-                type="text"
-                id="serverIp"
-                name="serverIp"
-                value={formData.serverIp}
-                onChange={handleChange}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
-                placeholder="e.g., play.myserver.com or 123.45.67.89:25565"
-              />
+              <div className="grid grid-cols-3 gap-3">
+                <div className="col-span-2">
+                  <input
+                    type="text"
+                    id="serverIp"
+                    name="serverIp"
+                    value={formData.serverIp}
+                    onChange={handleChange}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                    placeholder="e.g., play.myserver.com or 123.45.67.89"
+                  />
+                  <p className="text-xs text-gray-500 mt-1">Server IP or hostname</p>
+                </div>
+                <div>
+                  <input
+                    type="number"
+                    id="serverPort"
+                    name="serverPort"
+                    value={formData.serverPort}
+                    onChange={handleChange}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                    placeholder="25565"
+                  />
+                  <p className="text-xs text-gray-500 mt-1">Port</p>
+                </div>
+              </div>
               <p className="text-xs text-gray-500 mt-1">
-                Optional - Let players know how to connect & enable live stats
+                Optional - Enables live player count and status. Leave blank to display IP only.
               </p>
             </div>
 

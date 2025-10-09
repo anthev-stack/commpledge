@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation"
 import { useSession } from "next-auth/react"
 import Link from "next/link"
 import { SUPPORTED_GAMES } from "@/lib/supported-games"
+import { REGIONS, getTagsForGame } from "@/lib/game-tags"
 
 export default function EditServerPage({ params }: { params: Promise<{ id: string }> }) {
   const router = useRouter()
@@ -21,10 +22,13 @@ export default function EditServerPage({ params }: { params: Promise<{ id: strin
     description: "",
     gameType: "",
     serverIp: "",
+    serverPort: "",
     playerCount: "",
     cost: "",
     withdrawalDay: "",
     imageUrl: "",
+    region: "",
+    tags: [] as string[],
   })
 
   useEffect(() => {
@@ -44,15 +48,22 @@ export default function EditServerPage({ params }: { params: Promise<{ id: strin
           withdrawalDay: data.withdrawalDay,
         })
         setPledgeCount(data.pledgerCount || 0)
+        
+        // Split serverIp into IP and port
+        const [ip, port] = (data.serverIp || "").split(":")
+        
         setFormData({
           name: data.name || "",
           description: data.description || "",
           gameType: data.gameType || "",
-          serverIp: data.serverIp || "",
+          serverIp: ip || "",
+          serverPort: port || "",
           playerCount: data.playerCount?.toString() || "",
           cost: data.cost?.toString() || "",
           withdrawalDay: data.withdrawalDay?.toString() || "",
           imageUrl: data.imageUrl || "",
+          region: data.region || "",
+          tags: data.tags || [],
         })
       } else {
         setError("Server not found")
@@ -84,12 +95,20 @@ export default function EditServerPage({ params }: { params: Promise<{ id: strin
     setLoading(true)
 
     try {
+      // Combine IP and port for server IP field
+      const combinedServerIp = formData.serverIp && formData.serverPort
+        ? `${formData.serverIp}:${formData.serverPort}`
+        : formData.serverIp || ""
+
       const response = await fetch(`/api/servers/${serverId}`, {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(formData),
+        body: JSON.stringify({
+          ...formData,
+          serverIp: combinedServerIp,
+        }),
       })
 
       const data = await response.json()
@@ -111,11 +130,33 @@ export default function EditServerPage({ params }: { params: Promise<{ id: strin
   }
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
-    })
+    const { name, value } = e.target
+    
+    // If changing game type, reset tags
+    if (name === "gameType") {
+      setFormData({
+        ...formData,
+        [name]: value,
+        tags: [],
+      })
+    } else {
+      setFormData({
+        ...formData,
+        [name]: value,
+      })
+    }
   }
+
+  const handleTagToggle = (tag: string) => {
+    setFormData(prev => ({
+      ...prev,
+      tags: prev.tags.includes(tag)
+        ? prev.tags.filter(t => t !== tag)
+        : [...prev.tags, tag],
+    }))
+  }
+
+  const availableTags = formData.gameType ? getTagsForGame(formData.gameType) : []
 
   if (!session) {
     router.push("/login")
@@ -233,20 +274,87 @@ export default function EditServerPage({ params }: { params: Promise<{ id: strin
               />
             </div>
 
+            {/* Region */}
             <div>
-              <label htmlFor="serverIp" className="block text-sm font-medium text-gray-700 mb-1">
-                Server IP Address
+              <label htmlFor="region" className="block text-sm font-medium text-gray-700 mb-1">
+                Server Region
               </label>
-              <input
-                type="text"
-                id="serverIp"
-                name="serverIp"
-                value={formData.serverIp}
+              <select
+                id="region"
+                name="region"
+                value={formData.region}
                 onChange={handleChange}
                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
-                placeholder="play.example.com:25565"
-              />
+              >
+                <option value="">Select region...</option>
+                {REGIONS.map((region) => (
+                  <option key={region} value={region}>
+                    {region}
+                  </option>
+                ))}
+              </select>
             </div>
+
+            {/* Server IP and Port */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Server Address (for live stats)
+              </label>
+              <div className="grid grid-cols-3 gap-3">
+                <div className="col-span-2">
+                  <input
+                    type="text"
+                    id="serverIp"
+                    name="serverIp"
+                    value={formData.serverIp}
+                    onChange={handleChange}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                    placeholder="e.g., play.myserver.com"
+                  />
+                  <p className="text-xs text-gray-500 mt-1">Server IP or hostname</p>
+                </div>
+                <div>
+                  <input
+                    type="number"
+                    id="serverPort"
+                    name="serverPort"
+                    value={formData.serverPort}
+                    onChange={handleChange}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                    placeholder="25565"
+                  />
+                  <p className="text-xs text-gray-500 mt-1">Port</p>
+                </div>
+              </div>
+            </div>
+
+            {/* Tags */}
+            {formData.gameType && availableTags.length > 0 && (
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Server Tags <span className="text-gray-500">(Select all that apply)</span>
+                </label>
+                <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
+                  {availableTags.map((tag) => (
+                    <button
+                      key={tag}
+                      type="button"
+                      onClick={() => handleTagToggle(tag)}
+                      className={`px-3 py-2 rounded-lg text-sm font-medium transition ${
+                        formData.tags.includes(tag)
+                          ? "bg-indigo-600 text-white"
+                          : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                      }`}
+                    >
+                      {tag}
+                    </button>
+                  ))}
+                </div>
+                <p className="text-xs text-gray-500 mt-2">
+                  Selected: {formData.tags.length > 0 ? formData.tags.join(", ") : "None"}
+                </p>
+              </div>
+            )}
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="relative">
