@@ -39,12 +39,18 @@ export async function GET(
     const port = portStr ? parseInt(portStr) : game.defaultPort
 
     try {
-      // Query the game server
+      // Query the game server with timeout and retry options
+      console.log(`Querying server: ${host}:${port} (type: ${game.type})`)
+      
       const state = await gamedigQuery({
         type: game.type,
         host: host,
         port: port,
+        socketTimeout: 5000,
+        maxRetries: 3,
       })
+
+      console.log(`Query successful for ${host}:${port}`)
 
       // Format response based on game type
       const response: any = {
@@ -86,11 +92,19 @@ export async function GET(
       return NextResponse.json(response)
     } catch (queryError: any) {
       // Server is offline or unreachable
-      console.log(`Server query failed for ${host}:${port}:`, queryError.message)
+      console.error(`Server query failed for ${host}:${port} (type: ${game.type}):`, {
+        message: queryError.message,
+        code: queryError.code,
+        stack: queryError.stack,
+      })
       
       return NextResponse.json({
         online: false,
         error: "Server is offline or unreachable",
+        details: queryError.message,
+        host: host,
+        port: port,
+        gameType: game.type,
       })
     }
   } catch (error) {
