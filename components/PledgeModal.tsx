@@ -32,7 +32,6 @@ export default function PledgeModal({ server, isOpen, onClose, onSuccess }: Pled
     if (isOpen) {
       fetchPledgeStatus()
     } else {
-      setAmount("10")
       setError("")
       setMessage("")
     }
@@ -45,8 +44,16 @@ export default function PledgeModal({ server, isOpen, onClose, onSuccess }: Pled
       const response = await fetch(`/api/servers/${server.id}/pledge`)
       const data = await response.json()
       setPledgeStatus(data)
+      
+      // Set amount to existing pledge amount if user has one
+      if (data.hasPledge && data.userPledge) {
+        setAmount(data.userPledge.amount.toString())
+      } else {
+        setAmount("10")
+      }
     } catch (error) {
       console.error("Error fetching pledge status:", error)
+      setAmount("10")
     } finally {
       setLoadingStatus(false)
     }
