@@ -175,10 +175,17 @@ export async function DELETE(
 
     const { id } = await params
 
-    // Check if user owns this server
+    // Check if user owns the server
     const existingServer = await prisma.server.findUnique({
       where: { id },
-      select: { ownerId: true },
+      select: { 
+        ownerId: true,
+        _count: {
+          select: {
+            pledges: true,
+          },
+        },
+      },
     })
 
     if (!existingServer || existingServer.ownerId !== session.user.id) {
@@ -188,13 +195,15 @@ export async function DELETE(
       )
     }
 
-    // Soft delete by updating status
-    await prisma.server.update({
+    // Delete server (cascades to pledges due to Prisma schema)
+    await prisma.server.delete({
       where: { id },
-      data: { status: "archived" },
     })
 
-    return NextResponse.json({ success: true })
+    return NextResponse.json({ 
+      message: "Server deleted successfully",
+      pledgesRemoved: existingServer._count.pledges,
+    })
   } catch (error) {
     console.error("Error deleting server:", error)
     return NextResponse.json(
