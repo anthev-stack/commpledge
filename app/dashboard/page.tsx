@@ -183,11 +183,19 @@ export default function DashboardPage() {
 
   const formatActivityMessage = (activity: Activity) => {
     const amount = activity.metadata?.amount
+    const serverDeleted = !activity.server
     const serverName = activity.server?.name || "a server"
+
+    // Special message for deleted servers
+    if (serverDeleted && activity.action !== "server_created") {
+      return "Server you pledged towards has been deleted. You have been removed from pledging."
+    }
 
     switch (activity.action) {
       case "server_created":
-        return `You created server "${serverName}"`
+        return serverDeleted 
+          ? "You created a server (now deleted)"
+          : `You created server "${serverName}"`
       case "pledge_created":
         return `You pledged $${amount}/month towards "${serverName}"`
       case "pledge_updated":
@@ -202,7 +210,13 @@ export default function DashboardPage() {
   const formatServerActivityMessage = (activity: Activity) => {
     const amount = activity.metadata?.amount
     const userName = activity.user?.name || "Someone"
-    const serverName = activity.server?.name || "a server"
+    const serverDeleted = !activity.server
+    const serverName = activity.server?.name || "your server"
+
+    // Special message for deleted servers
+    if (serverDeleted) {
+      return `${userName} had activity on a deleted server`
+    }
 
     switch (activity.action) {
       case "pledge_created":
@@ -425,31 +439,39 @@ export default function DashboardPage() {
                 </div>
               ) : (
                 <div className="space-y-4">
-                  {activities.map((activity) => (
-                    <div key={activity.id} className="flex items-start space-x-3 pb-4 border-b border-gray-200 last:border-0">
-                      <div className="flex-shrink-0 mt-1">
-                        {getActivityIcon(activity.action)}
+                  {activities.map((activity) => {
+                    const serverDeleted = !activity.server
+                    return (
+                      <div 
+                        key={activity.id} 
+                        className={`flex items-start space-x-3 pb-4 border-b border-gray-200 last:border-0 ${
+                          serverDeleted ? 'opacity-60' : ''
+                        }`}
+                      >
+                        <div className="flex-shrink-0 mt-1">
+                          {getActivityIcon(activity.action)}
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <p className={`text-sm ${serverDeleted ? 'text-gray-600 italic' : 'text-gray-900'}`}>
+                            {activityTab === "user"
+                              ? formatActivityMessage(activity)
+                              : formatServerActivityMessage(activity)}
+                          </p>
+                          <p className="text-xs text-gray-500 mt-1">
+                            {new Date(activity.createdAt).toLocaleString()}
+                          </p>
+                        </div>
+                        {activity.server?.id && (
+                          <Link
+                            href={`/servers/${activity.server.id}`}
+                            className="flex-shrink-0 text-sm text-indigo-600 hover:text-indigo-700"
+                          >
+                            View →
+                          </Link>
+                        )}
                       </div>
-                      <div className="flex-1 min-w-0">
-                        <p className="text-sm text-gray-900">
-                          {activityTab === "user"
-                            ? formatActivityMessage(activity)
-                            : formatServerActivityMessage(activity)}
-                        </p>
-                        <p className="text-xs text-gray-500 mt-1">
-                          {new Date(activity.createdAt).toLocaleString()}
-                        </p>
-                      </div>
-                      {activity.server?.id && (
-                        <Link
-                          href={`/servers/${activity.server.id}`}
-                          className="flex-shrink-0 text-sm text-indigo-600 hover:text-indigo-700"
-                        >
-                          View →
-                        </Link>
-                      )}
-                    </div>
-                  ))}
+                    )
+                  })}
                 </div>
               )}
             </div>
