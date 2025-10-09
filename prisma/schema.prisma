@@ -85,6 +85,9 @@ model User {
   servers               Server[]
   pledges               Pledge[]
   activityLogs          ActivityLog[]
+  tickets               Ticket[]
+  ticketResponses       TicketResponse[]
+  assignedTickets       Ticket[] @relation("AssignedTickets")
 }
 
 model VerificationToken {
@@ -116,9 +119,6 @@ model Server {
   pledges        Pledge[]
   withdrawals    Withdrawal[]
   activityLogs   ActivityLog[]
-  tickets        Ticket[]
-  ticketResponses TicketResponse[]
-  assignedTickets Ticket[] @relation("AssignedTickets")
   
   createdAt      DateTime @default(now())
   updatedAt      DateTime @updatedAt
