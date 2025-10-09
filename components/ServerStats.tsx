@@ -36,9 +36,14 @@ export default function ServerStats({ serverId, gameType }: ServerStatsProps) {
 
   const fetchStats = async () => {
     try {
-      const response = await fetch(`/api/servers/${serverId}/query`)
+      const response = await fetch(`/api/servers/${serverId}/stats`)
       const data = await response.json()
-      setStats(data)
+      
+      if (response.ok && data.stats) {
+        setStats(data.stats)
+      } else {
+        setStats({ online: false, error: data.error || "Failed to fetch stats" })
+      }
     } catch (error) {
       console.error("Failed to fetch server stats:", error)
       setStats({ online: false, error: "Failed to fetch stats" })
