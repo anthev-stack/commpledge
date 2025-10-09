@@ -123,6 +123,8 @@ export async function POST(request: Request) {
         cost: monthlyCost,
         withdrawalDay: withdrawalDayNum,
         imageUrl,
+        region: body.region || null,
+        tags: body.tags || [],
         ownerId: session.user.id,
       },
       include: {
