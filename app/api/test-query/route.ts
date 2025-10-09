@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server"
-import { query as gamedigQuery } from "gamedig"
+const Gamedig = require("gamedig")
 
 // Test endpoint to debug game server queries
 export async function GET(request: Request) {
@@ -11,7 +11,7 @@ export async function GET(request: Request) {
   try {
     console.log(`Testing query: ${host}:${port} (type: ${type})`)
     
-    const state = await gamedigQuery({
+    const state = await Gamedig.query({
       type: type,
       host: host,
       port: port,
