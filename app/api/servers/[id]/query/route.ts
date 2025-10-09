@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server"
 import { prisma } from "@/lib/prisma"
-import Gamedig from "gamedig"
+import * as Gamedig from "gamedig"
 import { getGameByName } from "@/lib/supported-games"
 
 export async function GET(

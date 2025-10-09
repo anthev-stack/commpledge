@@ -5,6 +5,7 @@ import { useSearchParams } from "next/navigation"
 import Link from "next/link"
 import Image from "next/image"
 import PledgeModal from "@/components/PledgeModal"
+import ServerStats from "@/components/ServerStats"
 
 export const dynamic = 'force-dynamic'
 

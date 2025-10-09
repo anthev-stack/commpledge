@@ -31,6 +31,7 @@ export default function ServerStats({ serverId, gameType }: ServerStatsProps) {
     // Refresh every 30 seconds
     const interval = setInterval(fetchStats, 30000)
     return () => clearInterval(interval)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [serverId])
 
   const fetchStats = async () => {
