@@ -108,14 +108,6 @@ export default function ServerStats({ serverId, gameType }: ServerStatsProps) {
             </div>
           )}
 
-          {/* MOTD (for Minecraft) */}
-          {stats.motd && (
-            <div className="pt-2 border-t border-gray-200">
-              <span className="text-xs text-gray-500">MOTD:</span>
-              <p className="text-sm text-gray-700 mt-1">{stats.motd}</p>
-            </div>
-          )}
-
           {/* Map (for CS, etc) */}
           {stats.map && (
             <div className="flex items-center justify-between">

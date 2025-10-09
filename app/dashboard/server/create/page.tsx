@@ -21,7 +21,6 @@ export default function CreateServerPage() {
     gameType: "",
     serverIp: "",
     serverPort: "",
-    playerCount: "",
     cost: "",
     withdrawalDay: "15",
     imageUrl: "",
@@ -379,23 +378,6 @@ export default function CreateServerPage() {
                 </p>
               </div>
             )}
-
-            {/* Player Count */}
-            <div>
-              <label htmlFor="playerCount" className="block text-sm font-medium text-gray-700 mb-1">
-                Maximum Players
-              </label>
-              <input
-                type="number"
-                id="playerCount"
-                name="playerCount"
-                min="1"
-                value={formData.playerCount}
-                onChange={handleChange}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
-                placeholder="e.g., 50"
-              />
-            </div>
 
             {/* Monthly Cost */}
             <div>
