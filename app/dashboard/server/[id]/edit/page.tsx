@@ -74,7 +74,7 @@ export default function EditServerPage({ params }: { params: Promise<{ id: strin
     const withdrawalDayChanged = initialData && parseInt(formData.withdrawalDay) !== initialData.withdrawalDay
 
     if ((costChanged || withdrawalDayChanged) && pledgeCount > 0) {
-      const confirmMessage = `⚠️ WARNING: You are changing the ${costChanged ? 'monthly cost' : ''${costChanged && withdrawalDayChanged ? ' and ' : ''}${withdrawalDayChanged ? 'withdrawal day' : ''}.\n\nThis will REMOVE ALL ${pledgeCount} CURRENT PLEDGES.\n\nPledgers will need to re-pledge with the new details.\n\nAre you absolutely sure you want to continue?`
+      const confirmMessage = `⚠️ WARNING: You are changing the ${costChanged ? 'monthly cost' : ''}${costChanged && withdrawalDayChanged ? ' and ' : ''}${withdrawalDayChanged ? 'withdrawal day' : ''}.\n\nThis will REMOVE ALL ${pledgeCount} CURRENT PLEDGES.\n\nPledgers will need to re-pledge with the new details.\n\nAre you absolutely sure you want to continue?`
       
       if (!confirm(confirmMessage)) {
         return
