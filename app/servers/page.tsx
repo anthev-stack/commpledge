@@ -1,10 +1,9 @@
 "use client"
 
-import { useEffect, useState } from "react"
+import { useState, useEffect } from "react"
 import Link from "next/link"
 import Image from "next/image"
-
-export const dynamic = 'force-dynamic'
+import { REGIONS, getAllGameTypes } from "@/lib/game-tags"
 
 interface Server {
   id: string
@@ -15,6 +14,8 @@ interface Server {
   playerCount: number
   cost: number
   imageUrl: string
+  region: string | null
+  tags: string[]
   owner: {
     id: string
     name: string
@@ -27,185 +28,349 @@ interface Server {
 
 export default function ServersPage() {
   const [servers, setServers] = useState<Server[]>([])
+  const [filteredServers, setFilteredServers] = useState<Server[]>([])
   const [loading, setLoading] = useState(true)
-  const [filter, setFilter] = useState("all")
+  const [searchTerm, setSearchTerm] = useState("")
+  const [selectedGame, setSelectedGame] = useState("")
+  const [selectedRegion, setSelectedRegion] = useState("")
+  const [selectedTags, setSelectedTags] = useState<string[]>([])
+  
+  // Get all unique tags from current filtered servers
+  const [availableTags, setAvailableTags] = useState<string[]>([])
 
   useEffect(() => {
     fetchServers()
   }, [])
 
+  useEffect(() => {
+    filterServers()
+  }, [servers, searchTerm, selectedGame, selectedRegion, selectedTags])
+
   const fetchServers = async () => {
     try {
       const response = await fetch("/api/servers")
-      const data = await response.json()
-      setServers(data)
+      if (response.ok) {
+        const data = await response.json()
+        setServers(data)
+      }
     } catch (error) {
-      console.error("Error fetching servers:", error)
+      console.error("Failed to fetch servers:", error)
     } finally {
       setLoading(false)
     }
   }
 
-  const gameTypes = ["all", ...new Set(servers.map(s => s.gameType))]
-  const filteredServers = filter === "all" 
-    ? servers 
-    : servers.filter(s => s.gameType === filter)
+  const filterServers = () => {
+    let filtered = servers
 
-  if (loading) {
-    return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-600 mx-auto mb-4"></div>
-          <p className="text-gray-600">Loading servers...</p>
-        </div>
-      </div>
+    // Search by name
+    if (searchTerm) {
+      filtered = filtered.filter(server =>
+        server.name.toLowerCase().includes(searchTerm.toLowerCase())
+      )
+    }
+
+    // Filter by game type
+    if (selectedGame) {
+      filtered = filtered.filter(server => server.gameType === selectedGame)
+    }
+
+    // Filter by region
+    if (selectedRegion) {
+      filtered = filtered.filter(server => server.region === selectedRegion)
+    }
+
+    // Filter by tags
+    if (selectedTags.length > 0) {
+      filtered = filtered.filter(server =>
+        selectedTags.every(tag => server.tags.includes(tag))
+      )
+    }
+
+    setFilteredServers(filtered)
+
+    // Update available tags based on filtered servers
+    const tags = new Set<string>()
+    filtered.forEach(server => {
+      server.tags.forEach(tag => tags.add(tag))
+    })
+    setAvailableTags(Array.from(tags).sort())
+  }
+
+  const toggleTag = (tag: string) => {
+    setSelectedTags(prev =>
+      prev.includes(tag)
+        ? prev.filter(t => t !== tag)
+        : [...prev, tag]
     )
   }
 
+  const clearFilters = () => {
+    setSearchTerm("")
+    setSelectedGame("")
+    setSelectedRegion("")
+    setSelectedTags([])
+  }
+
+  const hasActiveFilters = searchTerm || selectedGame || selectedRegion || selectedTags.length > 0
+
   return (
-    <div className="min-h-screen bg-gradient-to-br from-indigo-50 via-white to-purple-50">
-      {/* Header */}
-      <div className="bg-white border-b">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-          <h1 className="text-3xl font-bold text-gray-900">Browse Game Servers</h1>
-          <p className="text-gray-600 mt-2">
-            Support your favorite game servers with donations
-          </p>
-        </div>
-      </div>
+    <div className="min-h-screen bg-gray-50 py-8">
+      <div className="max-w-7xl mx-auto px-4">
+        <h1 className="text-3xl font-bold text-gray-900 mb-8">Browse Game Servers</h1>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {/* Filter */}
-        <div className="mb-6 flex flex-wrap gap-2">
-          {gameTypes.map((type) => (
-            <button
-              key={type}
-              onClick={() => setFilter(type)}
-              className={`px-4 py-2 rounded-lg font-medium transition ${
-                filter === type
-                  ? "bg-indigo-600 text-white"
-                  : "bg-white text-gray-700 hover:bg-gray-50 border border-gray-300"
-              }`}
-            >
-              {type === "all" ? "All Games" : type}
-            </button>
-          ))}
+        {/* Search and Filters */}
+        <div className="bg-white rounded-lg shadow-md p-6 mb-6">
+          {/* Search Bar */}
+          <div className="mb-4">
+            <label htmlFor="search" className="block text-sm font-medium text-gray-700 mb-2">
+              Search Servers
+            </label>
+            <input
+              type="text"
+              id="search"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              placeholder="Search by server name..."
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+            />
+          </div>
+
+          {/* Filter Dropdowns */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+            {/* Game Type Filter */}
+            <div>
+              <label htmlFor="gameType" className="block text-sm font-medium text-gray-700 mb-2">
+                Game Type
+              </label>
+              <select
+                id="gameType"
+                value={selectedGame}
+                onChange={(e) => setSelectedGame(e.target.value)}
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+              >
+                <option value="">All Games</option>
+                {getAllGameTypes().map((game) => (
+                  <option key={game} value={game}>
+                    {game}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            {/* Region Filter */}
+            <div>
+              <label htmlFor="region" className="block text-sm font-medium text-gray-700 mb-2">
+                Region
+              </label>
+              <select
+                id="region"
+                value={selectedRegion}
+                onChange={(e) => setSelectedRegion(e.target.value)}
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+              >
+                <option value="">All Regions</option>
+                {REGIONS.map((region) => (
+                  <option key={region} value={region}>
+                    {region}
+                  </option>
+                ))}
+              </select>
+            </div>
+          </div>
+
+          {/* Tag Filters */}
+          {availableTags.length > 0 && (
+            <div className="mb-4">
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Filter by Tags
+              </label>
+              <div className="flex flex-wrap gap-2">
+                {availableTags.map((tag) => (
+                  <button
+                    key={tag}
+                    onClick={() => toggleTag(tag)}
+                    className={`px-3 py-1 rounded-full text-sm font-medium transition ${
+                      selectedTags.includes(tag)
+                        ? "bg-indigo-600 text-white"
+                        : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                    }`}
+                  >
+                    {tag}
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Clear Filters */}
+          {hasActiveFilters && (
+            <div className="flex items-center justify-between pt-4 border-t border-gray-200">
+              <p className="text-sm text-gray-600">
+                Showing {filteredServers.length} of {servers.length} servers
+              </p>
+              <button
+                onClick={clearFilters}
+                className="text-sm text-indigo-600 hover:text-indigo-700 font-medium"
+              >
+                Clear all filters
+              </button>
+            </div>
+          )}
         </div>
 
-        {/* Server Grid */}
-        {filteredServers.length === 0 ? (
+        {/* Server List */}
+        {loading ? (
+          <div className="text-center py-12">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-600 mx-auto mb-4"></div>
+            <p className="text-gray-600">Loading servers...</p>
+          </div>
+        ) : filteredServers.length === 0 ? (
           <div className="bg-white rounded-lg shadow-md p-12 text-center">
             <svg className="w-16 h-16 text-gray-400 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 19a2 2 0 01-2-2V7a2 2 0 012-2h4l2 2h4a2 2 0 012 2v1M5 19h14a2 2 0 002-2v-5a2 2 0 00-2-2H9a2 2 0 00-2 2v5a2 2 0 01-2 2z" />
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
             </svg>
-            <h2 className="text-xl font-semibold text-gray-900 mb-2">
-              No servers found
-            </h2>
-            <p className="text-gray-600">
-              Be the first to create a server listing!
+            <h3 className="text-lg font-semibold text-gray-900 mb-2">
+              {hasActiveFilters ? "No servers found" : "No servers available"}
+            </h3>
+            <p className="text-gray-600 mb-4">
+              {hasActiveFilters
+                ? "Try adjusting your filters to see more results"
+                : "Be the first to create a server!"}
             </p>
+            {hasActiveFilters && (
+              <button
+                onClick={clearFilters}
+                className="text-indigo-600 hover:text-indigo-700 font-medium"
+              >
+                Clear filters
+              </button>
+            )}
           </div>
         ) : (
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
             {filteredServers.map((server) => (
-              <Link
-                key={server.id}
-                href={`/servers/${server.id}`}
-                className="bg-white rounded-lg shadow-md hover:shadow-xl transition overflow-hidden group"
-              >
-                {/* Server Image */}
-                {server.imageUrl ? (
-                  <div className="relative h-48 bg-gray-200">
-                    <Image
-                      src={server.imageUrl}
-                      alt={server.name}
-                      fill
-                      className="object-cover group-hover:scale-105 transition-transform duration-300"
-                    />
-                  </div>
-                ) : (
-                  <div className="h-48 bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center">
-                    <svg className="w-16 h-16 text-white opacity-50" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 12h14M5 12a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v4a2 2 0 01-2 2M5 12a2 2 0 00-2 2v4a2 2 0 002 2h14a2 2 0 002-2v-4a2 2 0 00-2-2m-2-4h.01M17 16h.01" />
-                    </svg>
-                  </div>
-                )}
-
-                <div className="p-4">
-                  {/* Game Type Badge */}
-                  <span className="inline-block px-2 py-1 bg-indigo-100 text-indigo-800 text-xs font-semibold rounded mb-2">
-                    {server.gameType}
-                  </span>
-
-                  {/* Server Name */}
-                  <h3 className="text-lg font-bold text-gray-900 mb-2 line-clamp-1">
-                    {server.name}
-                  </h3>
-
-                  {/* Description */}
-                  {server.description && (
-                    <p className="text-sm text-gray-600 mb-3 line-clamp-2">
-                      {server.description}
-                    </p>
+              <Link key={server.id} href={`/servers/${server.id}`}>
+                <div className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition cursor-pointer h-full flex flex-col">
+                  {/* Server Image/Icon */}
+                  {server.imageUrl ? (
+                    <div className="relative h-48 w-full">
+                      <Image
+                        src={server.imageUrl}
+                        alt={server.name}
+                        fill
+                        className="object-cover"
+                      />
+                    </div>
+                  ) : (
+                    <div className="h-48 bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center">
+                      <span className="text-6xl text-white font-bold">
+                        {server.name[0]?.toUpperCase()}
+                      </span>
+                    </div>
                   )}
 
-                  {/* Server Details */}
-                  <div className="flex items-center justify-between text-xs text-gray-500 mb-3">
-                    {server.playerCount && (
-                      <span className="flex items-center">
-                        <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
-                        </svg>
-                        {server.playerCount} players
-                      </span>
-                    )}
-                  <span className="flex items-center">
-                    <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
-                    </svg>
-                    {server.pledgerCount} pledgers
-                  </span>
-                  </div>
+                  <div className="p-6 flex-1 flex flex-col">
+                    {/* Server Name */}
+                    <h3 className="text-xl font-bold text-gray-900 mb-2 line-clamp-1">
+                      {server.name}
+                    </h3>
 
-              {/* Progress Bar */}
-              <div className="mb-3">
-                <div className="flex justify-between text-xs text-gray-600 mb-1">
-                  <span>${server.totalPledged.toFixed(2)} pledged</span>
-                  <span>${server.cost.toFixed(2)} needed</span>
-                </div>
-                <div className="w-full bg-gray-200 rounded-full h-2">
-                  <div
-                    className="bg-indigo-600 h-2 rounded-full transition-all"
-                    style={{
-                      width: `${Math.min((server.totalPledged / server.cost) * 100, 100)}%`,
-                    }}
-                  />
-                </div>
-                {server.totalOptimized > 0 && server.totalOptimized < server.totalPledged && (
-                  <p className="text-xs text-green-600 mt-1">
-                    💰 Optimized to ${server.totalOptimized.toFixed(2)}/month
-                  </p>
-                )}
-              </div>
+                    {/* Game Type & Region */}
+                    <div className="flex items-center text-sm text-gray-600 mb-2">
+                      <span className="font-medium">{server.gameType}</span>
+                      {server.region && (
+                        <>
+                          <span className="mx-2">•</span>
+                          <span>{server.region}</span>
+                        </>
+                      )}
+                    </div>
 
-                  {/* Owner */}
-                  <div className="flex items-center pt-3 border-t border-gray-200">
-                    {server.owner.image ? (
-                      <Image
-                        src={server.owner.image}
-                        alt={server.owner.name}
-                        width={24}
-                        height={24}
-                        className="rounded-full"
-                      />
-                    ) : (
-                      <div className="w-6 h-6 bg-indigo-600 rounded-full flex items-center justify-center text-white text-xs font-semibold">
-                        {server.owner.name?.[0]?.toUpperCase() || "?"}
+                    {/* Tags */}
+                    {server.tags.length > 0 && (
+                      <div className="flex flex-wrap gap-1 mb-3">
+                        {server.tags.slice(0, 3).map((tag) => (
+                          <span
+                            key={tag}
+                            className="px-2 py-1 text-xs bg-indigo-100 text-indigo-700 rounded-full"
+                          >
+                            {tag}
+                          </span>
+                        ))}
+                        {server.tags.length > 3 && (
+                          <span className="px-2 py-1 text-xs bg-gray-100 text-gray-600 rounded-full">
+                            +{server.tags.length - 3}
+                          </span>
+                        )}
                       </div>
                     )}
-                    <span className="ml-2 text-xs text-gray-600">
-                      by {server.owner.name || "Anonymous"}
-                    </span>
+
+                    {/* Description */}
+                    {server.description && (
+                      <p className="text-sm text-gray-600 mb-4 line-clamp-2">
+                        {server.description}
+                      </p>
+                    )}
+
+                    <div className="mt-auto">
+                      {/* Stats */}
+                      <div className="flex items-center justify-between text-sm text-gray-600 mb-3">
+                        {server.playerCount !== null && server.playerCount !== undefined && (
+                          <span className="flex items-center">
+                            <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+                            </svg>
+                            {server.playerCount} players
+                          </span>
+                        )}
+                        <span className="flex items-center">
+                          <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+                          </svg>
+                          {server.pledgerCount} pledgers
+                        </span>
+                      </div>
+
+                      {/* Progress Bar */}
+                      <div className="mb-3">
+                        <div className="flex justify-between text-xs text-gray-600 mb-1">
+                          <span>${server.totalPledged.toFixed(2)} pledged</span>
+                          <span>${server.cost.toFixed(2)} needed</span>
+                        </div>
+                        <div className="w-full bg-gray-200 rounded-full h-2">
+                          <div
+                            className="bg-indigo-600 h-2 rounded-full transition-all"
+                            style={{
+                              width: `${Math.min((server.totalPledged / server.cost) * 100, 100)}%`,
+                            }}
+                          />
+                        </div>
+                        {server.totalOptimized > 0 && server.totalOptimized < server.totalPledged && (
+                          <p className="text-xs text-green-600 mt-1">
+                            💰 Optimized to ${server.totalOptimized.toFixed(2)}/month
+                          </p>
+                        )}
+                      </div>
+
+                      {/* Owner */}
+                      <div className="flex items-center pt-3 border-t border-gray-200">
+                        {server.owner.image ? (
+                          <Image
+                            src={server.owner.image}
+                            alt={server.owner.name}
+                            width={24}
+                            height={24}
+                            className="rounded-full mr-2"
+                          />
+                        ) : (
+                          <div className="w-6 h-6 bg-indigo-600 rounded-full flex items-center justify-center text-white text-xs font-semibold mr-2">
+                            {server.owner.name[0]?.toUpperCase()}
+                          </div>
+                        )}
+                        <span className="text-sm text-gray-600">{server.owner.name}</span>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </Link>

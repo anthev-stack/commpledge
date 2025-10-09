@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation"
 import { useSession } from "next-auth/react"
 import Link from "next/link"
 import { SUPPORTED_GAMES } from "@/lib/supported-games"
+import { REGIONS, getTagsForGame } from "@/lib/game-tags"
 
 export default function CreateServerPage() {
   const router = useRouter()
@@ -23,6 +24,8 @@ export default function CreateServerPage() {
     cost: "",
     withdrawalDay: "15",
     imageUrl: "",
+    region: "",
+    tags: [] as string[],
   })
 
   useEffect(() => {
@@ -82,11 +85,33 @@ export default function CreateServerPage() {
   }
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
-    })
+    const { name, value } = e.target
+    
+    // If changing game type, reset tags
+    if (name === "gameType") {
+      setFormData({
+        ...formData,
+        [name]: value,
+        tags: [],
+      })
+    } else {
+      setFormData({
+        ...formData,
+        [name]: value,
+      })
+    }
   }
+
+  const handleTagToggle = (tag: string) => {
+    setFormData(prev => ({
+      ...prev,
+      tags: prev.tags.includes(tag)
+        ? prev.tags.filter(t => t !== tag)
+        : [...prev.tags, tag],
+    }))
+  }
+
+  const availableTags = formData.gameType ? getTagsForGame(formData.gameType) : []
 
   if (!session) {
     router.push("/login")
@@ -266,6 +291,30 @@ export default function CreateServerPage() {
               />
             </div>
 
+            {/* Region */}
+            <div>
+              <label htmlFor="region" className="block text-sm font-medium text-gray-700 mb-1">
+                Server Region
+              </label>
+              <select
+                id="region"
+                name="region"
+                value={formData.region}
+                onChange={handleChange}
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+              >
+                <option value="">Select region...</option>
+                {REGIONS.map((region) => (
+                  <option key={region} value={region}>
+                    {region}
+                  </option>
+                ))}
+              </select>
+              <p className="text-xs text-gray-500 mt-1">
+                Helps players find servers close to them
+              </p>
+            </div>
+
             {/* Server IP */}
             <div>
               <label htmlFor="serverIp" className="block text-sm font-medium text-gray-700 mb-1">
@@ -281,9 +330,37 @@ export default function CreateServerPage() {
                 placeholder="e.g., play.myserver.com or 123.45.67.89:25565"
               />
               <p className="text-xs text-gray-500 mt-1">
-                Optional - Let players know how to connect
+                Optional - Let players know how to connect & enable live stats
               </p>
             </div>
+
+            {/* Tags */}
+            {formData.gameType && availableTags.length > 0 && (
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Server Tags <span className="text-gray-500">(Select all that apply)</span>
+                </label>
+                <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
+                  {availableTags.map((tag) => (
+                    <button
+                      key={tag}
+                      type="button"
+                      onClick={() => handleTagToggle(tag)}
+                      className={`px-3 py-2 rounded-lg text-sm font-medium transition ${
+                        formData.tags.includes(tag)
+                          ? "bg-indigo-600 text-white"
+                          : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                      }`}
+                    >
+                      {tag}
+                    </button>
+                  ))}
+                </div>
+                <p className="text-xs text-gray-500 mt-2">
+                  Selected: {formData.tags.length > 0 ? formData.tags.join(", ") : "None"}
+                </p>
+              </div>
+            )}
 
             {/* Player Count */}
             <div>

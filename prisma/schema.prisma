@@ -107,6 +107,8 @@ model Server {
   imageUrl       String?
   isActive       Boolean  @default(true) // Can accept pledges
   status         String   @default("active") // 'active', 'inactive', 'archived'
+  region         String?  // Server region: "North America", "Europe", etc.
+  tags           String[] @default([]) // Game-specific tags: ["Survival", "PvP", etc.]
   
   ownerId        String
   owner          User     @relation(fields: [ownerId], references: [id], onDelete: Cascade)
@@ -121,6 +123,8 @@ model Server {
   @@index([ownerId])
   @@index([status])
   @@index([isActive])
+  @@index([gameType])
+  @@index([region])
 }
 
 model Pledge {
