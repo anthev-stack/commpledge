@@ -49,6 +49,8 @@ export default function ServerPage({ params }: { params: Promise<{ id: string }>
   const [error, setError] = useState("")
   const [showPledgeModal, setShowPledgeModal] = useState(false)
   const [serverId, setServerId] = useState("")
+  const [userPledge, setUserPledge] = useState<any>(null)
+  const [checkingPledge, setCheckingPledge] = useState(true)
 
   useEffect(() => {
     const loadParams = async () => {
@@ -61,9 +63,27 @@ export default function ServerPage({ params }: { params: Promise<{ id: string }>
   useEffect(() => {
     if (serverId) {
       fetchServer()
+      checkUserPledge()
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [serverId])
+
+  const checkUserPledge = async () => {
+    if (!serverId) return
+    
+    setCheckingPledge(true)
+    try {
+      const response = await fetch(`/api/servers/${serverId}/pledge`)
+      if (response.ok) {
+        const data = await response.json()
+        setUserPledge(data.hasPledge ? data.userPledge : null)
+      }
+    } catch (error) {
+      console.error("Error checking pledge:", error)
+    } finally {
+      setCheckingPledge(false)
+    }
+  }
 
   useEffect(() => {
     // Show success message if redirected from payment
@@ -88,6 +108,36 @@ export default function ServerPage({ params }: { params: Promise<{ id: string }>
       setError("Failed to load server")
     } finally {
       setLoading(false)
+    }
+  }
+
+  const handlePledgeSuccess = () => {
+    setShowPledgeModal(false)
+    fetchServer()
+    checkUserPledge()
+  }
+
+  const handleRemovePledge = async () => {
+    if (!confirm("Are you sure you want to remove your pledge?")) {
+      return
+    }
+
+    try {
+      const response = await fetch(`/api/servers/${serverId}/pledge`, {
+        method: "DELETE",
+      })
+
+      if (response.ok) {
+        setUserPledge(null)
+        fetchServer()
+        alert("Pledge removed successfully!")
+      } else {
+        const data = await response.json()
+        alert(data.error || "Failed to remove pledge")
+      }
+    } catch (error) {
+      console.error("Remove pledge error:", error)
+      alert("Failed to remove pledge")
     }
   }
 
