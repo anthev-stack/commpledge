@@ -154,6 +154,12 @@ export default function DashboardPage() {
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
           </svg>
         )
+      case "server_deleted":
+        return (
+          <svg className="w-5 h-5 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+          </svg>
+        )
       case "pledge_created":
         return (
           <svg className="w-5 h-5 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -170,6 +176,24 @@ export default function DashboardPage() {
         return (
           <svg className="w-5 h-5 text-yellow-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+          </svg>
+        )
+      case "user_suspended":
+        return (
+          <svg className="w-5 h-5 text-orange-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+          </svg>
+        )
+      case "user_banned":
+        return (
+          <svg className="w-5 h-5 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636" />
+          </svg>
+        )
+      case "user_promoted":
+        return (
+          <svg className="w-5 h-5 text-purple-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" />
           </svg>
         )
       default:
@@ -196,12 +220,20 @@ export default function DashboardPage() {
         return serverDeleted 
           ? "You created a server (now deleted)"
           : `You created server "${serverName}"`
+      case "server_deleted":
+        return `You deleted server "${activity.metadata?.serverName || serverName}"`
       case "pledge_created":
         return `You pledged $${amount}/month towards "${serverName}"`
       case "pledge_updated":
         return `You updated your pledge to "${serverName}" ($${amount}/month)`
       case "pledge_cancelled":
         return `You removed your pledge from "${serverName}"`
+      case "user_suspended":
+        return "Your account was suspended due to payment failures"
+      case "user_banned":
+        return "Your account was banned by staff"
+      case "user_promoted":
+        return `You were promoted to ${activity.metadata?.role || "moderator"}`
       default:
         return activity.action
     }
@@ -225,6 +257,10 @@ export default function DashboardPage() {
         return `${userName} updated their pledge to "${serverName}" ($${amount}/month)`
       case "pledge_cancelled":
         return `${userName} removed their pledge from "${serverName}"`
+      case "server_created":
+        return `Someone created a server (this shouldn't appear here)`
+      case "server_deleted":
+        return `Someone deleted a server (this shouldn't appear here)`
       default:
         return activity.action
     }

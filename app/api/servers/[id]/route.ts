@@ -196,6 +196,24 @@ export async function DELETE(
       )
     }
 
+    // Get server name before deleting
+    const server = await prisma.server.findUnique({
+      where: { id },
+      select: { name: true },
+    })
+
+    // Log server deletion activity
+    await prisma.activityLog.create({
+      data: {
+        userId: session.user.id,
+        action: "server_deleted",
+        metadata: {
+          serverName: server?.name,
+          pledgesRemoved: existingServer._count.pledges,
+        },
+      },
+    })
+
     // Delete server (cascades to pledges due to Prisma schema)
     await prisma.server.delete({
       where: { id },
