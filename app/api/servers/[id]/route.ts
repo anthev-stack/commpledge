@@ -109,6 +109,28 @@ export async function PATCH(
       )
     }
 
+    // Check if cost or withdrawalDay changed - if so, remove all pledges
+    const oldServer = await prisma.server.findUnique({
+      where: { id },
+      select: {
+        cost: true,
+        withdrawalDay: true,
+      },
+    })
+
+    const costChanged = body.cost && parseFloat(body.cost) !== oldServer?.cost
+    const withdrawalDayChanged = body.withdrawalDay && parseInt(body.withdrawalDay) !== oldServer?.withdrawalDay
+    
+    let pledgesRemoved = 0
+
+    if (costChanged || withdrawalDayChanged) {
+      // Delete all pledges for this server
+      const result = await prisma.pledge.deleteMany({
+        where: { serverId: id },
+      })
+      pledgesRemoved = result.count
+    }
+
     const server = await prisma.server.update({
       where: { id },
       data: {
@@ -123,7 +145,10 @@ export async function PATCH(
       },
     })
 
-    return NextResponse.json(server)
+    return NextResponse.json({
+      ...server,
+      pledgesRemoved,
+    })
   } catch (error) {
     console.error("Error updating server:", error)
     return NextResponse.json(
