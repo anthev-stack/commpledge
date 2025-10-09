@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server"
 import { prisma } from "@/lib/prisma"
-import * as Gamedig from "gamedig"
+import { query as gamedigQuery } from "gamedig"
 import { getGameByName } from "@/lib/supported-games"
 
 export async function GET(
@@ -40,7 +40,7 @@ export async function GET(
 
     try {
       // Query the game server
-      const state = await Gamedig.query({
+      const state = await gamedigQuery({
         type: game.type,
         host: host,
         port: port,
