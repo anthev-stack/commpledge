@@ -18,6 +18,7 @@ interface Server {
   imageUrl: string
   region: string | null
   tags: string[]
+  createdAt: string
   owner: {
     id: string
     name: string

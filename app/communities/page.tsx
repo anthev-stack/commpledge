@@ -19,6 +19,7 @@ interface Community {
   memberCount: number
   discordUrl: string | null
   websiteUrl: string | null
+  createdAt: string
   owner: {
     id: string
     name: string
