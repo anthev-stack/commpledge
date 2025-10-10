@@ -104,7 +104,7 @@ export async function POST(
     // Log the boost activity
     await prisma.activityLog.create({
       data: {
-        type: 'server_boosted',
+        action: 'server_boosted',
         userId: session.user.id,
         serverId,
         metadata: {
