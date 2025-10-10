@@ -56,7 +56,7 @@ export default function ServersPage() {
       const response = await fetch("/api/favorites?type=server")
       if (response.ok) {
         const data = await response.json()
-        const favoriteIds = new Set(data.favorites.map((fav: any) => fav.serverId).filter(Boolean))
+        const favoriteIds = new Set(data.favorites.map((fav: any) => fav.serverId).filter((id: any): id is string => Boolean(id)))
         setFavorites(favoriteIds)
       }
     } catch (error) {
