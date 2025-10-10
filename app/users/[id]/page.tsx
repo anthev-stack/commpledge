@@ -23,6 +23,7 @@ export default async function UserProfilePage({ params }: UserProfilePageProps) 
       email: true,
       image: true,
       createdAt: true,
+      role: true,
     },
   })
 
@@ -63,9 +64,20 @@ export default async function UserProfilePage({ params }: UserProfilePageProps) 
                 </div>
               )}
               <div className="mt-4 sm:mt-0 sm:ml-6 text-center sm:text-left">
-                <h1 className="text-3xl font-bold text-gray-900">
-                  {user.name || "Anonymous User"}
-                </h1>
+                <div className="flex items-center justify-center sm:justify-start space-x-3">
+                  <h1 className="text-3xl font-bold text-gray-900">
+                    {user.name || "Anonymous User"}
+                  </h1>
+                  <span className={`px-3 py-1 text-sm rounded-full ${
+                    user.role === "ADMIN" ? "bg-purple-100 text-purple-700" :
+                    user.role === "MODERATOR" ? "bg-blue-100 text-blue-700" :
+                    user.role === "SUSPENDED" ? "bg-orange-100 text-orange-700" :
+                    user.role === "BANNED" ? "bg-red-100 text-red-700" :
+                    "bg-gray-100 text-gray-700"
+                  }`}>
+                    {user.role}
+                  </span>
+                </div>
                 <p className="text-gray-600 mt-1">Community Member</p>
               </div>
             </div>
@@ -100,6 +112,21 @@ export default async function UserProfilePage({ params }: UserProfilePageProps) 
                   <dt className="text-sm font-medium text-gray-500 mb-1">Profile Picture</dt>
                   <dd className="text-sm text-gray-900">
                     {user.image ? "Yes" : "No"}
+                  </dd>
+                </div>
+
+                <div className="bg-gray-50 px-4 py-3 rounded-lg">
+                  <dt className="text-sm font-medium text-gray-500 mb-1">Role</dt>
+                  <dd className="text-sm">
+                    <span className={`px-2 py-1 rounded-full ${
+                      user.role === "ADMIN" ? "bg-purple-100 text-purple-700" :
+                      user.role === "MODERATOR" ? "bg-blue-100 text-blue-700" :
+                      user.role === "SUSPENDED" ? "bg-orange-100 text-orange-700" :
+                      user.role === "BANNED" ? "bg-red-100 text-red-700" :
+                      "bg-gray-100 text-gray-700"
+                    }`}>
+                      {user.role}
+                    </span>
                   </dd>
                 </div>
               </dl>

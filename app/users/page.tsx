@@ -12,6 +12,7 @@ export default async function UsersPage() {
       email: true,
       image: true,
       createdAt: true,
+      role: true,
     },
     orderBy: {
       createdAt: "desc",
@@ -59,9 +60,20 @@ export default async function UsersPage() {
                     </div>
                   )}
                   <div className="flex-1 min-w-0">
-                    <h2 className="text-lg font-semibold text-gray-900 truncate">
-                      {user.name || "Anonymous User"}
-                    </h2>
+                    <div className="flex items-center space-x-2 mb-1">
+                      <h2 className="text-lg font-semibold text-gray-900 truncate">
+                        {user.name || "Anonymous User"}
+                      </h2>
+                      <span className={`px-2 py-0.5 text-xs rounded-full whitespace-nowrap ${
+                        user.role === "ADMIN" ? "bg-purple-100 text-purple-700" :
+                        user.role === "MODERATOR" ? "bg-blue-100 text-blue-700" :
+                        user.role === "SUSPENDED" ? "bg-orange-100 text-orange-700" :
+                        user.role === "BANNED" ? "bg-red-100 text-red-700" :
+                        "bg-gray-100 text-gray-700"
+                      }`}>
+                        {user.role}
+                      </span>
+                    </div>
                     <p className="text-sm text-gray-600">Community Member</p>
                   </div>
                 </div>
