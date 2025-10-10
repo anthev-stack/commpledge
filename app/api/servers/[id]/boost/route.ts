@@ -49,6 +49,23 @@ export async function POST(
       )
     }
 
+    // Check global boost limit (15 active boosts max)
+    const activeBoostsCount = await prisma.serverBoost.count({
+      where: {
+        isActive: true,
+        expiresAt: {
+          gt: new Date()
+        }
+      }
+    })
+
+    if (activeBoostsCount >= 15) {
+      return NextResponse.json(
+        { error: "Maximum number of boosted servers reached (15/15). Please try again later when a boost expires." },
+        { status: 400 }
+      )
+    }
+
     // Check if user has a payment method
     const user = await prisma.user.findUnique({
       where: { id: session.user.id },

@@ -118,7 +118,7 @@ export async function POST(request: Request) {
         gameTypes: gameTypes || [],
         region,
         tags: tags || [],
-        memberCount: memberCount || 0,
+        memberCount: memberCount ? parseInt(memberCount, 10) : 0,
         ownerId: session.user.id,
       },
       include: {

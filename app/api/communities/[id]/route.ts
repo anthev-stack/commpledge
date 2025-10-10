@@ -114,7 +114,7 @@ export async function PATCH(
         gameTypes: body.gameTypes,
         region: body.region,
         tags: body.tags,
-        memberCount: body.memberCount,
+        memberCount: body.memberCount ? parseInt(body.memberCount, 10) : 0,
       },
       include: {
         owner: {
