@@ -11,7 +11,7 @@ export async function GET() {
     })
 
     return NextResponse.json({ 
-      theme: themeSetting?.value || "default" 
+      theme: themeSetting?.value || "dark" 
     })
   } catch (error) {
     console.error("Error fetching theme:", error)
@@ -51,7 +51,7 @@ export async function POST(request: Request) {
     const { theme } = body
 
     // Validate theme
-    const validThemes = ["default", "halloween", "christmas", "birthday", "newyear"]
+    const validThemes = ["dark", "default", "halloween", "christmas", "birthday", "newyear"]
     if (!validThemes.includes(theme)) {
       return NextResponse.json(
         { error: "Invalid theme" },

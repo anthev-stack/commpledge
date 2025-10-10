@@ -15,6 +15,21 @@ export interface Theme {
 }
 
 export const THEMES: Record<string, Theme> = {
+  dark: {
+    name: "dark",
+    displayName: "Dark",
+    emoji: "🌙",
+    description: "Dark theme with green accents",
+    colors: {
+      primary: "#10b981", // emerald-500
+      secondary: "#059669", // emerald-600
+      accent: "#34d399", // emerald-400
+      background: "#1a1a2e", // dark blue-grey
+      surface: "#16213e", // slightly lighter dark blue
+      text: "#ffffff", // white
+      textSecondary: "#cccccc", // light grey
+    }
+  },
   default: {
     name: "default",
     displayName: "Default",
@@ -93,7 +108,7 @@ export const THEMES: Record<string, Theme> = {
 }
 
 export function getTheme(themeName: string): Theme {
-  return THEMES[themeName] || THEMES.default
+  return THEMES[themeName] || THEMES.dark
 }
 
 export function getThemeCSS(theme: Theme): string {

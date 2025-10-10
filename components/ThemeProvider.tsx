@@ -20,8 +20,8 @@ export function useTheme() {
 }
 
 export function ThemeProvider({ children }: { children: ReactNode }) {
-  const [themeName, setThemeName] = useState("default")
-  const [theme, setTheme] = useState<Theme>(THEMES.default)
+  const [themeName, setThemeName] = useState("dark")
+  const [theme, setTheme] = useState<Theme>(THEMES.dark)
 
   useEffect(() => {
     // Fetch current theme from API
@@ -30,7 +30,7 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
         const response = await fetch("/api/settings/theme")
         if (response.ok) {
           const data = await response.json()
-          const newThemeName = data.theme || "default"
+          const newThemeName = data.theme || "dark"
           setThemeName(newThemeName)
           setTheme(getTheme(newThemeName))
         }
