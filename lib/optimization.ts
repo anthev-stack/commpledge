@@ -158,3 +158,4 @@ export function getOptimizationPreview(
     potentialSavings: Math.round(Math.max(0, potentialSavings) * 100) / 100,
   }
 }
+

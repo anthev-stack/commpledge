@@ -283,3 +283,4 @@ Potential additions:
 - ✅ Game-specific statistics
 
 **No more fake servers!** All stats are pulled directly from the real game servers. 🚀
+

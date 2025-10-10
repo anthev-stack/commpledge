@@ -42,3 +42,4 @@ export function calculateTotalFees(amount: number): {
     netAmount: Math.round(netAmount * 100) / 100,
   }
 }
+

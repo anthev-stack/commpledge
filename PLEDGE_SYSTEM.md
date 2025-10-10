@@ -421,3 +421,4 @@ Your Community Pledges platform is now a fully functional crowdfunding system wi
 - ✅ Multi-country support
 
 **The more people who pledge, the less everyone pays!** 🚀
+

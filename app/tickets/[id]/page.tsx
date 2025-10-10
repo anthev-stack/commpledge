@@ -301,3 +301,4 @@ export default function TicketPage({ params }: { params: Promise<{ id: string }>
     </div>
   )
 }
+

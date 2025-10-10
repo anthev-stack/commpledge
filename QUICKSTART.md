@@ -117,3 +117,4 @@ Make sure `NEXTAUTH_SECRET` is set in `.env`
 
 Enjoy using Community Pledges! 🎉
 
+

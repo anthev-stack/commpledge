@@ -73,3 +73,4 @@ export function getGameByType(type: string) {
 export function getGameByName(name: string) {
   return SUPPORTED_GAMES.find(game => game.name === name)
 }
+

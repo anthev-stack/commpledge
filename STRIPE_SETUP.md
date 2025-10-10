@@ -234,3 +234,4 @@ Use any:
 ---
 
 **You're all set!** Server owners can now receive donations through Stripe Connect Express without needing a business account.
+

@@ -8,3 +8,4 @@ CREATE INDEX "Server_gameType_idx" ON "Server"("gameType");
 -- CreateIndex
 CREATE INDEX "Server_region_idx" ON "Server"("region");
 
+
