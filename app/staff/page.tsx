@@ -85,10 +85,13 @@ export default function StaffDashboardPage() {
       const response = await fetch("/api/user/me")
       if (response.ok) {
         const data = await response.json()
+        console.log("User role data:", data)
         if (data.role !== "ADMIN" && data.role !== "MODERATOR") {
+          console.log("User is not staff, redirecting to dashboard")
           router.push("/dashboard")
           return
         }
+        console.log("User is staff, loading data")
         // User is staff, load data
         if (tab === "users") {
           fetchUsers()
@@ -97,6 +100,11 @@ export default function StaffDashboardPage() {
         } else {
           fetchTickets()
         }
+      } else {
+        console.error("Failed to fetch user role, status:", response.status)
+        const errorData = await response.text()
+        console.error("Error response:", errorData)
+        router.push("/dashboard")
       }
     } catch (error) {
       console.error("Failed to check role:", error)
