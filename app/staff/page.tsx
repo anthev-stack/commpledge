@@ -508,7 +508,7 @@ export default function StaffDashboardPage() {
                   ))
                 )}
               </div>
-            ) : (
+            ) : tab === "servers" ? (
               /* Server Management */
               <div className="space-y-4">
                 {filteredServers.length === 0 ? (
