@@ -32,6 +32,11 @@ export default function SettingsPage() {
   const [showAddPaymentModal, setShowAddPaymentModal] = useState(false)
   const [deletingPaymentMethod, setDeletingPaymentMethod] = useState<string | null>(null)
 
+  // Profile picture upload
+  const [profileImage, setProfileImage] = useState<string | null>(session?.user?.image || null)
+  const [uploadingImage, setUploadingImage] = useState(false)
+  const [dragActive, setDragActive] = useState(false)
+
   useEffect(() => {
     checkStripeStatus()
     fetchUserData()
@@ -91,6 +96,91 @@ export default function SettingsPage() {
   const handlePaymentMethodAdded = () => {
     setMessage("Payment method added successfully!")
     fetchPaymentMethods()
+  }
+
+  const handleProfileImageUpload = async (file: File) => {
+    if (!file) return
+
+    // Check file type
+    const allowedTypes = ['image/webp', 'image/png', 'image/jpeg', 'image/jpg']
+    if (!allowedTypes.includes(file.type)) {
+      setError("Only WebP, PNG, and JPG files are allowed")
+      return
+    }
+
+    // Check if user is staff for GIF support
+    const userResponse = await fetch("/api/user/me")
+    const userData = await userResponse.json()
+    const isStaff = userData.role === "ADMIN" || userData.role === "MODERATOR"
+    
+    if (file.type === 'image/gif' && !isStaff) {
+      setError("Only partners, moderators, and admins can upload GIF profile pictures")
+      return
+    }
+
+    // Check file size (5MB max)
+    if (file.size > 5 * 1024 * 1024) {
+      setError("File size must be less than 5MB")
+      return
+    }
+
+    setUploadingImage(true)
+    setError("")
+
+    try {
+      const formData = new FormData()
+      formData.append('image', file)
+
+      const response = await fetch('/api/user/profile-image', {
+        method: 'POST',
+        body: formData,
+      })
+
+      if (response.ok) {
+        const data = await response.json()
+        setProfileImage(data.imageUrl)
+        setMessage("Profile picture updated successfully!")
+        // Update the session to reflect the new image
+        update({ image: data.imageUrl })
+      } else {
+        const errorData = await response.json()
+        setError(errorData.error || "Failed to upload image")
+      }
+    } catch (error) {
+      setError("Failed to upload image")
+    } finally {
+      setUploadingImage(false)
+    }
+  }
+
+  const handleDrop = (e: React.DragEvent) => {
+    e.preventDefault()
+    e.stopPropagation()
+    setDragActive(false)
+    
+    const files = Array.from(e.dataTransfer.files)
+    if (files.length > 0) {
+      handleProfileImageUpload(files[0])
+    }
+  }
+
+  const handleDragOver = (e: React.DragEvent) => {
+    e.preventDefault()
+    e.stopPropagation()
+    setDragActive(true)
+  }
+
+  const handleDragLeave = (e: React.DragEvent) => {
+    e.preventDefault()
+    e.stopPropagation()
+    setDragActive(false)
+  }
+
+  const handleFileInput = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = Array.from(e.target.files || [])
+    if (files.length > 0) {
+      handleProfileImageUpload(files[0])
+    }
   }
 
   const checkStripeStatus = async () => {
@@ -222,31 +312,73 @@ export default function SettingsPage() {
             {/* Profile Picture Section */}
             <div className="mb-8">
               <h2 className="text-lg font-semibold text-gray-900 mb-4">Profile Picture</h2>
-              <div className="flex items-center space-x-4">
-                {session.user?.image ? (
-                  <Image
-                    src={session.user.image}
-                    alt={session.user?.name || "User"}
-                    width={80}
-                    height={80}
-                    className="rounded-full"
-                  />
-                ) : (
-                  <div className="w-20 h-20 bg-indigo-600 rounded-full flex items-center justify-center text-white text-2xl font-semibold">
-                    {session.user?.name?.[0]?.toUpperCase() || session.user?.email?.[0]?.toUpperCase() || "U"}
-                  </div>
-                )}
-                <div>
-                  <p className="text-sm text-gray-600">
-                    {session.user?.image 
-                      ? "Your profile picture from your authentication provider"
-                      : "No profile picture set"}
-                  </p>
-                  {!session.user?.image && (
-                    <p className="text-xs text-gray-500 mt-1">
-                      Sign in with Discord to set a profile picture
-                    </p>
+              
+              <div className="flex items-start space-x-6">
+                {/* Current Profile Picture */}
+                <div className="flex-shrink-0">
+                  {profileImage ? (
+                    <Image
+                      src={profileImage}
+                      alt={session?.user?.name || "User"}
+                      width={80}
+                      height={80}
+                      className="rounded-full object-cover"
+                    />
+                  ) : (
+                    <div className="w-20 h-20 bg-indigo-600 rounded-full flex items-center justify-center text-white text-2xl font-semibold">
+                      {session?.user?.name?.[0]?.toUpperCase() || session?.user?.email?.[0]?.toUpperCase() || "U"}
+                    </div>
                   )}
+                </div>
+
+                {/* Upload Area */}
+                <div className="flex-1">
+                  <div
+                    className={`relative border-2 border-dashed rounded-lg p-6 text-center transition-colors ${
+                      dragActive
+                        ? "border-indigo-500 bg-indigo-50"
+                        : "border-gray-300 hover:border-gray-400"
+                    }`}
+                    onDrop={handleDrop}
+                    onDragOver={handleDragOver}
+                    onDragLeave={handleDragLeave}
+                  >
+                    {uploadingImage ? (
+                      <div className="flex flex-col items-center">
+                        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-indigo-600 mb-2"></div>
+                        <p className="text-sm text-gray-600">Uploading...</p>
+                      </div>
+                    ) : (
+                      <>
+                        <svg className="mx-auto h-12 w-12 text-gray-400 mb-4" stroke="currentColor" fill="none" viewBox="0 0 48 48">
+                          <path d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" />
+                        </svg>
+                        <div className="text-sm text-gray-600 mb-2">
+                          <span className="font-medium text-indigo-600 hover:text-indigo-500 cursor-pointer">
+                            Click to upload
+                          </span>{" "}
+                          or drag and drop
+                        </div>
+                        <p className="text-xs text-gray-500">
+                          WebP, PNG, JPG up to 5MB
+                          <br />
+                          GIF allowed for partners, moderators, and admins
+                        </p>
+                      </>
+                    )}
+                    
+                    <input
+                      type="file"
+                      accept=".webp,.png,.jpg,.jpeg,.gif"
+                      onChange={handleFileInput}
+                      className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+                      disabled={uploadingImage}
+                    />
+                  </div>
+                  
+                  <p className="text-xs text-gray-500 mt-2">
+                    Your profile picture will be displayed across the platform
+                  </p>
                 </div>
               </div>
             </div>
