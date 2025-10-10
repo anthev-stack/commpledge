@@ -5,6 +5,7 @@ import Link from "next/link"
 import Image from "next/image"
 import { REGIONS } from "@/lib/game-tags"
 import { SUPPORTED_GAMES } from "@/lib/supported-games"
+import { getTagsForGame } from "@/lib/game-tags"
 
 interface Server {
   id: string
@@ -35,6 +36,8 @@ export default function ServersPage() {
   const [selectedGame, setSelectedGame] = useState("")
   const [selectedRegion, setSelectedRegion] = useState("")
   const [selectedTags, setSelectedTags] = useState<string[]>([])
+  const [sortBy, setSortBy] = useState("newest")
+  const [showFilters, setShowFilters] = useState(false)
   
   // Get all unique tags from current filtered servers
   const [availableTags, setAvailableTags] = useState<string[]>([])
@@ -45,7 +48,7 @@ export default function ServersPage() {
 
   useEffect(() => {
     filterServers()
-  }, [servers, searchTerm, selectedGame, selectedRegion, selectedTags])
+  }, [servers, searchTerm, selectedGame, selectedRegion, selectedTags, sortBy])
 
   const fetchServers = async () => {
     try {
@@ -64,10 +67,13 @@ export default function ServersPage() {
   const filterServers = () => {
     let filtered = servers
 
-    // Search by name
+    // Search by name, description, game type, or tags
     if (searchTerm) {
       filtered = filtered.filter(server =>
-        server.name.toLowerCase().includes(searchTerm.toLowerCase())
+        server.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        server.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        server.gameType.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        server.tags.some(tag => tag.toLowerCase().includes(searchTerm.toLowerCase()))
       )
     }
 
@@ -88,14 +94,42 @@ export default function ServersPage() {
       )
     }
 
+    // Sort results
+    filtered.sort((a, b) => {
+      switch (sortBy) {
+        case "newest":
+          return new Date(b.createdAt || "").getTime() - new Date(a.createdAt || "").getTime()
+        case "oldest":
+          return new Date(a.createdAt || "").getTime() - new Date(b.createdAt || "").getTime()
+        case "most_pledged":
+          return b.totalPledged - a.totalPledged
+        case "least_pledged":
+          return a.totalPledged - b.totalPledged
+        case "most_pledgers":
+          return b.pledgerCount - a.pledgerCount
+        case "least_pledgers":
+          return a.pledgerCount - b.pledgerCount
+        case "name_asc":
+          return a.name.localeCompare(b.name)
+        case "name_desc":
+          return b.name.localeCompare(a.name)
+        default:
+          return 0
+      }
+    })
+
     setFilteredServers(filtered)
 
-    // Update available tags based on filtered servers
-    const tags = new Set<string>()
-    filtered.forEach(server => {
-      server.tags.forEach(tag => tags.add(tag))
-    })
-    setAvailableTags(Array.from(tags).sort())
+    // Update available tags based on filtered servers and selected game
+    if (selectedGame) {
+      setAvailableTags(getTagsForGame(selectedGame))
+    } else {
+      const tags = new Set<string>()
+      filtered.forEach(server => {
+        server.tags.forEach(tag => tags.add(tag))
+      })
+      setAvailableTags(Array.from(tags).sort())
+    }
   }
 
   const toggleTag = (tag: string) => {
@@ -111,9 +145,13 @@ export default function ServersPage() {
     setSelectedGame("")
     setSelectedRegion("")
     setSelectedTags([])
+    setSortBy("newest")
   }
 
-  const hasActiveFilters = searchTerm || selectedGame || selectedRegion || selectedTags.length > 0
+  const hasActiveFilters = searchTerm || selectedGame || selectedRegion || selectedTags.length > 0 || sortBy !== "newest"
+
+  // Get current game tags for display
+  const currentGameTags = selectedGame ? getTagsForGame(selectedGame) : availableTags
 
   return (
     <div className="min-h-screen bg-gray-50 py-8">
@@ -121,103 +159,155 @@ export default function ServersPage() {
         <h1 className="text-3xl font-bold text-gray-900 mb-8">Browse Game Servers</h1>
 
         {/* Search and Filters */}
-        <div className="bg-white rounded-lg shadow-md p-6 mb-6">
-          {/* Search Bar */}
-          <div className="mb-4">
-            <label htmlFor="search" className="block text-sm font-medium text-gray-700 mb-2">
-              Search Servers
-            </label>
-            <input
-              type="text"
-              id="search"
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              placeholder="Search by server name..."
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
-            />
-          </div>
-
-          {/* Filter Dropdowns */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-            {/* Game Type Filter */}
-            <div>
-              <label htmlFor="gameType" className="block text-sm font-medium text-gray-700 mb-2">
-                Game Type
-              </label>
-              <select
-                id="gameType"
-                value={selectedGame}
-                onChange={(e) => setSelectedGame(e.target.value)}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
-              >
-                <option value="">All Games</option>
-                {SUPPORTED_GAMES.map((game) => (
-                  <option key={game.name} value={game.name}>
-                    {game.name}
-                  </option>
-                ))}
-              </select>
-            </div>
-
-            {/* Region Filter */}
-            <div>
-              <label htmlFor="region" className="block text-sm font-medium text-gray-700 mb-2">
-                Region
-              </label>
-              <select
-                id="region"
-                value={selectedRegion}
-                onChange={(e) => setSelectedRegion(e.target.value)}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
-              >
-                <option value="">All Regions</option>
-                {REGIONS.map((region) => (
-                  <option key={region} value={region}>
-                    {region}
-                  </option>
-                ))}
-              </select>
-            </div>
-          </div>
-
-          {/* Tag Filters */}
-          {availableTags.length > 0 && (
-            <div className="mb-4">
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Filter by Tags
-              </label>
-              <div className="flex flex-wrap gap-2">
-                {availableTags.map((tag) => (
-                  <button
-                    key={tag}
-                    onClick={() => toggleTag(tag)}
-                    className={`px-3 py-1 rounded-full text-sm font-medium transition ${
-                      selectedTags.includes(tag)
-                        ? "bg-indigo-600 text-white"
-                        : "bg-gray-100 text-gray-700 hover:bg-gray-200"
-                    }`}
-                  >
-                    {tag}
-                  </button>
-                ))}
+        <div className="bg-gray-900 rounded-xl shadow-lg p-6 mb-6">
+          {/* Search Bar and Filters Button */}
+          <div className="flex gap-3 mb-4">
+            <div className="flex-1 relative">
+              <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                <svg className="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                </svg>
               </div>
+              <input
+                type="text"
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                placeholder="Search servers by name, description, game type, or tags..."
+                className="w-full pl-10 pr-4 py-3 bg-gray-800 border border-gray-700 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+              />
+              <div className="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
+                <svg className="h-5 w-5 text-gray-500" fill="currentColor" viewBox="0 0 20 20">
+                  <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+              </div>
+            </div>
+            <button
+              onClick={() => setShowFilters(!showFilters)}
+              className="px-6 py-3 bg-gray-800 border border-gray-700 rounded-lg text-white hover:bg-gray-700 transition flex items-center gap-2"
+            >
+              <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.707A1 1 0 013 7V4z" />
+              </svg>
+              Filters
+            </button>
+          </div>
+
+          {/* Filter Options */}
+          {showFilters && (
+            <div className="space-y-4">
+              {/* Filter Dropdowns */}
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                {/* Game Type Filter */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-300 mb-2">
+                    Game Type
+                  </label>
+                  <select
+                    value={selectedGame}
+                    onChange={(e) => setSelectedGame(e.target.value)}
+                    className="w-full px-4 py-2 bg-gray-800 border border-gray-700 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                  >
+                    <option value="">All Games</option>
+                    {SUPPORTED_GAMES.map((game) => (
+                      <option key={game.type} value={game.name}>
+                        {game.name}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+
+                {/* Region Filter */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-300 mb-2">
+                    Region
+                  </label>
+                  <select
+                    value={selectedRegion}
+                    onChange={(e) => setSelectedRegion(e.target.value)}
+                    className="w-full px-4 py-2 bg-gray-800 border border-gray-700 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                  >
+                    <option value="">All Regions</option>
+                    {REGIONS.map((region) => (
+                      <option key={region} value={region}>
+                        {region}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+
+                {/* Sort By Filter */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-300 mb-2">
+                    Sort By
+                  </label>
+                  <select
+                    value={sortBy}
+                    onChange={(e) => setSortBy(e.target.value)}
+                    className="w-full px-4 py-2 bg-gray-800 border border-gray-700 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                  >
+                    <option value="newest">Newest First</option>
+                    <option value="oldest">Oldest First</option>
+                    <option value="most_pledged">Most Pledged</option>
+                    <option value="least_pledged">Least Pledged</option>
+                    <option value="most_pledgers">Most Pledgers</option>
+                    <option value="least_pledgers">Least Pledgers</option>
+                    <option value="name_asc">Name A-Z</option>
+                    <option value="name_desc">Name Z-A</option>
+                  </select>
+                </div>
+              </div>
+
+              {/* Game-specific Tags */}
+              {currentGameTags.length > 0 && (
+                <div>
+                  <h3 className="text-lg font-medium text-white mb-3">
+                    {selectedGame ? `${selectedGame} Tags` : "Popular Tags"}
+                  </h3>
+                  <div className="flex flex-wrap gap-2">
+                    {currentGameTags.map((tag) => (
+                      <button
+                        key={tag}
+                        onClick={() => toggleTag(tag)}
+                        className={`px-3 py-1 rounded-full text-sm font-medium transition ${
+                          selectedTags.includes(tag)
+                            ? "bg-indigo-600 text-white"
+                            : "bg-gray-800 text-gray-300 hover:bg-gray-700 border border-gray-600"
+                        }`}
+                      >
+                        {tag}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              )}
             </div>
           )}
 
-          {/* Clear Filters */}
-          {hasActiveFilters && (
-            <div className="flex items-center justify-between pt-4 border-t border-gray-200">
-              <p className="text-sm text-gray-600">
-                Showing {filteredServers.length} of {servers.length} servers
-              </p>
+          {/* Status Bar */}
+          <div className="flex items-center justify-between pt-4 mt-4 border-t border-gray-700">
+            <div className="flex items-center gap-4 text-sm text-gray-400">
+              <span>Showing {filteredServers.length} of {servers.length} servers</span>
+              {selectedGame && (
+                <span className="flex items-center gap-1">
+                  <span className="w-2 h-2 bg-green-500 rounded-full"></span>
+                  Filtered by {selectedGame}
+                </span>
+              )}
+              {sortBy !== "newest" && (
+                <span className="text-white">
+                  Sorted by {sortBy.replace("_", " ").replace(/\b\w/g, l => l.toUpperCase())}
+                </span>
+              )}
+            </div>
+            {hasActiveFilters && (
               <button
                 onClick={clearFilters}
-                className="text-sm text-indigo-600 hover:text-indigo-700 font-medium"
+                className="text-sm text-indigo-400 hover:text-indigo-300 font-medium transition"
               >
                 Clear all filters
               </button>
-            </div>
-          )}
+            )}
+          </div>
         </div>
 
         {/* Server List */}
