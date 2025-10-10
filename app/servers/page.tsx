@@ -29,6 +29,9 @@ interface Server {
   totalPledged: number
   totalOptimized: number
   pledgerCount: number
+  _count?: {
+    favorites: number
+  }
 }
 
 export default function ServersPage() {
