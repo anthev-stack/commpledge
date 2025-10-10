@@ -26,6 +26,11 @@ interface Server {
     stripeAccountId: string
     stripeOnboardingComplete: boolean
   }
+  community?: {
+    id: string
+    name: string
+    imageUrl: string | null
+  } | null
   pledges: Array<{
     id: string
     amount: number
@@ -229,6 +234,37 @@ export default function ServerPage({ params }: { params: Promise<{ id: string }>
                 </div>
               )}
             </div>
+
+            {/* Linked Community */}
+            {server.community && (
+              <div className="bg-white rounded-lg shadow-md p-6">
+                <h2 className="text-xl font-bold text-gray-900 mb-4">Part of Community</h2>
+                <Link
+                  href={`/communities/${server.community.id}`}
+                  className="flex items-center space-x-4 p-4 border border-gray-200 rounded-lg hover:border-indigo-500 hover:shadow-md transition"
+                >
+                  {server.community.imageUrl ? (
+                    <Image
+                      src={server.community.imageUrl}
+                      alt={server.community.name}
+                      width={60}
+                      height={60}
+                      className="rounded-lg"
+                    />
+                  ) : (
+                    <div className="w-15 h-15 bg-gradient-to-br from-purple-500 to-pink-600 rounded-lg flex items-center justify-center flex-shrink-0">
+                      <span className="text-xl text-white font-bold">
+                        {server.community.name[0]?.toUpperCase()}
+                      </span>
+                    </div>
+                  )}
+                  <div className="flex-1">
+                    <h3 className="text-lg font-bold text-gray-900">{server.community.name}</h3>
+                    <p className="text-sm text-gray-600">View community profile →</p>
+                  </div>
+                </Link>
+              </div>
+            )}
 
             {/* Active Pledgers */}
             <div className="bg-white rounded-lg shadow-md p-6">

@@ -125,6 +125,7 @@ export async function POST(request: Request) {
         imageUrl,
         region: body.region || null,
         tags: body.tags || [],
+        communityId: body.communityId || null,
         ownerId: session.user.id,
       },
       include: {

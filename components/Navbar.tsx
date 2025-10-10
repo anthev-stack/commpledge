@@ -59,6 +59,12 @@ export default function Navbar() {
               >
                 Servers
               </Link>
+              <Link
+                href="/communities"
+                className="text-gray-700 hover:text-indigo-600 px-3 py-2 rounded-md text-sm font-medium transition"
+              >
+                Communities
+              </Link>
               {session && (
                 <>
                   <Link
@@ -170,6 +176,13 @@ export default function Navbar() {
                 className="text-gray-700 hover:text-indigo-600 hover:bg-gray-50 px-3 py-2 rounded-md text-base font-medium transition"
               >
                 Servers
+              </Link>
+              <Link
+                href="/communities"
+                onClick={() => setMobileMenuOpen(false)}
+                className="text-gray-700 hover:text-indigo-600 hover:bg-gray-50 px-3 py-2 rounded-md text-base font-medium transition"
+              >
+                Communities
               </Link>
               {session && (
                 <>

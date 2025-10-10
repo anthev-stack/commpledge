@@ -22,6 +22,13 @@ export async function GET(
             stripeOnboardingComplete: true,
           },
         },
+        community: {
+          select: {
+            id: true,
+            name: true,
+            imageUrl: true,
+          },
+        },
         pledges: {
           where: {
             status: "ACTIVE",
@@ -143,6 +150,7 @@ export async function PATCH(
         imageUrl: body.imageUrl,
         region: body.region !== undefined ? body.region : undefined,
         tags: body.tags !== undefined ? body.tags : undefined,
+        communityId: body.communityId !== undefined ? (body.communityId || null) : undefined,
       },
     })
 

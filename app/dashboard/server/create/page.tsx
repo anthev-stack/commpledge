@@ -7,6 +7,11 @@ import Link from "next/link"
 import { SUPPORTED_GAMES } from "@/lib/supported-games"
 import { REGIONS, getTagsForGame } from "@/lib/game-tags"
 
+interface Community {
+  id: string
+  name: string
+}
+
 export default function CreateServerPage() {
   const router = useRouter()
   const { data: session } = useSession()
@@ -14,6 +19,7 @@ export default function CreateServerPage() {
   const [error, setError] = useState("")
   const [stripeStatus, setStripeStatus] = useState<any>(null)
   const [checkingStripe, setCheckingStripe] = useState(true)
+  const [communities, setCommunities] = useState<Community[]>([])
 
   const [formData, setFormData] = useState({
     name: "",
@@ -26,10 +32,12 @@ export default function CreateServerPage() {
     imageUrl: "",
     region: "",
     tags: [] as string[],
+    communityId: "",
   })
 
   useEffect(() => {
     checkStripeConnection()
+    fetchCommunities()
   }, [])
 
   const checkStripeConnection = async () => {
@@ -45,6 +53,18 @@ export default function CreateServerPage() {
       setError("Failed to check Stripe status")
     } finally {
       setCheckingStripe(false)
+    }
+  }
+
+  const fetchCommunities = async () => {
+    try {
+      const response = await fetch("/api/user/communities")
+      if (response.ok) {
+        const data = await response.json()
+        setCommunities(data)
+      }
+    } catch (error) {
+      console.error("Failed to fetch communities:", error)
     }
   }
 
@@ -314,6 +334,32 @@ export default function CreateServerPage() {
                 Helps players find servers close to them
               </p>
             </div>
+
+            {/* Community Link */}
+            {communities.length > 0 && (
+              <div>
+                <label htmlFor="communityId" className="block text-sm font-medium text-gray-700 mb-1">
+                  Link to Community (Optional)
+                </label>
+                <select
+                  id="communityId"
+                  name="communityId"
+                  value={formData.communityId}
+                  onChange={handleChange}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                >
+                  <option value="">No community</option>
+                  {communities.map((community) => (
+                    <option key={community.id} value={community.id}>
+                      {community.name}
+                    </option>
+                  ))}
+                </select>
+                <p className="text-xs text-gray-500 mt-1">
+                  Link this server to your community profile to help promote it
+                </p>
+              </div>
+            )}
 
             {/* Server IP and Port */}
             <div>

@@ -28,13 +28,16 @@ export default function EditServerPage({ params }: { params: Promise<{ id: strin
     imageUrl: "",
     region: "",
     tags: [] as string[],
+    communityId: "",
   })
+  const [communities, setCommunities] = useState<any[]>([])
 
   useEffect(() => {
     params.then(p => {
       setServerId(p.id)
       fetchServer(p.id)
     })
+    fetchCommunities()
   }, [])
 
   const fetchServer = async (id: string) => {
@@ -62,6 +65,7 @@ export default function EditServerPage({ params }: { params: Promise<{ id: strin
           imageUrl: data.imageUrl || "",
           region: data.region || "",
           tags: data.tags || [],
+          communityId: data.communityId || "",
         })
       } else {
         setError("Server not found")
@@ -70,6 +74,18 @@ export default function EditServerPage({ params }: { params: Promise<{ id: strin
     } catch (error) {
       console.error("Failed to fetch server:", error)
       setError("Failed to load server")
+    }
+  }
+
+  const fetchCommunities = async () => {
+    try {
+      const response = await fetch("/api/user/communities")
+      if (response.ok) {
+        const data = await response.json()
+        setCommunities(data)
+      }
+    } catch (error) {
+      console.error("Failed to fetch communities:", error)
     }
   }
 
@@ -292,6 +308,32 @@ export default function EditServerPage({ params }: { params: Promise<{ id: strin
                 ))}
               </select>
             </div>
+
+            {/* Community Link */}
+            {communities.length > 0 && (
+              <div>
+                <label htmlFor="communityId" className="block text-sm font-medium text-gray-700 mb-1">
+                  Link to Community (Optional)
+                </label>
+                <select
+                  id="communityId"
+                  name="communityId"
+                  value={formData.communityId}
+                  onChange={handleChange}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                >
+                  <option value="">No community</option>
+                  {communities.map((community: any) => (
+                    <option key={community.id} value={community.id}>
+                      {community.name}
+                    </option>
+                  ))}
+                </select>
+                <p className="text-xs text-gray-500 mt-1">
+                  Link this server to your community profile to help promote it
+                </p>
+              </div>
+            )}
 
             {/* Server IP and Port */}
             <div>
