@@ -22,15 +22,35 @@ export async function GET() {
         _count: {
           select: {
             pledges: true,
+            favorites: true,
           },
         },
+        boosts: {
+          where: {
+            isActive: true,
+            expiresAt: {
+              gt: new Date()
+            }
+          },
+          orderBy: {
+            createdAt: 'desc'
+          },
+          take: 1
+        }
       },
       orderBy: {
         createdAt: "desc",
       },
     })
 
-    return NextResponse.json(servers)
+    // Transform servers to include boost information
+    const serversWithBoostInfo = servers.map(server => ({
+      ...server,
+      isBoosted: server.boosts.length > 0,
+      boostExpiresAt: server.boosts[0]?.expiresAt || null,
+    }))
+
+    return NextResponse.json(serversWithBoostInfo)
   } catch (error) {
     console.error("Error fetching user servers:", error)
     return NextResponse.json(
