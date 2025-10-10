@@ -99,9 +99,14 @@ export default function DashboardPage() {
       if (response.ok) {
         const data = await response.json()
         setActivities(data)
+      } else {
+        const error = await response.json()
+        console.error("Failed to fetch activity:", error)
+        setActivities([])
       }
     } catch (error) {
       console.error("Failed to fetch activity:", error)
+      setActivities([])
     } finally {
       setLoadingActivity(false)
     }
