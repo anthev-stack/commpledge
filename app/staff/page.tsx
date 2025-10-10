@@ -623,7 +623,7 @@ export default function StaffDashboardPage() {
                   ))
                 )}
               </div>
-            ) : (
+            ) : tab === "tickets" ? (
               /* Ticket Management */
               <div className="space-y-4">
                 {filteredTickets.length === 0 ? (
@@ -840,7 +840,7 @@ export default function StaffDashboardPage() {
                   </div>
                 </div>
               </div>
-            )}
+            ) : null}
           </div>
         </div>
       </div>
