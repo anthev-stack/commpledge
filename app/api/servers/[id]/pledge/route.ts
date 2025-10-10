@@ -199,10 +199,10 @@ export async function POST(
         userId: session.user.id,
         serverId: id,
         action: "pledge_created",
-        details: JSON.stringify({
+        metadata: {
           amount: pledgeAmount,
           optimizedAmount: preview.estimatedPayment,
-        }),
+        },
       },
     })
 
@@ -294,9 +294,9 @@ export async function DELETE(
         userId: session.user.id,
         serverId: id,
         action: "pledge_cancelled",
-        details: JSON.stringify({
+        metadata: {
           amount: pledge.amount,
-        }),
+        },
       },
     })
 

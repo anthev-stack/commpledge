@@ -137,10 +137,10 @@ export async function GET(request: Request) {
                   userId: pledge.user.id,
                   serverId: server.id,
                   action: "payment_success",
-                  details: JSON.stringify({
+                  metadata: {
                     amount: chargeAmount,
                     pledgeId: pledge.id,
-                  }),
+                  },
                 },
               })
             }
@@ -180,11 +180,11 @@ export async function GET(request: Request) {
                 userId: pledge.user.id,
                 serverId: server.id,
                 action: "payment_failed",
-                details: JSON.stringify({
+                metadata: {
                   amount: chargeAmount,
                   pledgeId: pledge.id,
                   error: error.message,
-                }),
+                },
               },
             })
           }
