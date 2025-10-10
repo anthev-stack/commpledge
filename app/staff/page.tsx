@@ -425,23 +425,37 @@ export default function StaffDashboardPage() {
               >
                 Ticket Management
               </button>
+              {userRole === "ADMIN" && (
+                <button
+                  onClick={() => setTab("web")}
+                  className={`flex-1 px-6 py-4 text-sm font-medium transition ${
+                    tab === "web"
+                      ? "text-indigo-600 border-b-2 border-indigo-600"
+                      : "text-gray-600 hover:text-gray-900"
+                  }`}
+                >
+                  Web Management
+                </button>
+              )}
             </div>
           </div>
 
           {/* Search Bar */}
-          <div className="p-6 border-b border-gray-200">
-            <input
-              type="text"
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              placeholder={
-                tab === "users" ? "Search users by name or email..." :
-                tab === "servers" ? "Search servers by name or game..." :
-                "Search tickets by title or user..."
-              }
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
-            />
-          </div>
+          {tab !== "web" && (
+            <div className="p-6 border-b border-gray-200">
+              <input
+                type="text"
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                placeholder={
+                  tab === "users" ? "Search users by name or email..." :
+                  tab === "servers" ? "Search servers by name or game..." :
+                  "Search tickets by title or user..."
+                }
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+              />
+            </div>
+          )}
 
           {/* Ticket Filters */}
           {tab === "tickets" && (
@@ -662,6 +676,169 @@ export default function StaffDashboardPage() {
                     </div>
                   ))
                 )}
+              </div>
+            ) : tab === "web" ? (
+              /* Web Management */
+              <div className="max-w-4xl mx-auto">
+                <div className="mb-8">
+                  <h2 className="text-2xl font-bold text-gray-900 mb-2">Theme Management</h2>
+                  <p className="text-gray-600">Change the global theme for all users. This will affect the entire website.</p>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                  {/* Default Theme */}
+                  <div
+                    onClick={() => handleThemeChange("default")}
+                    className={`relative border-2 rounded-lg p-6 cursor-pointer transition-all hover:shadow-lg ${
+                      currentTheme === "default"
+                        ? "border-indigo-600 ring-2 ring-indigo-200"
+                        : "border-gray-200 hover:border-indigo-300"
+                    }`}
+                  >
+                    {currentTheme === "default" && (
+                      <div className="absolute top-3 right-3 bg-indigo-600 text-white rounded-full p-1">
+                        <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                          <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                        </svg>
+                      </div>
+                    )}
+                    <div className="text-4xl mb-3">🎨</div>
+                    <h3 className="text-lg font-bold text-gray-900 mb-2">Default</h3>
+                    <p className="text-sm text-gray-600 mb-4">Clean and professional design</p>
+                    <div className="flex space-x-2">
+                      <div className="w-8 h-8 rounded-full bg-indigo-600"></div>
+                      <div className="w-8 h-8 rounded-full bg-purple-600"></div>
+                      <div className="w-8 h-8 rounded-full bg-cyan-500"></div>
+                    </div>
+                  </div>
+
+                  {/* Halloween Theme */}
+                  <div
+                    onClick={() => handleThemeChange("halloween")}
+                    className={`relative border-2 rounded-lg p-6 cursor-pointer transition-all hover:shadow-lg ${
+                      currentTheme === "halloween"
+                        ? "border-orange-600 ring-2 ring-orange-200"
+                        : "border-gray-200 hover:border-orange-300"
+                    }`}
+                  >
+                    {currentTheme === "halloween" && (
+                      <div className="absolute top-3 right-3 bg-orange-600 text-white rounded-full p-1">
+                        <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                          <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                        </svg>
+                      </div>
+                    )}
+                    <div className="text-4xl mb-3">🎃</div>
+                    <h3 className="text-lg font-bold text-gray-900 mb-2">Halloween</h3>
+                    <p className="text-sm text-gray-600 mb-4">Spooky and festive orange and black theme</p>
+                    <div className="flex space-x-2">
+                      <div className="w-8 h-8 rounded-full bg-orange-600"></div>
+                      <div className="w-8 h-8 rounded-full bg-gray-800"></div>
+                      <div className="w-8 h-8 rounded-full bg-purple-500"></div>
+                    </div>
+                  </div>
+
+                  {/* Christmas Theme */}
+                  <div
+                    onClick={() => handleThemeChange("christmas")}
+                    className={`relative border-2 rounded-lg p-6 cursor-pointer transition-all hover:shadow-lg ${
+                      currentTheme === "christmas"
+                        ? "border-red-600 ring-2 ring-red-200"
+                        : "border-gray-200 hover:border-red-300"
+                    }`}
+                  >
+                    {currentTheme === "christmas" && (
+                      <div className="absolute top-3 right-3 bg-red-600 text-white rounded-full p-1">
+                        <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                          <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                        </svg>
+                      </div>
+                    )}
+                    <div className="text-4xl mb-3">🎄</div>
+                    <h3 className="text-lg font-bold text-gray-900 mb-2">Christmas</h3>
+                    <p className="text-sm text-gray-600 mb-4">Festive red and green holiday theme</p>
+                    <div className="flex space-x-2">
+                      <div className="w-8 h-8 rounded-full bg-red-600"></div>
+                      <div className="w-8 h-8 rounded-full bg-green-600"></div>
+                      <div className="w-8 h-8 rounded-full bg-yellow-400"></div>
+                    </div>
+                  </div>
+
+                  {/* Birthday Theme */}
+                  <div
+                    onClick={() => handleThemeChange("birthday")}
+                    className={`relative border-2 rounded-lg p-6 cursor-pointer transition-all hover:shadow-lg ${
+                      currentTheme === "birthday"
+                        ? "border-pink-500 ring-2 ring-pink-200"
+                        : "border-gray-200 hover:border-pink-300"
+                    }`}
+                  >
+                    {currentTheme === "birthday" && (
+                      <div className="absolute top-3 right-3 bg-pink-500 text-white rounded-full p-1">
+                        <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                          <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                        </svg>
+                      </div>
+                    )}
+                    <div className="text-4xl mb-3">🎂</div>
+                    <h3 className="text-lg font-bold text-gray-900 mb-2">Birthday</h3>
+                    <p className="text-sm text-gray-600 mb-4">Colorful and celebratory theme</p>
+                    <div className="flex space-x-2">
+                      <div className="w-8 h-8 rounded-full bg-pink-500"></div>
+                      <div className="w-8 h-8 rounded-full bg-violet-500"></div>
+                      <div className="w-8 h-8 rounded-full bg-amber-500"></div>
+                    </div>
+                  </div>
+
+                  {/* New Year Theme */}
+                  <div
+                    onClick={() => handleThemeChange("newyear")}
+                    className={`relative border-2 rounded-lg p-6 cursor-pointer transition-all hover:shadow-lg ${
+                      currentTheme === "newyear"
+                        ? "border-blue-800 ring-2 ring-blue-200"
+                        : "border-gray-200 hover:border-blue-300"
+                    }`}
+                  >
+                    {currentTheme === "newyear" && (
+                      <div className="absolute top-3 right-3 bg-blue-800 text-white rounded-full p-1">
+                        <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                          <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                        </svg>
+                      </div>
+                    )}
+                    <div className="text-4xl mb-3">🎆</div>
+                    <h3 className="text-lg font-bold text-gray-900 mb-2">New Year</h3>
+                    <p className="text-sm text-gray-600 mb-4">Elegant gold and blue celebration theme</p>
+                    <div className="flex space-x-2">
+                      <div className="w-8 h-8 rounded-full bg-blue-800"></div>
+                      <div className="w-8 h-8 rounded-full bg-cyan-600"></div>
+                      <div className="w-8 h-8 rounded-full bg-yellow-400"></div>
+                    </div>
+                  </div>
+                </div>
+
+                {savingTheme && (
+                  <div className="mt-6 text-center">
+                    <div className="inline-flex items-center space-x-2 text-indigo-600">
+                      <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-indigo-600"></div>
+                      <span>Updating theme...</span>
+                    </div>
+                  </div>
+                )}
+
+                <div className="mt-8 p-4 bg-blue-50 border border-blue-200 rounded-lg">
+                  <div className="flex items-start">
+                    <svg className="w-5 h-5 text-blue-600 mt-0.5 mr-3" fill="currentColor" viewBox="0 0 20 20">
+                      <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clipRule="evenodd" />
+                    </svg>
+                    <div>
+                      <h4 className="text-sm font-semibold text-blue-900 mb-1">Theme Change Notice</h4>
+                      <p className="text-sm text-blue-800">
+                        Changing the theme will affect all users immediately. Users will see the new theme on their next page load or refresh.
+                      </p>
+                    </div>
+                  </div>
+                </div>
               </div>
             )}
           </div>
