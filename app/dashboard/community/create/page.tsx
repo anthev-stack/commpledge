@@ -302,13 +302,13 @@ export default function CreateCommunityPage() {
                   <div className="grid grid-cols-2 md:grid-cols-3 gap-2 max-h-60 overflow-y-auto border border-gray-300 rounded-lg p-3">
                     {SUPPORTED_GAMES.map((game) => (
                       <label
-                        key={game.id}
+                        key={game.type}
                         className="flex items-center space-x-2 cursor-pointer hover:bg-gray-50 p-2 rounded"
                       >
                         <input
                           type="checkbox"
-                          checked={formData.gameTypes.includes(game.id)}
-                          onChange={() => handleGameTypeToggle(game.id)}
+                          checked={formData.gameTypes.includes(game.type)}
+                          onChange={() => handleGameTypeToggle(game.type)}
                           className="rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
                         />
                         <span className="text-sm text-gray-700">{game.name}</span>

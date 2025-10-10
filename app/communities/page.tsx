@@ -161,7 +161,7 @@ export default function CommunitiesPage() {
               >
                 <option value="">All Games</option>
                 {SUPPORTED_GAMES.map((game) => (
-                  <option key={game.id} value={game.id}>
+                  <option key={game.type} value={game.type}>
                     {game.name}
                   </option>
                 ))}
