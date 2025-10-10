@@ -3,7 +3,8 @@
 import { useState, useEffect } from "react"
 import Link from "next/link"
 import Image from "next/image"
-import { REGIONS, COMMUNITY_TAGS } from "@/lib/game-tags"
+import { REGIONS } from "@/lib/game-tags"
+import { COMMUNITY_TAGS } from "@/lib/community-tags"
 import { SUPPORTED_GAMES } from "@/lib/supported-games"
 
 interface Community {
