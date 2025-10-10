@@ -3,6 +3,15 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
+  
+  /* Theme colors - defaults */
+  --color-primary: #4f46e5;
+  --color-secondary: #7c3aed;
+  --color-accent: #06b6d4;
+  --color-background: #f9fafb;
+  --color-surface: #ffffff;
+  --color-text: #111827;
+  --color-text-secondary: #6b7280;
 }
 
 @theme inline {
@@ -12,15 +21,100 @@
   --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
-
 body {
   background: var(--background);
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
+}
+
+/* Halloween Theme */
+body.theme-halloween {
+  background-color: #1c1917 !important;
+  color: #fafaf9 !important;
+}
+
+body.theme-halloween .bg-gray-50 {
+  background-color: #292524 !important;
+}
+
+body.theme-halloween .bg-white {
+  background-color: #292524 !important;
+}
+
+body.theme-halloween .text-gray-900,
+body.theme-halloween .text-gray-800 {
+  color: #fafaf9 !important;
+}
+
+body.theme-halloween .text-gray-600,
+body.theme-halloween .text-gray-700 {
+  color: #a8a29e !important;
+}
+
+body.theme-halloween .bg-indigo-600 {
+  background-color: #ea580c !important;
+}
+
+body.theme-halloween .hover\:bg-indigo-700:hover {
+  background-color: #c2410c !important;
+}
+
+body.theme-halloween .text-indigo-600 {
+  color: #fb923c !important;
+}
+
+body.theme-halloween .border-gray-200,
+body.theme-halloween .border-gray-300 {
+  border-color: #44403c !important;
+}
+
+/* Christmas Theme */
+body.theme-christmas .bg-indigo-600 {
+  background-color: #dc2626 !important;
+}
+
+body.theme-christmas .hover\:bg-indigo-700:hover {
+  background-color: #b91c1c !important;
+}
+
+body.theme-christmas .text-indigo-600 {
+  color: #dc2626 !important;
+}
+
+body.theme-christmas .bg-gray-50 {
+  background-color: #f0fdf4 !important;
+}
+
+/* Birthday Theme */
+body.theme-birthday .bg-indigo-600 {
+  background-color: #ec4899 !important;
+}
+
+body.theme-birthday .hover\:bg-indigo-700:hover {
+  background-color: #db2777 !important;
+}
+
+body.theme-birthday .text-indigo-600 {
+  color: #ec4899 !important;
+}
+
+body.theme-birthday .bg-gray-50 {
+  background-color: #fdf4ff !important;
+}
+
+/* New Year Theme */
+body.theme-newyear .bg-indigo-600 {
+  background-color: #1e40af !important;
+}
+
+body.theme-newyear .hover\:bg-indigo-700:hover {
+  background-color: #1e3a8a !important;
+}
+
+body.theme-newyear .text-indigo-600 {
+  color: #0891b2 !important;
+}
+
+body.theme-newyear .bg-gray-50 {
+  background-color: #eff6ff !important;
 }
