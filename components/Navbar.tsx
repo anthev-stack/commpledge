@@ -12,7 +12,7 @@ function StaffLink() {
     fetch("/api/user/me")
       .then(res => res.json())
       .then(data => {
-        if (data.role === "admin" || data.role === "moderator") {
+        if (data.role === "ADMIN" || data.role === "MODERATOR") {
           setIsStaff(true)
         }
       })

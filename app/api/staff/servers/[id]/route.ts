@@ -23,7 +23,7 @@ export async function DELETE(
       select: { role: true },
     })
 
-    if (staff?.role !== "admin" && staff?.role !== "moderator") {
+    if (staff?.role !== "ADMIN" && staff?.role !== "MODERATOR") {
       return NextResponse.json(
         { error: "Forbidden - Staff access only" },
         { status: 403 }

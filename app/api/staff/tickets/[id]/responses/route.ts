@@ -23,7 +23,7 @@ export async function POST(
       select: { role: true },
     })
 
-    if (user?.role !== "admin" && user?.role !== "moderator") {
+    if (user?.role !== "ADMIN" && user?.role !== "MODERATOR") {
       return NextResponse.json(
         { error: "Forbidden - Staff access only" },
         { status: 403 }

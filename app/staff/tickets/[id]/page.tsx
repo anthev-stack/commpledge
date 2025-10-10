@@ -88,7 +88,7 @@ export default function StaffTicketPage({ params }: { params: Promise<{ id: stri
       const response = await fetch("/api/user/me")
       if (response.ok) {
         const data = await response.json()
-        if (data.role !== "admin" && data.role !== "moderator") {
+        if (data.role !== "ADMIN" && data.role !== "MODERATOR") {
           router.push("/dashboard")
           return
         }

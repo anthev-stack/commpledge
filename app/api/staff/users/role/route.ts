@@ -20,7 +20,7 @@ export async function PATCH(request: Request) {
       select: { role: true },
     })
 
-    if (staff?.role !== "admin" && staff?.role !== "moderator") {
+    if (staff?.role !== "ADMIN" && staff?.role !== "MODERATOR") {
       return NextResponse.json(
         { error: "Forbidden - Staff access only" },
         { status: 403 }
@@ -47,13 +47,13 @@ export async function PATCH(request: Request) {
     }
 
     // Prevent moderators from promoting to admin or modifying other admins/moderators
-    if (staff.role === "moderator") {
+    if (staff.role === "MODERATOR") {
       const targetUser = await prisma.user.findUnique({
         where: { id: userId },
         select: { role: true },
       })
 
-      if (role === "admin" || targetUser?.role === "admin" || targetUser?.role === "moderator") {
+      if (role === "ADMIN" || targetUser?.role === "ADMIN" || targetUser?.role === "MODERATOR") {
         return NextResponse.json(
           { error: "Moderators cannot modify admin or moderator accounts" },
           { status: 403 }

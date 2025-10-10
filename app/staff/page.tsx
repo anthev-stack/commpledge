@@ -85,7 +85,7 @@ export default function StaffDashboardPage() {
       const response = await fetch("/api/user/me")
       if (response.ok) {
         const data = await response.json()
-        if (data.role !== "admin" && data.role !== "moderator") {
+        if (data.role !== "ADMIN" && data.role !== "MODERATOR") {
           router.push("/dashboard")
           return
         }
@@ -466,10 +466,10 @@ export default function StaffDashboardPage() {
                             <div className="flex items-center space-x-2">
                               <h3 className="font-semibold text-gray-900">{user.name || "Unnamed"}</h3>
                               <span className={`px-2 py-1 text-xs rounded-full ${
-                                user.role === "admin" ? "bg-purple-100 text-purple-700" :
-                                user.role === "moderator" ? "bg-blue-100 text-blue-700" :
-                                user.role === "suspended" ? "bg-orange-100 text-orange-700" :
-                                user.role === "banned" ? "bg-red-100 text-red-700" :
+                                user.role === "ADMIN" ? "bg-purple-100 text-purple-700" :
+                                user.role === "MODERATOR" ? "bg-blue-100 text-blue-700" :
+                                user.role === "SUSPENDED" ? "bg-orange-100 text-orange-700" :
+                                user.role === "BANNED" ? "bg-red-100 text-red-700" :
                                 "bg-gray-100 text-gray-700"
                               }`}>
                                 {user.role}
