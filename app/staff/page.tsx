@@ -74,6 +74,7 @@ export default function StaffDashboardPage() {
   })
   const [currentTheme, setCurrentTheme] = useState("default")
   const [savingTheme, setSavingTheme] = useState(false)
+  const [userRole, setUserRole] = useState<string | null>(null)
 
   useEffect(() => {
     if (session?.user) {
@@ -88,6 +89,7 @@ export default function StaffDashboardPage() {
       if (response.ok) {
         const data = await response.json()
         console.log("User role data:", data)
+        setUserRole(data.role) // Set the user role to state
         if (data.role !== "ADMIN" && data.role !== "MODERATOR") {
           console.log("User is not staff, redirecting to dashboard")
           router.push("/dashboard")
