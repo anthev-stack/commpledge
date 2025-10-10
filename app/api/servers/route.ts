@@ -23,10 +23,29 @@ export async function GET() {
             pledges: true,
           },
         },
+        boosts: {
+          where: {
+            isActive: true,
+            expiresAt: {
+              gt: new Date()
+            }
+          },
+          orderBy: {
+            createdAt: 'desc'
+          },
+          take: 1
+        }
       },
-      orderBy: {
-        createdAt: "desc",
-      },
+      orderBy: [
+        {
+          boosts: {
+            _count: 'desc'
+          }
+        },
+        {
+          createdAt: "desc"
+        }
+      ],
     })
 
     // Calculate pledge stats for each server
@@ -48,6 +67,8 @@ export async function GET() {
           totalPledged: pledgeStats._sum.amount || 0,
           totalOptimized: pledgeStats._sum.optimizedAmount || 0,
           pledgerCount: server._count.pledges,
+          isBoosted: server.boosts.length > 0,
+          boostExpiresAt: server.boosts[0]?.expiresAt || null,
         }
       })
     )

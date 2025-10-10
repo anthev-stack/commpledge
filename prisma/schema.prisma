@@ -89,6 +89,8 @@ model User {
   tickets               Ticket[]
   ticketResponses       TicketResponse[]
   assignedTickets       Ticket[] @relation("AssignedTickets")
+  serverBoosts          ServerBoost[]
+  favorites             UserFavorite[]
 }
 
 model VerificationToken {
@@ -123,6 +125,8 @@ model Server {
   pledges        Pledge[]
   withdrawals    Withdrawal[]
   activityLogs   ActivityLog[]
+  boosts         ServerBoost[]
+  favorites      UserFavorite[]
   
   createdAt      DateTime @default(now())
   updatedAt      DateTime @updatedAt
@@ -270,10 +274,52 @@ model Community {
   owner       User     @relation(fields: [ownerId], references: [id], onDelete: Cascade)
   
   servers     Server[] // Servers linked to this community
+  favorites   UserFavorite[]
   
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
   
   @@index([ownerId])
   @@index([isActive])
+}
+
+model ServerBoost {
+  id          String   @id @default(cuid())
+  serverId    String
+  server      Server   @relation(fields: [serverId], references: [id], onDelete: Cascade)
+  
+  userId      String
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  cost        Float    // $3.00 boost cost
+  startsAt    DateTime @default(now())
+  expiresAt   DateTime // startsAt + 24 hours
+  isActive    Boolean  @default(true)
+  
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  @@index([serverId])
+  @@index([userId])
+  @@index([expiresAt])
+  @@index([isActive])
+}
+
+model UserFavorite {
+  id          String   @id @default(cuid())
+  userId      String
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  // Either server or community (not both)
+  serverId    String?
+  server      Server?  @relation(fields: [serverId], references: [id], onDelete: Cascade)
+  
+  communityId String?
+  community   Community? @relation(fields: [communityId], references: [id], onDelete: Cascade)
+  
+  createdAt   DateTime @default(now())
+  
+  @@unique([userId, serverId])
+  @@unique([userId, communityId])
+  @@index([userId])
 }

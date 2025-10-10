@@ -19,6 +19,8 @@ interface Server {
   region: string | null
   tags: string[]
   createdAt: string
+  isBoosted: boolean
+  boostExpiresAt: string | null
   owner: {
     id: string
     name: string
@@ -39,13 +41,60 @@ export default function ServersPage() {
   const [selectedTags, setSelectedTags] = useState<string[]>([])
   const [sortBy, setSortBy] = useState("newest")
   const [showFilters, setShowFilters] = useState(false)
+  const [favorites, setFavorites] = useState<Set<string>>(new Set())
   
   // Get all unique tags from current filtered servers
   const [availableTags, setAvailableTags] = useState<string[]>([])
 
   useEffect(() => {
     fetchServers()
+    fetchFavorites()
   }, [])
+
+  const fetchFavorites = async () => {
+    try {
+      const response = await fetch("/api/favorites?type=server")
+      if (response.ok) {
+        const data = await response.json()
+        const favoriteIds = new Set(data.favorites.map((fav: any) => fav.serverId).filter(Boolean))
+        setFavorites(favoriteIds)
+      }
+    } catch (error) {
+      console.error("Failed to fetch favorites:", error)
+    }
+  }
+
+  const toggleFavorite = async (serverId: string) => {
+    try {
+      const isFavorited = favorites.has(serverId)
+      
+      if (isFavorited) {
+        // Remove from favorites
+        const response = await fetch(`/api/favorites?serverId=${serverId}`, {
+          method: 'DELETE'
+        })
+        if (response.ok) {
+          setFavorites(prev => {
+            const newSet = new Set(prev)
+            newSet.delete(serverId)
+            return newSet
+          })
+        }
+      } else {
+        // Add to favorites
+        const response = await fetch("/api/favorites", {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ serverId })
+        })
+        if (response.ok) {
+          setFavorites(prev => new Set(prev).add(serverId))
+        }
+      }
+    } catch (error) {
+      console.error("Failed to toggle favorite:", error)
+    }
+  }
 
   useEffect(() => {
     filterServers()
@@ -353,12 +402,66 @@ export default function ServersPage() {
                         fill
                         className="object-cover"
                       />
+                      {/* Boost indicator */}
+                      {server.isBoosted && (
+                        <div className="absolute top-2 left-2 bg-yellow-500 text-white px-2 py-1 rounded-full text-xs font-semibold flex items-center gap-1">
+                          <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
+                            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                          </svg>
+                          BOOSTED
+                        </div>
+                      )}
+                      {/* Favorite button */}
+                      <button
+                        onClick={(e) => {
+                          e.preventDefault()
+                          e.stopPropagation()
+                          toggleFavorite(server.id)
+                        }}
+                        className="absolute top-2 right-2 p-2 bg-white/80 hover:bg-white rounded-full transition-colors"
+                      >
+                        <svg 
+                          className={`w-5 h-5 ${favorites.has(server.id) ? 'text-red-500 fill-current' : 'text-gray-400'}`}
+                          fill={favorites.has(server.id) ? 'currentColor' : 'none'}
+                          stroke="currentColor" 
+                          viewBox="0 0 24 24"
+                        >
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                        </svg>
+                      </button>
                     </div>
                   ) : (
-                    <div className="h-48 bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center">
+                    <div className="relative h-48 bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center">
                       <span className="text-6xl text-white font-bold">
                         {server.name[0]?.toUpperCase()}
                       </span>
+                      {/* Boost indicator */}
+                      {server.isBoosted && (
+                        <div className="absolute top-2 left-2 bg-yellow-500 text-white px-2 py-1 rounded-full text-xs font-semibold flex items-center gap-1">
+                          <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
+                            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                          </svg>
+                          BOOSTED
+                        </div>
+                      )}
+                      {/* Favorite button */}
+                      <button
+                        onClick={(e) => {
+                          e.preventDefault()
+                          e.stopPropagation()
+                          toggleFavorite(server.id)
+                        }}
+                        className="absolute top-2 right-2 p-2 bg-white/80 hover:bg-white rounded-full transition-colors"
+                      >
+                        <svg 
+                          className={`w-5 h-5 ${favorites.has(server.id) ? 'text-red-500 fill-current' : 'text-gray-400'}`}
+                          fill={favorites.has(server.id) ? 'currentColor' : 'none'}
+                          stroke="currentColor" 
+                          viewBox="0 0 24 24"
+                        >
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                        </svg>
+                      </button>
                     </div>
                   )}
 
