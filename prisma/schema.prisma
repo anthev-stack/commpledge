@@ -83,6 +83,7 @@ model User {
   accounts              Account[]
   sessions              Session[]
   servers               Server[]
+  communities           Community[]
   pledges               Pledge[]
   activityLogs          ActivityLog[]
   tickets               Ticket[]
@@ -116,6 +117,9 @@ model Server {
   ownerId        String
   owner          User     @relation(fields: [ownerId], references: [id], onDelete: Cascade)
   
+  communityId    String?
+  community      Community? @relation(fields: [communityId], references: [id], onDelete: SetNull)
+  
   pledges        Pledge[]
   withdrawals    Withdrawal[]
   activityLogs   ActivityLog[]
@@ -128,6 +132,7 @@ model Server {
   @@index([isActive])
   @@index([gameType])
   @@index([region])
+  @@index([communityId])
 }
 
 model Pledge {
@@ -236,4 +241,39 @@ model TicketResponse {
 
   @@index([ticketId])
   @@index([userId])
+}
+
+model Community {
+  id          String   @id @default(cuid())
+  name        String
+  description String?
+  about       String?  // Longer detailed about section
+  imageUrl    String?
+  bannerUrl   String?
+  
+  // Social links
+  discordUrl  String?
+  websiteUrl  String?
+  twitterUrl  String?
+  youtubeUrl  String?
+  
+  // Gaming information
+  gameTypes   String[] @default([]) // Games the community plays: ["Minecraft", "Rust", etc.]
+  region      String?  // Primary region: "North America", "Europe", "Asia", etc.
+  tags        String[] @default([]) // Community tags: ["Casual", "Competitive", "PvE", etc.]
+  
+  // Community stats
+  memberCount Int      @default(0) // Approximate member count
+  isActive    Boolean  @default(true)
+  
+  ownerId     String
+  owner       User     @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+  
+  servers     Server[] // Servers linked to this community
+  
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  @@index([ownerId])
+  @@index([isActive])
 }

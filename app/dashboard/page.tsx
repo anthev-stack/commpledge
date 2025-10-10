@@ -20,6 +20,19 @@ interface Server {
   }
 }
 
+interface Community {
+  id: string
+  name: string
+  description: string | null
+  imageUrl: string | null
+  gameTypes: string[]
+  memberCount: number
+  createdAt: string
+  _count: {
+    servers: number
+  }
+}
+
 interface UserStats {
   totalPledged: number
   activePledges: number
@@ -46,6 +59,7 @@ export default function DashboardPage() {
   const { data: session, status } = useSession()
   const router = useRouter()
   const [servers, setServers] = useState<Server[]>([])
+  const [communities, setCommunities] = useState<Community[]>([])
   const [stats, setStats] = useState<UserStats | null>(null)
   const [loading, setLoading] = useState(true)
   const [activityTab, setActivityTab] = useState<"user" | "server">("user")
@@ -55,6 +69,7 @@ export default function DashboardPage() {
   useEffect(() => {
     if (session?.user?.id) {
       fetchServers()
+      fetchCommunities()
       fetchStats()
       fetchActivity("user")
     }
@@ -77,6 +92,18 @@ export default function DashboardPage() {
       console.error("Failed to fetch servers:", error)
     } finally {
       setLoading(false)
+    }
+  }
+
+  const fetchCommunities = async () => {
+    try {
+      const response = await fetch("/api/user/communities")
+      if (response.ok) {
+        const data = await response.json()
+        setCommunities(data)
+      }
+    } catch (error) {
+      console.error("Failed to fetch communities:", error)
     }
   }
 
@@ -327,12 +354,20 @@ export default function DashboardPage() {
           </div>
         </div>
 
-        <div className="grid gap-6 md:grid-cols-2 mb-12">
+        <div className="grid gap-6 md:grid-cols-3 mb-12">
           {/* Create Server Card */}
           <Link href="/dashboard/server/create">
             <div className="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition cursor-pointer">
               <h2 className="text-xl font-semibold text-gray-900 mb-2">Create Server</h2>
               <p className="text-gray-600">Set up a new game server and start receiving pledges</p>
+            </div>
+          </Link>
+
+          {/* Create Community Card */}
+          <Link href="/dashboard/community/create">
+            <div className="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition cursor-pointer">
+              <h2 className="text-xl font-semibold text-gray-900 mb-2">Create Community</h2>
+              <p className="text-gray-600">Share your community to attract new members</p>
             </div>
           </Link>
 
@@ -427,6 +462,97 @@ export default function DashboardPage() {
               ))}
           </div>
         </div>
+        )}
+
+        {/* My Communities Section - Only show if user has communities */}
+        {!loading && communities.length > 0 && (
+          <div className="mb-12">
+            <h2 className="text-2xl font-bold text-gray-900 mb-4">My Communities</h2>
+          
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {communities.map((community) => (
+                <div key={community.id} className="bg-white rounded-lg shadow-md hover:shadow-lg transition overflow-hidden">
+                  <div className="p-6">
+                    <div className="flex items-start justify-between mb-4">
+                      <div className="flex items-start space-x-4 flex-1">
+                        {community.imageUrl ? (
+                          <Image
+                            src={community.imageUrl}
+                            alt={community.name}
+                            width={60}
+                            height={60}
+                            className="rounded-lg object-cover"
+                          />
+                        ) : (
+                          <div className="w-15 h-15 bg-gradient-to-br from-purple-500 to-pink-600 rounded-lg flex items-center justify-center">
+                            <span className="text-xl text-white font-bold">
+                              {community.name[0]?.toUpperCase()}
+                            </span>
+                          </div>
+                        )}
+                        
+                        <div className="flex-1">
+                          <h3 className="text-lg font-bold text-gray-900 mb-1">{community.name}</h3>
+                          {community.description && (
+                            <p className="text-sm text-gray-600 line-clamp-2">{community.description}</p>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Game Types */}
+                    {community.gameTypes.length > 0 && (
+                      <div className="flex flex-wrap gap-1 mb-4">
+                        {community.gameTypes.slice(0, 3).map((gameType) => (
+                          <span
+                            key={gameType}
+                            className="px-2 py-1 bg-indigo-100 text-indigo-700 text-xs font-medium rounded"
+                          >
+                            {gameType}
+                          </span>
+                        ))}
+                        {community.gameTypes.length > 3 && (
+                          <span className="px-2 py-1 bg-gray-100 text-gray-700 text-xs font-medium rounded">
+                            +{community.gameTypes.length - 3}
+                          </span>
+                        )}
+                      </div>
+                    )}
+
+                    {/* Stats */}
+                    <div className="flex items-center space-x-4 text-sm text-gray-500 mb-4">
+                      <span className="flex items-center">
+                        <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
+                        </svg>
+                        {community.memberCount > 0 ? `${community.memberCount} members` : "New"}
+                      </span>
+                      <span className="flex items-center">
+                        <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 12h14M5 12a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v4a2 2 0 01-2 2M5 12a2 2 0 00-2 2v4a2 2 0 002 2h14a2 2 0 002-2v-4a2 2 0 00-2-2m-2-4h.01M17 16h.01" />
+                        </svg>
+                        {community._count.servers} {community._count.servers === 1 ? 'server' : 'servers'}
+                      </span>
+                    </div>
+
+                    {/* Action Buttons */}
+                    <div className="flex space-x-2">
+                      <Link href={`/communities/${community.id}`} className="flex-1">
+                        <button className="w-full px-4 py-2 text-sm bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition">
+                          View
+                        </button>
+                      </Link>
+                      <Link href={`/dashboard/community/${community.id}/edit`} className="flex-1">
+                        <button className="w-full px-4 py-2 text-sm bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition">
+                          Edit
+                        </button>
+                      </Link>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
         )}
 
         {/* Activity Section */}
