@@ -148,6 +148,7 @@ export async function POST(request: Request) {
         region: body.region || null,
         tags: body.tags || [],
         communityId: body.communityId || null,
+        discordWebhook: body.discordWebhook || null,
         ownerId: session.user.id,
       },
       include: {

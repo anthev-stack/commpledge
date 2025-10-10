@@ -61,7 +61,7 @@ interface Ticket {
 export default function StaffDashboardPage() {
   const { data: session, status } = useSession()
   const router = useRouter()
-  const [tab, setTab] = useState<"users" | "servers" | "tickets">("users")
+  const [tab, setTab] = useState<"users" | "servers" | "tickets" | "web">("users")
   const [users, setUsers] = useState<User[]>([])
   const [servers, setServers] = useState<Server[]>([])
   const [tickets, setTickets] = useState<Ticket[]>([])
@@ -72,6 +72,8 @@ export default function StaffDashboardPage() {
     category: "all",
     priority: "all"
   })
+  const [currentTheme, setCurrentTheme] = useState("default")
+  const [savingTheme, setSavingTheme] = useState(false)
 
   useEffect(() => {
     if (session?.user) {
@@ -118,8 +120,10 @@ export default function StaffDashboardPage() {
         fetchUsers()
       } else if (tab === "servers") {
         fetchServers()
-      } else {
+      } else if (tab === "tickets") {
         fetchTickets()
+      } else if (tab === "web") {
+        fetchCurrentTheme()
       }
     }
   }, [tab, session, ticketFilters])
@@ -171,6 +175,48 @@ export default function StaffDashboardPage() {
       console.error("Failed to fetch tickets:", error)
     } finally {
       setLoading(false)
+    }
+  }
+
+  const fetchCurrentTheme = async () => {
+    try {
+      const response = await fetch("/api/settings/theme")
+      if (response.ok) {
+        const data = await response.json()
+        setCurrentTheme(data.theme)
+      }
+    } catch (error) {
+      console.error("Failed to fetch theme:", error)
+    }
+  }
+
+  const handleThemeChange = async (newTheme: string) => {
+    if (!confirm(`Change site theme to ${newTheme}? This will affect all users.`)) {
+      return
+    }
+
+    setSavingTheme(true)
+    try {
+      const response = await fetch("/api/settings/theme", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ theme: newTheme })
+      })
+
+      if (response.ok) {
+        setCurrentTheme(newTheme)
+        alert("Theme updated successfully! Users will see the new theme on their next page load.")
+        // Reload to apply theme
+        window.location.reload()
+      } else {
+        const data = await response.json()
+        alert(data.error || "Failed to update theme")
+      }
+    } catch (error) {
+      console.error("Failed to update theme:", error)
+      alert("Failed to update theme")
+    } finally {
+      setSavingTheme(false)
     }
   }
 

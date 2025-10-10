@@ -29,6 +29,7 @@ export default function EditServerPage({ params }: { params: Promise<{ id: strin
     region: "",
     tags: [] as string[],
     communityId: "",
+    discordWebhook: "",
   })
   const [communities, setCommunities] = useState<any[]>([])
 
@@ -66,6 +67,7 @@ export default function EditServerPage({ params }: { params: Promise<{ id: strin
           region: data.region || "",
           tags: data.tags || [],
           communityId: data.communityId || "",
+          discordWebhook: data.discordWebhook || "",
         })
       } else {
         setError("Server not found")

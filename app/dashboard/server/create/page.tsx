@@ -33,6 +33,7 @@ export default function CreateServerPage() {
     region: "",
     tags: [] as string[],
     communityId: "",
+    discordWebhook: "",
   })
 
   useEffect(() => {
@@ -360,6 +361,33 @@ export default function CreateServerPage() {
                 </p>
               </div>
             )}
+
+            {/* Discord Webhook */}
+            <div>
+              <label htmlFor="discordWebhook" className="block text-sm font-medium text-gray-700 mb-1">
+                Discord Webhook URL (Optional)
+              </label>
+              <input
+                type="url"
+                id="discordWebhook"
+                name="discordWebhook"
+                value={formData.discordWebhook}
+                onChange={handleChange}
+                placeholder="https://discord.com/api/webhooks/..."
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+              />
+              <p className="text-xs text-gray-500 mt-1">
+                Get notified in Discord when someone pledges to your server. 
+                <a 
+                  href="https://support.discord.com/hc/en-us/articles/228383668-Intro-to-Webhooks" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="text-indigo-600 hover:text-indigo-700 ml-1"
+                >
+                  Learn how to create a webhook →
+                </a>
+              </p>
+            </div>
 
             {/* Server IP and Port */}
             <div>
