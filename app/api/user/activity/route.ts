@@ -30,6 +30,13 @@ export async function GET(request: Request) {
               name: true,
             },
           },
+          user: {
+            select: {
+              id: true,
+              name: true,
+              image: true,
+            },
+          },
         },
         orderBy: {
           createdAt: "desc",
@@ -81,8 +88,9 @@ export async function GET(request: Request) {
     }
   } catch (error) {
     console.error("Error fetching activity:", error)
+    console.error("Error details:", JSON.stringify(error, null, 2))
     return NextResponse.json(
-      { error: "Failed to fetch activity" },
+      { error: "Failed to fetch activity", details: error instanceof Error ? error.message : String(error) },
       { status: 500 }
     )
   }
