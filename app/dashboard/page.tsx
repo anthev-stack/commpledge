@@ -312,6 +312,10 @@ export default function DashboardPage() {
         return "Your account was banned by staff"
       case "user_promoted":
         return `You were promoted to ${activity.metadata?.role || "moderator"}`
+      case "server_boosted":
+        return serverDeleted
+          ? "You boosted a server (now deleted)"
+          : `You boosted "${serverName}" to the top of the list for 24 hours ($3.00)`
       default:
         return activity.action
     }
@@ -339,6 +343,8 @@ export default function DashboardPage() {
         return `Someone created a server (this shouldn't appear here)`
       case "server_deleted":
         return `Someone deleted a server (this shouldn't appear here)`
+      case "server_boosted":
+        return `You boosted "${serverName}" to the top of the list for 24 hours ($3.00)`
       default:
         return activity.action
     }
