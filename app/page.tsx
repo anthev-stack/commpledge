@@ -222,35 +222,6 @@ export default async function Home() {
           </div>
         </div>
       </section>
-
-      {/* CTA Section */}
-      <section className="py-20">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">
-            Ready to Keep Your Community Alive?
-          </h2>
-          <p className="text-xl text-gray-300 mb-10">
-            Join thousands of gamers sharing server costs and building amazing communities together.
-          </p>
-          <div className="flex flex-col sm:flex-row justify-center gap-4">
-            {!session && (
-              <Link
-                href="/register"
-                className="bg-emerald-600 hover:bg-emerald-700 text-white px-10 py-4 rounded-lg text-lg font-bold transition shadow-xl hover:shadow-2xl transform hover:-translate-y-1"
-              >
-                Get Started Free
-              </Link>
-            )}
-            <Link
-              href="/servers"
-              className="bg-white hover:bg-gray-50 text-emerald-600 px-10 py-4 rounded-lg text-lg font-bold transition shadow-xl hover:shadow-2xl transform hover:-translate-y-1 border-2 border-emerald-600"
-            >
-              Browse Servers
-            </Link>
-          </div>
-        </div>
-      </section>
-
     </div>
   )
 }
