@@ -31,14 +31,12 @@ body {
 /* Dark Theme as Default */
 html, body {
   background: linear-gradient(to bottom, #16213e 0%, #16213e 30%, #0d4d3b 60%, #064e3b 80%, #022c22 100%) !important;
-  background-attachment: fixed !important;
   color: #ffffff !important;
   min-height: 100vh !important;
 }
 
 body {
   background: linear-gradient(to bottom, #16213e 0%, #16213e 30%, #0d4d3b 60%, #064e3b 80%, #022c22 100%) !important;
-  background-attachment: fixed !important;
   color: #ffffff !important;
   min-height: 100vh !important;
 }
