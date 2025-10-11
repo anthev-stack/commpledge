@@ -4,6 +4,7 @@ import { useState, useEffect } from "react"
 import { useSession } from "next-auth/react"
 import Link from "next/link"
 import { MIN_PLEDGE, MAX_PLEDGE } from "@/lib/constants"
+import { useCurrency } from "./CurrencyProvider"
 
 interface PledgeModalProps {
   server: {
@@ -21,6 +22,7 @@ interface PledgeModalProps {
 
 export default function PledgeModal({ server, isOpen, onClose, onSuccess }: PledgeModalProps) {
   const { data: session } = useSession()
+  const { currency, symbol, convertFromUSD, convertToUSD, formatPrice } = useCurrency()
   const [amount, setAmount] = useState("10")
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState("")
@@ -45,11 +47,13 @@ export default function PledgeModal({ server, isOpen, onClose, onSuccess }: Pled
       const data = await response.json()
       setPledgeStatus(data)
       
-      // Set amount to existing pledge amount if user has one
+      // Set amount to existing pledge amount if user has one (convert from USD)
       if (data.hasPledge && data.userPledge) {
-        setAmount(data.userPledge.amount.toString())
+        const convertedAmount = convertFromUSD(data.userPledge.amount)
+        setAmount(convertedAmount.toFixed(2))
       } else {
-        setAmount("10")
+        const defaultConverted = convertFromUSD(10)
+        setAmount(defaultConverted.toFixed(2))
       }
     } catch (error) {
       console.error("Error fetching pledge status:", error)
@@ -60,10 +64,21 @@ export default function PledgeModal({ server, isOpen, onClose, onSuccess }: Pled
   }
 
   const handlePledge = async () => {
-    const pledgeAmount = parseFloat(amount)
+    const pledgeAmountInUserCurrency = parseFloat(amount)
     
-    if (isNaN(pledgeAmount) || pledgeAmount < MIN_PLEDGE || pledgeAmount > MAX_PLEDGE) {
-      setError(`Pledge must be between $${MIN_PLEDGE} and $${MAX_PLEDGE}`)
+    if (isNaN(pledgeAmountInUserCurrency)) {
+      setError(`Please enter a valid amount`)
+      return
+    }
+
+    // Convert user's currency input to USD for storage
+    const pledgeAmountUSD = convertToUSD(pledgeAmountInUserCurrency)
+    
+    // Check min/max in USD
+    if (pledgeAmountUSD < MIN_PLEDGE || pledgeAmountUSD > MAX_PLEDGE) {
+      const minConverted = convertFromUSD(MIN_PLEDGE)
+      const maxConverted = convertFromUSD(MAX_PLEDGE)
+      setError(`Pledge must be between ${symbol}${minConverted.toFixed(2)} and ${symbol}${maxConverted.toFixed(2)}`)
       return
     }
 
@@ -76,7 +91,7 @@ export default function PledgeModal({ server, isOpen, onClose, onSuccess }: Pled
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ amount: pledgeAmount }),
+        body: JSON.stringify({ amount: pledgeAmountUSD }),
       })
 
       const data = await response.json()
@@ -160,11 +175,11 @@ export default function PledgeModal({ server, isOpen, onClose, onSuccess }: Pled
               <div className="bg-green-50 border border-green-200 rounded-lg p-4">
                 <h3 className="font-semibold text-green-900 mb-2">Your Current Pledge</h3>
                 <div className="space-y-2 text-sm text-green-800">
-                  <p><strong>Pledged Amount:</strong> ${pledgeStatus.userPledge.amount.toFixed(2)}/month</p>
-                  <p><strong>Estimated Payment:</strong> ${(pledgeStatus.userPledge.optimizedAmount || pledgeStatus.userPledge.amount).toFixed(2)}/month</p>
+                  <p><strong>Pledged Amount:</strong> {formatPrice(pledgeStatus.userPledge.amount)}/month</p>
+                  <p><strong>Estimated Payment:</strong> {formatPrice(pledgeStatus.userPledge.optimizedAmount || pledgeStatus.userPledge.amount)}/month</p>
                   {pledgeStatus.userPledge.optimizedAmount < pledgeStatus.userPledge.amount && (
                     <p className="text-green-700">
-                      💰 You&apos;re saving ${(pledgeStatus.userPledge.amount - pledgeStatus.userPledge.optimizedAmount).toFixed(2)}/month thanks to optimization!
+                      💰 You&apos;re saving {formatPrice(pledgeStatus.userPledge.amount - pledgeStatus.userPledge.optimizedAmount)}/month thanks to optimization!
                     </p>
                   )}
                 </div>
@@ -220,7 +235,7 @@ export default function PledgeModal({ server, isOpen, onClose, onSuccess }: Pled
                   <strong>Server:</strong> {server.name}
                 </p>
                 <p className="text-xs text-indigo-600 mt-1">
-                  Monthly cost: ${server.cost.toFixed(2)} • {pledgeStatus.currentPledges}/{pledgeStatus.maxPledges} pledgers
+                  Monthly cost: {formatPrice(server.cost)} • {pledgeStatus.currentPledges}/{pledgeStatus.maxPledges} pledgers
                 </p>
               </div>
 
@@ -238,34 +253,42 @@ export default function PledgeModal({ server, isOpen, onClose, onSuccess }: Pled
 
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Your Monthly Pledge (${MIN_PLEDGE}-${MAX_PLEDGE})
+                  Your Monthly Pledge ({symbol}{convertFromUSD(MIN_PLEDGE).toFixed(2)}-{symbol}{convertFromUSD(MAX_PLEDGE).toFixed(2)})
                 </label>
                 <div className="relative">
-                  <span className="absolute left-3 top-3 text-gray-500">$</span>
+                  <span className="absolute left-3 top-3 text-gray-500">{symbol}</span>
                   <input
                     type="number"
-                    min={MIN_PLEDGE}
-                    max={MAX_PLEDGE}
-                    step="1"
+                    min={convertFromUSD(MIN_PLEDGE)}
+                    max={convertFromUSD(MAX_PLEDGE)}
+                    step="0.01"
                     value={amount}
                     onChange={(e) => setAmount(e.target.value)}
-                    className="w-full pl-7 pr-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                    className="w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
                   />
                 </div>
+                {currency !== 'USD' && (
+                  <p className="text-xs text-gray-500 mt-1">
+                    Amounts are displayed in {currency} but stored in USD
+                  </p>
+                )}
               </div>
 
               {/* Quick Amount Buttons */}
               <div className="grid grid-cols-5 gap-2">
-                {[2, 5, 10, 15, 20].map((preset) => (
-                  <button
-                    key={preset}
-                    type="button"
-                    onClick={() => setAmount(preset.toString())}
-                    className="px-3 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition text-sm font-medium"
-                  >
-                    ${preset}
-                  </button>
-                ))}
+                {[2, 5, 10, 15, 20].map((presetUSD) => {
+                  const convertedPreset = convertFromUSD(presetUSD)
+                  return (
+                    <button
+                      key={presetUSD}
+                      type="button"
+                      onClick={() => setAmount(convertedPreset.toFixed(2))}
+                      className="px-3 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition text-sm font-medium"
+                    >
+                      {symbol}{Math.round(convertedPreset)}
+                    </button>
+                  )
+                })}
               </div>
 
               {/* Optimization Preview */}
