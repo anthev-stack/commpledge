@@ -7,9 +7,9 @@ export default async function Home() {
   const session = await getServerSession(authOptions)
 
   return (
-    <div className="bg-gradient-to-br from-gray-900 via-gray-800 to-emerald-900 min-h-screen">
+    <div className="bg-white">
       {/* Hero Section */}
-      <section className="relative bg-gradient-to-br from-emerald-600 via-emerald-700 to-emerald-800 text-white overflow-hidden">
+      <section className="relative bg-gradient-to-br from-indigo-600 via-purple-600 to-pink-500 text-white overflow-hidden">
         <div className="absolute inset-0 bg-black opacity-10"></div>
         <div className="absolute inset-0 bg-grid-pattern opacity-5"></div>
         
@@ -19,7 +19,7 @@ export default async function Home() {
               <h1 className="text-4xl sm:text-5xl md:text-7xl font-extrabold tracking-tight">
                 COMMUNITY PLEDGES
               </h1>
-              <span className="bg-emerald-400 text-emerald-900 text-xs sm:text-sm font-bold px-3 py-1 rounded-full">
+              <span className="bg-yellow-400 text-indigo-900 text-xs sm:text-sm font-bold px-3 py-1 rounded-full">
                 BETA
               </span>
             </div>
@@ -28,7 +28,7 @@ export default async function Home() {
               Share the cost of community servers with your members
             </p>
             
-            <p className="text-lg sm:text-xl mb-12 max-w-3xl mx-auto text-emerald-100">
+            <p className="text-lg sm:text-xl mb-12 max-w-3xl mx-auto text-indigo-100">
               Pledge what you can afford whether it&apos;s $2 or $10, we&apos;ll optimize with split costs 
               to make hosting affordable for everyone. <span className="font-semibold text-white">Keeping community servers alive!</span>
             </p>
@@ -36,14 +36,14 @@ export default async function Home() {
             <div className="flex flex-col sm:flex-row justify-center gap-4 mb-8">
               <Link
                 href="/servers"
-                className="bg-white text-emerald-600 hover:bg-emerald-50 px-8 py-4 rounded-lg text-lg font-bold transition shadow-xl hover:shadow-2xl transform hover:-translate-y-1"
+                className="bg-white text-indigo-600 hover:bg-indigo-50 px-8 py-4 rounded-lg text-lg font-bold transition shadow-xl hover:shadow-2xl transform hover:-translate-y-1"
               >
                 Browse Servers
               </Link>
               {session && (
                 <Link
                   href="/dashboard/server/create"
-                  className="bg-emerald-900 hover:bg-emerald-800 text-white px-8 py-4 rounded-lg text-lg font-bold transition shadow-xl hover:shadow-2xl transform hover:-translate-y-1 border-2 border-white"
+                  className="bg-indigo-900 hover:bg-indigo-800 text-white px-8 py-4 rounded-lg text-lg font-bold transition shadow-xl hover:shadow-2xl transform hover:-translate-y-1 border-2 border-white"
                 >
                   Create Server
                 </Link>
@@ -52,10 +52,10 @@ export default async function Home() {
           </div>
         </div>
 
-        {/* Wave Divider - Transparent to show body background */}
+        {/* Wave Divider */}
         <div className="absolute bottom-0 left-0 right-0">
           <svg viewBox="0 0 1440 120" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-auto">
-            <path d="M0 120L60 105C120 90 240 60 360 45C480 30 600 30 720 37.5C840 45 960 60 1080 67.5C1200 75 1320 75 1380 75L1440 75V120H1380C1320 120 1200 120 1080 120C960 120 840 120 720 120C600 120 480 120 360 120C240 120 120 120 60 120H0Z" fill="transparent"/>
+            <path d="M0 120L60 105C120 90 240 60 360 45C480 30 600 30 720 37.5C840 45 960 60 1080 67.5C1200 75 1320 75 1380 75L1440 75V120H1380C1320 120 1200 120 1080 120C960 120 840 120 720 120C600 120 480 120 360 120C240 120 120 120 60 120H0Z" fill="white"/>
           </svg>
         </div>
       </section>
