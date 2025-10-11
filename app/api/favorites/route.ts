@@ -131,6 +131,20 @@ export async function POST(request: NextRequest) {
       }
     })
 
+    // Log activity for server favorites (only for server favorites, not communities)
+    if (serverId) {
+      await prisma.activityLog.create({
+        data: {
+          action: "server_favorited",
+          userId: session.user.id,
+          serverId,
+          metadata: {
+            favoriteId: favorite.id
+          }
+        }
+      })
+    }
+
     return NextResponse.json({ 
       success: true, 
       favorite: {
@@ -182,6 +196,20 @@ export async function DELETE(request: NextRequest) {
         { error: "Favorite not found" },
         { status: 404 }
       )
+    }
+
+    // Log activity for server unfavorites (only for server favorites, not communities)
+    if (favorite.serverId) {
+      await prisma.activityLog.create({
+        data: {
+          action: "server_unfavorited",
+          userId: session.user.id,
+          serverId: favorite.serverId,
+          metadata: {
+            favoriteId: favorite.id
+          }
+        }
+      })
     }
 
     await prisma.userFavorite.delete({
