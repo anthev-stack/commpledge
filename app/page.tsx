@@ -62,40 +62,40 @@ export default async function Home() {
 
       {/* Features Section */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
-        <div className="grid md:grid-cols-3 gap-8">
-          <div className="bg-white/10 backdrop-blur-sm border border-white/20 p-8 rounded-2xl shadow-lg hover:shadow-xl transition transform hover:-translate-y-2">
-            <div className="w-16 h-16 bg-emerald-600 rounded-2xl flex items-center justify-center mb-6 shadow-lg">
-              <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+        <div className="grid md:grid-cols-3 gap-12">
+          <div className="text-center">
+            <div className="mb-6">
+              <svg className="w-16 h-16 text-emerald-500 mx-auto" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
               </svg>
             </div>
-            <h3 className="text-2xl font-bold text-white mb-3">Split Cost Sharing</h3>
-            <p className="text-gray-200 leading-relaxed">
+            <h3 className="text-2xl font-bold text-white mb-4">Split Cost Sharing</h3>
+            <p className="text-gray-300 leading-relaxed">
               Pay only what you pledged or less. We optimize costs to reduce everyone&apos;s payments 
               when others pledge alongside you respecting your pledge limit.
             </p>
           </div>
 
-          <div className="bg-white/10 backdrop-blur-sm border border-white/20 p-8 rounded-2xl shadow-lg hover:shadow-xl transition transform hover:-translate-y-2">
-            <div className="w-16 h-16 bg-emerald-500 rounded-2xl flex items-center justify-center mb-6 shadow-lg">
-              <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+          <div className="text-center">
+            <div className="mb-6">
+              <svg className="w-16 h-16 text-emerald-500 mx-auto" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M16 4c0-1.11.89-2 2-2s2 .89 2 2-.89 2-2 2-2-.89-2-2zm4 18v-6h2.5l-2.54-7.63A1.5 1.5 0 0 0 18.54 8H17c-.8 0-1.54.37-2.01.97L12 14v6h2v-4.5l1.5-1.5V22h2zm-8-18c0-1.11.89-2 2-2s2 .89 2 2-.89 2-2 2-2-.89-2-2zm4 18v-6h2.5l-2.54-7.63A1.5 1.5 0 0 0 14.54 8H13c-.8 0-1.54.37-2.01.97L8 14v6h2v-4.5l1.5-1.5V22h2z"/>
               </svg>
             </div>
-            <h3 className="text-2xl font-bold text-white mb-3">Community Driven</h3>
-            <p className="text-gray-200 leading-relaxed">
+            <h3 className="text-2xl font-bold text-white mb-4">Community Driven</h3>
+            <p className="text-gray-300 leading-relaxed">
               Join forces with other community members to make server costs more affordable for server owners.
             </p>
           </div>
 
-          <div className="bg-white/10 backdrop-blur-sm border border-white/20 p-8 rounded-2xl shadow-lg hover:shadow-xl transition transform hover:-translate-y-2">
-            <div className="w-16 h-16 bg-emerald-400 rounded-2xl flex items-center justify-center mb-6 shadow-lg">
-              <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+          <div className="text-center">
+            <div className="mb-6">
+              <svg className="w-16 h-16 text-emerald-500 mx-auto" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
               </svg>
             </div>
-            <h3 className="text-2xl font-bold text-white mb-3">Transparent Process</h3>
-            <p className="text-gray-200 leading-relaxed">
+            <h3 className="text-2xl font-bold text-white mb-4">Transparent Process</h3>
+            <p className="text-gray-300 leading-relaxed">
               See exactly what you&apos;ll pay and how your pledge helped reduce costs for everyone else if you pledged more!
             </p>
           </div>
@@ -111,46 +111,46 @@ export default async function Home() {
             <p className="text-lg text-gray-300 mt-2">Join servers and help share hosting costs</p>
           </div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-            <div className="bg-white/10 backdrop-blur-sm border border-white/20 p-8 rounded-2xl shadow-lg hover:shadow-xl transition">
-              <div className="w-16 h-16 bg-gradient-to-br from-emerald-500 to-emerald-600 rounded-full flex items-center justify-center mb-6 text-white text-2xl font-bold shadow-lg">
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-12">
+            <div className="text-center">
+              <div className="w-16 h-16 bg-emerald-600 rounded-full flex items-center justify-center mb-6 text-white text-2xl font-bold mx-auto">
                 1
               </div>
-              <h3 className="text-xl font-bold text-white mb-3">Browse Servers to Play!</h3>
-              <p className="text-gray-200 leading-relaxed">
+              <h3 className="text-xl font-bold text-white mb-4">Browse Servers to Play!</h3>
+              <p className="text-gray-300 leading-relaxed">
                 Discover amazing gaming servers across Minecraft, Rust, Terraria, ARK, Valheim, and more. 
                 Find communities that match your interests.
               </p>
             </div>
 
-            <div className="bg-white/10 backdrop-blur-sm border border-white/20 p-8 rounded-2xl shadow-lg hover:shadow-xl transition">
-              <div className="w-16 h-16 bg-gradient-to-br from-emerald-600 to-emerald-700 rounded-full flex items-center justify-center mb-6 text-white text-2xl font-bold shadow-lg">
+            <div className="text-center">
+              <div className="w-16 h-16 bg-emerald-600 rounded-full flex items-center justify-center mb-6 text-white text-2xl font-bold mx-auto">
                 2
               </div>
-              <h3 className="text-xl font-bold text-white mb-3">Pledge Your Support</h3>
-              <p className="text-gray-200 leading-relaxed">
+              <h3 className="text-xl font-bold text-white mb-4">Pledge Your Support</h3>
+              <p className="text-gray-300 leading-relaxed">
                 Choose how much you can afford to contribute monthly - whether it&apos;s $2, $5, or $10. 
                 Every pledge helps keep the server running.
               </p>
             </div>
 
-            <div className="bg-white/10 backdrop-blur-sm border border-white/20 p-8 rounded-2xl shadow-lg hover:shadow-xl transition">
-              <div className="w-16 h-16 bg-gradient-to-br from-emerald-700 to-emerald-800 rounded-full flex items-center justify-center mb-6 text-white text-2xl font-bold shadow-lg">
+            <div className="text-center">
+              <div className="w-16 h-16 bg-emerald-600 rounded-full flex items-center justify-center mb-6 text-white text-2xl font-bold mx-auto">
                 3
               </div>
-              <h3 className="text-xl font-bold text-white mb-3">Pay Less Than You Pledged</h3>
-              <p className="text-gray-200 leading-relaxed">
+              <h3 className="text-xl font-bold text-white mb-4">Pay Less Than You Pledged</h3>
+              <p className="text-gray-300 leading-relaxed">
                 When others join and pledge, costs get split! You&apos;ll often pay less than your pledged 
                 amount while still supporting the community.
               </p>
             </div>
 
-            <div className="bg-white/10 backdrop-blur-sm border border-white/20 p-8 rounded-2xl shadow-lg hover:shadow-xl transition">
-              <div className="w-16 h-16 bg-gradient-to-br from-emerald-500 to-emerald-700 rounded-full flex items-center justify-center mb-6 text-white text-2xl font-bold shadow-lg">
+            <div className="text-center">
+              <div className="w-16 h-16 bg-emerald-600 rounded-full flex items-center justify-center mb-6 text-white text-2xl font-bold mx-auto">
                 4
               </div>
-              <h3 className="text-xl font-bold text-white mb-3">Enjoy & Connect</h3>
-              <p className="text-gray-200 leading-relaxed">
+              <h3 className="text-xl font-bold text-white mb-4">Enjoy & Connect</h3>
+              <p className="text-gray-300 leading-relaxed">
                 Play on your chosen servers knowing you&apos;re helping keep them alive. Connect with 
                 like-minded gamers and build lasting friendships.
               </p>
@@ -167,46 +167,46 @@ export default async function Home() {
             <p className="text-lg text-gray-300 mt-2">Share hosting costs with your community</p>
           </div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-            <div className="bg-white/10 backdrop-blur-sm border border-white/20 p-8 rounded-2xl shadow-lg hover:shadow-xl transition">
-              <div className="w-16 h-16 bg-gradient-to-br from-emerald-500 to-emerald-600 rounded-full flex items-center justify-center mb-6 text-white text-2xl font-bold shadow-lg">
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-12">
+            <div className="text-center">
+              <div className="w-16 h-16 bg-emerald-600 rounded-full flex items-center justify-center mb-6 text-white text-2xl font-bold mx-auto">
                 1
               </div>
-              <h3 className="text-xl font-bold text-white mb-3">Upload Your Server</h3>
-              <p className="text-gray-200 leading-relaxed">
+              <h3 className="text-xl font-bold text-white mb-4">Upload Your Server</h3>
+              <p className="text-gray-300 leading-relaxed">
                 Create your server listing with details about your community, game type, and monthly hosting costs. 
                 Set your server&apos;s unique personality.
               </p>
             </div>
 
-            <div className="bg-white/10 backdrop-blur-sm border border-white/20 p-8 rounded-2xl shadow-lg hover:shadow-xl transition">
-              <div className="w-16 h-16 bg-gradient-to-br from-emerald-600 to-emerald-700 rounded-full flex items-center justify-center mb-6 text-white text-2xl font-bold shadow-lg">
+            <div className="text-center">
+              <div className="w-16 h-16 bg-emerald-600 rounded-full flex items-center justify-center mb-6 text-white text-2xl font-bold mx-auto">
                 2
               </div>
-              <h3 className="text-xl font-bold text-white mb-3">Invite Your Community</h3>
-              <p className="text-gray-200 leading-relaxed">
+              <h3 className="text-xl font-bold text-white mb-4">Invite Your Community</h3>
+              <p className="text-gray-300 leading-relaxed">
                 Share your server with your Discord community, friends, and social media. Let them know they 
                 can help support the server they love.
               </p>
             </div>
 
-            <div className="bg-white/10 backdrop-blur-sm border border-white/20 p-8 rounded-2xl shadow-lg hover:shadow-xl transition">
-              <div className="w-16 h-16 bg-gradient-to-br from-emerald-700 to-emerald-800 rounded-full flex items-center justify-center mb-6 text-white text-2xl font-bold shadow-lg">
+            <div className="text-center">
+              <div className="w-16 h-16 bg-emerald-600 rounded-full flex items-center justify-center mb-6 text-white text-2xl font-bold mx-auto">
                 3
               </div>
-              <h3 className="text-xl font-bold text-white mb-3">Watch Pledges Come In</h3>
-              <p className="text-gray-200 leading-relaxed">
+              <h3 className="text-xl font-bold text-white mb-4">Watch Pledges Come In</h3>
+              <p className="text-gray-300 leading-relaxed">
                 See your community members pledge their support. Track how much of your hosting costs are 
                 being covered by the community.
               </p>
             </div>
 
-            <div className="bg-white/10 backdrop-blur-sm border border-white/20 p-8 rounded-2xl shadow-lg hover:shadow-xl transition">
-              <div className="w-16 h-16 bg-gradient-to-br from-emerald-500 to-emerald-700 rounded-full flex items-center justify-center mb-6 text-white text-2xl font-bold shadow-lg">
+            <div className="text-center">
+              <div className="w-16 h-16 bg-emerald-600 rounded-full flex items-center justify-center mb-6 text-white text-2xl font-bold mx-auto">
                 4
               </div>
-              <h3 className="text-xl font-bold text-white mb-3">Focus on Your Community</h3>
-              <p className="text-gray-200 leading-relaxed">
+              <h3 className="text-xl font-bold text-white mb-4">Focus on Your Community</h3>
+              <p className="text-gray-300 leading-relaxed">
                 Spend less time worrying about hosting costs and more time building amazing experiences for 
                 your players. Let the community support what they love.
               </p>
