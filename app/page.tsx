@@ -99,125 +99,123 @@ export default async function Home() {
         </div>
       </section>
 
-      {/* How It Works Section */}
+      {/* How It Works - Community Members */}
       <section className="py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="bg-slate-800/50 backdrop-blur-sm rounded-lg shadow-lg p-8 mb-16 border border-slate-700/50">
-            <h2 className="text-3xl font-bold text-center mb-12 text-white uppercase">How It Works</h2>
-            <div className="grid lg:grid-cols-2 gap-12">
-              {/* Left Column - Community Members */}
-              <div className="space-y-8">
-                <div className="text-center mb-8">
-                  <h3 className="text-2xl font-bold text-white mb-2 uppercase">For Community Members</h3>
-                  <p className="text-gray-400">Join servers and help share hosting costs</p>
+            <div className="text-center mb-12">
+              <h3 className="text-2xl font-bold text-white mb-2 uppercase">For Community Members</h3>
+              <p className="text-gray-400">Join servers and help share hosting costs</p>
+            </div>
+            
+            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+              <div className="flex items-start space-x-4">
+                <div className="bg-emerald-600 text-white w-10 h-10 rounded-full flex items-center justify-center text-lg font-bold flex-shrink-0">
+                  1
                 </div>
-                
-                <div className="space-y-6">
-                  <div className="flex items-start space-x-4">
-                    <div className="bg-emerald-600 text-white w-10 h-10 rounded-full flex items-center justify-center text-lg font-bold flex-shrink-0">
-                      1
-                    </div>
-                    <div>
-                      <h4 className="font-semibold text-white mb-2">Browse Servers to Play!</h4>
-                      <p className="text-sm text-gray-300">
-                        Discover amazing gaming servers across Minecraft, Rust, Terraria, ARK, Valheim, and more. Find communities that match your interests.
-                      </p>
-                    </div>
-                  </div>
-                  
-                  <div className="flex items-start space-x-4">
-                    <div className="bg-emerald-600 text-white w-10 h-10 rounded-full flex items-center justify-center text-lg font-bold flex-shrink-0">
-                      2
-                    </div>
-                    <div>
-                      <h4 className="font-semibold text-white mb-2">Pledge Your Support</h4>
-                      <p className="text-sm text-gray-300">
-                        Choose how much you can afford to contribute monthly - whether it&apos;s $2, $5, or $10. Every pledge helps keep the server running.
-                      </p>
-                    </div>
-                  </div>
-                  
-                  <div className="flex items-start space-x-4">
-                    <div className="bg-emerald-600 text-white w-10 h-10 rounded-full flex items-center justify-center text-lg font-bold flex-shrink-0">
-                      3
-                    </div>
-                    <div>
-                      <h4 className="font-semibold text-white mb-2">Pay Less Than You Pledged</h4>
-                      <p className="text-sm text-gray-300">
-                        When others join and pledge, costs get split! You&apos;ll often pay less than your pledged amount while still supporting the community.
-                      </p>
-                    </div>
-                  </div>
-                  
-                  <div className="flex items-start space-x-4">
-                    <div className="bg-emerald-600 text-white w-10 h-10 rounded-full flex items-center justify-center text-lg font-bold flex-shrink-0">
-                      4
-                    </div>
-                    <div>
-                      <h4 className="font-semibold text-white mb-2">Enjoy & Connect</h4>
-                      <p className="text-sm text-gray-300">
-                        Play on your chosen servers knowing you&apos;re helping keep them alive. Connect with like-minded gamers and build lasting friendships.
-                      </p>
-                    </div>
-                  </div>
+                <div>
+                  <h4 className="font-semibold text-white mb-2">Browse Servers to Play!</h4>
+                  <p className="text-sm text-gray-300">
+                    Discover amazing gaming servers across Minecraft, Rust, Terraria, ARK, Valheim, and more. Find communities that match your interests.
+                  </p>
                 </div>
               </div>
-
-              {/* Right Column - Server Owners */}
-              <div className="space-y-8">
-                <div className="text-center mb-8">
-                  <h3 className="text-2xl font-bold text-white mb-2 uppercase">For Server Owners</h3>
-                  <p className="text-gray-400">Share hosting costs with your community</p>
+              
+              <div className="flex items-start space-x-4">
+                <div className="bg-emerald-600 text-white w-10 h-10 rounded-full flex items-center justify-center text-lg font-bold flex-shrink-0">
+                  2
                 </div>
-                
-                <div className="space-y-6">
-                  <div className="flex items-start space-x-4">
-                    <div className="bg-emerald-600 text-white w-10 h-10 rounded-full flex items-center justify-center text-lg font-bold flex-shrink-0">
-                      1
-                    </div>
-                    <div>
-                      <h4 className="font-semibold text-white mb-2">Upload Your Server</h4>
-                      <p className="text-sm text-gray-300">
-                        Create your server listing with details about your community, game type, and monthly hosting costs. Set your server&apos;s unique personality.
-                      </p>
-                    </div>
-                  </div>
-                  
-                  <div className="flex items-start space-x-4">
-                    <div className="bg-emerald-600 text-white w-10 h-10 rounded-full flex items-center justify-center text-lg font-bold flex-shrink-0">
-                      2
-                    </div>
-                    <div>
-                      <h4 className="font-semibold text-white mb-2">Invite Your Community</h4>
-                      <p className="text-sm text-gray-300">
-                        Share your server with your Discord community, friends, and social media. Let them know they can help support the server they love.
-                      </p>
-                    </div>
-                  </div>
-                  
-                  <div className="flex items-start space-x-4">
-                    <div className="bg-emerald-600 text-white w-10 h-10 rounded-full flex items-center justify-center text-lg font-bold flex-shrink-0">
-                      3
-                    </div>
-                    <div>
-                      <h4 className="font-semibold text-white mb-2">Watch Pledges Come In</h4>
-                      <p className="text-sm text-gray-300">
-                        See your community members pledge their support. Track how much of your hosting costs are being covered by the community.
-                      </p>
-                    </div>
-                  </div>
-                  
-                  <div className="flex items-start space-x-4">
-                    <div className="bg-emerald-600 text-white w-10 h-10 rounded-full flex items-center justify-center text-lg font-bold flex-shrink-0">
-                      4
-                    </div>
-                    <div>
-                      <h4 className="font-semibold text-white mb-2">Focus on Your Community</h4>
-                      <p className="text-sm text-gray-300">
-                        Spend less time worrying about hosting costs and more time building amazing experiences for your players. Let the community support what they love.
-                      </p>
-                    </div>
-                  </div>
+                <div>
+                  <h4 className="font-semibold text-white mb-2">Pledge Your Support</h4>
+                  <p className="text-sm text-gray-300">
+                    Choose how much you can afford to contribute monthly - whether it&apos;s $2, $5, or $10. Every pledge helps keep the server running.
+                  </p>
+                </div>
+              </div>
+              
+              <div className="flex items-start space-x-4">
+                <div className="bg-emerald-600 text-white w-10 h-10 rounded-full flex items-center justify-center text-lg font-bold flex-shrink-0">
+                  3
+                </div>
+                <div>
+                  <h4 className="font-semibold text-white mb-2">Pay Less Than You Pledged</h4>
+                  <p className="text-sm text-gray-300">
+                    When others join and pledge, costs get split! You&apos;ll often pay less than your pledged amount while still supporting the community.
+                  </p>
+                </div>
+              </div>
+              
+              <div className="flex items-start space-x-4">
+                <div className="bg-emerald-600 text-white w-10 h-10 rounded-full flex items-center justify-center text-lg font-bold flex-shrink-0">
+                  4
+                </div>
+                <div>
+                  <h4 className="font-semibold text-white mb-2">Enjoy & Connect</h4>
+                  <p className="text-sm text-gray-300">
+                    Play on your chosen servers knowing you&apos;re helping keep them alive. Connect with like-minded gamers and build lasting friendships.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* How It Works - Server Owners */}
+      <section className="py-20">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="bg-slate-800/50 backdrop-blur-sm rounded-lg shadow-lg p-8 mb-16 border border-slate-700/50">
+            <div className="text-center mb-12">
+              <h3 className="text-2xl font-bold text-white mb-2 uppercase">For Server Owners</h3>
+              <p className="text-gray-400">Share hosting costs with your community</p>
+            </div>
+            
+            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+              <div className="flex items-start space-x-4">
+                <div className="bg-emerald-600 text-white w-10 h-10 rounded-full flex items-center justify-center text-lg font-bold flex-shrink-0">
+                  1
+                </div>
+                <div>
+                  <h4 className="font-semibold text-white mb-2">Upload Your Server</h4>
+                  <p className="text-sm text-gray-300">
+                    Create your server listing with details about your community, game type, and monthly hosting costs. Set your server&apos;s unique personality.
+                  </p>
+                </div>
+              </div>
+              
+              <div className="flex items-start space-x-4">
+                <div className="bg-emerald-600 text-white w-10 h-10 rounded-full flex items-center justify-center text-lg font-bold flex-shrink-0">
+                  2
+                </div>
+                <div>
+                  <h4 className="font-semibold text-white mb-2">Invite Your Community</h4>
+                  <p className="text-sm text-gray-300">
+                    Share your server with your Discord community, friends, and social media. Let them know they can help support the server they love.
+                  </p>
+                </div>
+              </div>
+              
+              <div className="flex items-start space-x-4">
+                <div className="bg-emerald-600 text-white w-10 h-10 rounded-full flex items-center justify-center text-lg font-bold flex-shrink-0">
+                  3
+                </div>
+                <div>
+                  <h4 className="font-semibold text-white mb-2">Watch Pledges Come In</h4>
+                  <p className="text-sm text-gray-300">
+                    See your community members pledge their support. Track how much of your hosting costs are being covered by the community.
+                  </p>
+                </div>
+              </div>
+              
+              <div className="flex items-start space-x-4">
+                <div className="bg-emerald-600 text-white w-10 h-10 rounded-full flex items-center justify-center text-lg font-bold flex-shrink-0">
+                  4
+                </div>
+                <div>
+                  <h4 className="font-semibold text-white mb-2">Focus on Your Community</h4>
+                  <p className="text-sm text-gray-300">
+                    Spend less time worrying about hosting costs and more time building amazing experiences for your players. Let the community support what they love.
+                  </p>
                 </div>
               </div>
             </div>
