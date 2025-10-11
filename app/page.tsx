@@ -7,7 +7,7 @@ export default async function Home() {
   const session = await getServerSession(authOptions)
 
   return (
-    <div className="bg-gray-900">
+    <div className="bg-gradient-to-br from-gray-900 via-gray-800 to-emerald-900 min-h-screen">
       {/* Hero Section */}
       <section className="relative bg-gradient-to-br from-emerald-600 via-emerald-700 to-emerald-800 text-white overflow-hidden">
         <div className="absolute inset-0 bg-black opacity-10"></div>
@@ -103,7 +103,7 @@ export default async function Home() {
       </section>
 
       {/* How It Works - Community Members */}
-      <section className="bg-gradient-to-br from-gray-900 via-gray-800 to-emerald-900 py-20">
+      <section className="py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <h2 className="text-4xl md:text-5xl font-bold text-white mb-4">How It Works</h2>
@@ -160,7 +160,7 @@ export default async function Home() {
       </section>
 
       {/* How It Works - Server Owners */}
-      <section className="bg-gradient-to-br from-gray-800 via-gray-900 to-emerald-800 py-20">
+      <section className="py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <p className="text-xl text-emerald-400 font-semibold">For Server Owners</p>

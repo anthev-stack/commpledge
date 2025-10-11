@@ -30,13 +30,17 @@ body {
 
 /* Dark Theme as Default */
 html, body {
-  background-color: #1a1a2e !important;
+  background: linear-gradient(to bottom right, #111827, #1f2937, #065f46) !important;
+  background-attachment: fixed !important;
   color: #ffffff !important;
+  min-height: 100vh !important;
 }
 
 body {
-  background-color: #1a1a2e !important;
+  background: linear-gradient(to bottom right, #111827, #1f2937, #065f46) !important;
+  background-attachment: fixed !important;
   color: #ffffff !important;
+  min-height: 100vh !important;
 }
 
 body .bg-white {
