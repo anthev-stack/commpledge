@@ -7,7 +7,7 @@ export default async function Home() {
   const session = await getServerSession(authOptions)
 
   return (
-    <div className="bg-[#16213e]">
+    <div>
       {/* Hero Section */}
       <section className="relative bg-gradient-to-br from-emerald-600 via-emerald-700 to-emerald-800 text-white overflow-hidden">
         <div className="absolute inset-0 bg-black opacity-10"></div>
