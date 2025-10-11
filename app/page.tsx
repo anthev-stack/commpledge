@@ -68,7 +68,7 @@ export default async function Home() {
             <div className="bg-emerald-500/20 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
               <DollarSign className="w-8 h-8 text-emerald-400" />
             </div>
-            <h3 className="text-xl font-semibold mb-2 text-white">Split Cost Sharing</h3>
+            <h3 className="text-xl font-semibold mb-2 text-white uppercase">Split Cost Sharing</h3>
             <p className="text-gray-300">
               Pay only what you pledged or less. We optimize costs to reduce everyone&apos;s payments 
               when others pledge alongside you respecting your pledge limit.
@@ -79,7 +79,7 @@ export default async function Home() {
             <div className="bg-emerald-500/20 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
               <Users className="w-8 h-8 text-emerald-400" />
             </div>
-            <h3 className="text-xl font-semibold mb-2 text-white">Community Driven</h3>
+            <h3 className="text-xl font-semibold mb-2 text-white uppercase">Community Driven</h3>
             <p className="text-gray-300">
               Join forces with other community members to make server costs 
               more affordable for server owners.
@@ -90,7 +90,7 @@ export default async function Home() {
             <div className="bg-emerald-500/20 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
               <Heart className="w-8 h-8 text-emerald-400" />
             </div>
-            <h3 className="text-xl font-semibold mb-2 text-white">Transparent Process</h3>
+            <h3 className="text-xl font-semibold mb-2 text-white uppercase">Transparent Process</h3>
             <p className="text-gray-300">
               See exactly what you&apos;ll pay and how your pledge helped reduce 
               costs for everyone else if you pledged more!
@@ -103,12 +103,12 @@ export default async function Home() {
       <section className="py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="bg-slate-800/50 backdrop-blur-sm rounded-lg shadow-lg p-8 mb-16 border border-slate-700/50">
-            <h2 className="text-3xl font-bold text-center mb-12 text-white">How It Works</h2>
+            <h2 className="text-3xl font-bold text-center mb-12 text-white uppercase">How It Works</h2>
             <div className="grid lg:grid-cols-2 gap-12">
               {/* Left Column - Community Members */}
               <div className="space-y-8">
                 <div className="text-center mb-8">
-                  <h3 className="text-2xl font-bold text-white mb-2">For Community Members</h3>
+                  <h3 className="text-2xl font-bold text-white mb-2 uppercase">For Community Members</h3>
                   <p className="text-gray-400">Join servers and help share hosting costs</p>
                 </div>
                 
@@ -166,7 +166,7 @@ export default async function Home() {
               {/* Right Column - Server Owners */}
               <div className="space-y-8">
                 <div className="text-center mb-8">
-                  <h3 className="text-2xl font-bold text-white mb-2">For Server Owners</h3>
+                  <h3 className="text-2xl font-bold text-white mb-2 uppercase">For Server Owners</h3>
                   <p className="text-gray-400">Share hosting costs with your community</p>
                 </div>
                 
