@@ -18,7 +18,7 @@ export default function FlyingAnimation({
   enabled = true 
 }: FlyingAnimationProps) {
   const containerRef = useRef<HTMLDivElement>(null)
-  const animationIdRef = useRef<number>()
+  const animationIdRef = useRef<number | undefined>(undefined)
 
   useEffect(() => {
     if (!enabled || !containerRef.current) return
