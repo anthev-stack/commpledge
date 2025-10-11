@@ -132,49 +132,184 @@ body nav {
   border-bottom: 1px solid #1e2749 !important;
 }
 
-/* Halloween Theme */
+/* ===== HALLOWEEN THEME ===== */
 body.theme-halloween {
-  background-color: #1c1917 !important;
+  background: linear-gradient(to bottom, #1c1917 0%, #1c1917 50%, #44403c 80%, #57534e 100%) !important;
   color: #fafaf9 !important;
 }
 
-body.theme-halloween .bg-gray-50 {
+body.theme-halloween .bg-white,
+body.theme-halloween .bg-gray-50,
+body.theme-halloween .bg-gray-100 {
   background-color: #292524 !important;
 }
 
-body.theme-halloween .bg-white {
-  background-color: #292524 !important;
+body.theme-halloween .bg-gray-200 {
+  background-color: #44403c !important;
 }
 
 body.theme-halloween .text-gray-900,
-body.theme-halloween .text-gray-800 {
+body.theme-halloween .text-gray-800,
+body.theme-halloween .text-gray-700 {
   color: #fafaf9 !important;
 }
 
-body.theme-halloween .text-gray-600,
-body.theme-halloween .text-gray-700 {
+body.theme-halloween .text-gray-600 {
   color: #a8a29e !important;
 }
 
+body.theme-halloween .text-gray-500,
+body.theme-halloween .text-gray-400 {
+  color: #78716c !important;
+}
+
+/* Halloween - Emerald to Orange */
+body.theme-halloween .bg-emerald-500,
+body.theme-halloween .bg-emerald-600,
+body.theme-halloween .bg-emerald-400,
 body.theme-halloween .bg-indigo-600 {
   background-color: #ea580c !important;
 }
 
+body.theme-halloween .bg-emerald-700,
+body.theme-halloween .bg-emerald-800,
+body.theme-halloween .bg-emerald-900,
+body.theme-halloween .hover\:bg-emerald-700:hover,
 body.theme-halloween .hover\:bg-indigo-700:hover {
   background-color: #c2410c !important;
 }
 
+body.theme-halloween .text-emerald-600,
+body.theme-halloween .text-emerald-500,
+body.theme-halloween .text-emerald-400,
 body.theme-halloween .text-indigo-600 {
+  color: #ea580c !important;
+}
+
+body.theme-halloween .text-emerald-100,
+body.theme-halloween .text-emerald-200 {
+  color: #fed7aa !important;
+}
+
+body.theme-halloween .border-emerald-600,
+body.theme-halloween .border-emerald-500,
+body.theme-halloween .border-indigo-600 {
+  border-color: #ea580c !important;
+}
+
+body.theme-halloween .border-emerald-500\/20 {
+  border-color: rgba(234, 88, 12, 0.2) !important;
+}
+
+body.theme-halloween .bg-emerald-500\/20 {
+  background-color: rgba(234, 88, 12, 0.2) !important;
+}
+
+body.theme-halloween .hover\:border-emerald-500:hover {
+  border-color: #ea580c !important;
+}
+
+body.theme-halloween .hover\:text-emerald-400:hover {
   color: #fb923c !important;
 }
 
-body.theme-halloween .border-gray-200,
-body.theme-halloween .border-gray-300 {
-  border-color: #44403c !important;
+body.theme-halloween input:focus,
+body.theme-halloween textarea:focus,
+body.theme-halloween select:focus {
+  border-color: #ea580c !important;
+  box-shadow: 0 0 0 3px rgba(234, 88, 12, 0.1) !important;
 }
 
-/* Christmas Theme */
-body.theme-christmas .bg-indigo-600 {
+body.theme-halloween .bg-slate-800\/50 {
+  background-color: rgba(41, 37, 36, 0.5) !important;
+}
+
+body.theme-halloween .border-slate-700\/50 {
+  border-color: rgba(68, 64, 60, 0.5) !important;
+}
+
+/* ===== CHRISTMAS THEME ===== */
+body.theme-christmas {
+  background: linear-gradient(to bottom, #f0fdf4 0%, #f0fdf4 50%, #dcfce7 80%, #bbf7d0 100%) !important;
+  color: #14532d !important;
+}
+
+body.theme-christmas .bg-white,
+body.theme-christmas .bg-gray-50,
+body.theme-christmas .bg-gray-100 {
+  background-color: #ffffff !important;
+}
+
+body.theme-christmas .bg-gray-200 {
+  background-color: #f3f4f6 !important;
+}
+
+body.theme-christmas .text-gray-900,
+body.theme-christmas .text-gray-800,
+body.theme-christmas .text-gray-700 {
+  color: #14532d !important;
+}
+
+body.theme-christmas .text-gray-600 {
+  color: #15803d !important;
+}
+
+body.theme-christmas .text-gray-500,
+body.theme-christmas .text-gray-400 {
+  color: #16a34a !important;
+}
+
+/* Christmas - Emerald stays green, but add red accents */
+body.theme-christmas .bg-emerald-500,
+body.theme-christmas .bg-emerald-600,
+body.theme-christmas .bg-emerald-400 {
+  background-color: #16a34a !important;
+}
+
+body.theme-christmas .bg-emerald-700,
+body.theme-christmas .bg-emerald-800,
+body.theme-christmas .bg-emerald-900,
+body.theme-christmas .hover\:bg-emerald-700:hover {
+  background-color: #15803d !important;
+}
+
+body.theme-christmas .text-emerald-600,
+body.theme-christmas .text-emerald-500,
+body.theme-christmas .text-emerald-400 {
+  color: #16a34a !important;
+}
+
+body.theme-christmas .text-emerald-100,
+body.theme-christmas .text-emerald-200 {
+  color: #dcfce7 !important;
+}
+
+body.theme-christmas .border-emerald-600,
+body.theme-christmas .border-emerald-500 {
+  border-color: #16a34a !important;
+}
+
+body.theme-christmas .border-emerald-500\/20 {
+  border-color: rgba(22, 163, 74, 0.2) !important;
+}
+
+body.theme-christmas .bg-emerald-500\/20 {
+  background-color: rgba(22, 163, 74, 0.2) !important;
+}
+
+body.theme-christmas .hover\:border-emerald-500:hover {
+  border-color: #16a34a !important;
+}
+
+body.theme-christmas .hover\:text-emerald-400:hover {
+  color: #4ade80 !important;
+}
+
+/* Christmas Red accents for buttons */
+body.theme-christmas .bg-indigo-600,
+body.theme-christmas .bg-indigo-700,
+body.theme-christmas .bg-indigo-800,
+body.theme-christmas .bg-indigo-900 {
   background-color: #dc2626 !important;
 }
 
@@ -186,40 +321,213 @@ body.theme-christmas .text-indigo-600 {
   color: #dc2626 !important;
 }
 
-body.theme-christmas .bg-gray-50 {
-  background-color: #f0fdf4 !important;
+body.theme-christmas .border-indigo-600 {
+  border-color: #dc2626 !important;
 }
 
-/* Birthday Theme */
+body.theme-christmas input:focus,
+body.theme-christmas textarea:focus,
+body.theme-christmas select:focus {
+  border-color: #16a34a !important;
+  box-shadow: 0 0 0 3px rgba(22, 163, 74, 0.1) !important;
+}
+
+body.theme-christmas .bg-slate-800\/50 {
+  background-color: rgba(255, 255, 255, 0.8) !important;
+}
+
+body.theme-christmas .border-slate-700\/50 {
+  border-color: rgba(22, 163, 74, 0.3) !important;
+}
+
+/* ===== BIRTHDAY THEME ===== */
+body.theme-birthday {
+  background: linear-gradient(to bottom, #fdf4ff 0%, #fdf4ff 50%, #fae8ff 80%, #f3e8ff 100%) !important;
+  color: #701a75 !important;
+}
+
+body.theme-birthday .bg-white,
+body.theme-birthday .bg-gray-50,
+body.theme-birthday .bg-gray-100 {
+  background-color: #ffffff !important;
+}
+
+body.theme-birthday .bg-gray-200 {
+  background-color: #f3f4f6 !important;
+}
+
+body.theme-birthday .text-gray-900,
+body.theme-birthday .text-gray-800,
+body.theme-birthday .text-gray-700 {
+  color: #701a75 !important;
+}
+
+body.theme-birthday .text-gray-600 {
+  color: #a21caf !important;
+}
+
+body.theme-birthday .text-gray-500,
+body.theme-birthday .text-gray-400 {
+  color: #c084fc !important;
+}
+
+/* Birthday - Emerald to Pink */
+body.theme-birthday .bg-emerald-500,
+body.theme-birthday .bg-emerald-600,
+body.theme-birthday .bg-emerald-400,
 body.theme-birthday .bg-indigo-600 {
   background-color: #ec4899 !important;
 }
 
+body.theme-birthday .bg-emerald-700,
+body.theme-birthday .bg-emerald-800,
+body.theme-birthday .bg-emerald-900,
+body.theme-birthday .hover\:bg-emerald-700:hover,
 body.theme-birthday .hover\:bg-indigo-700:hover {
   background-color: #db2777 !important;
 }
 
+body.theme-birthday .text-emerald-600,
+body.theme-birthday .text-emerald-500,
+body.theme-birthday .text-emerald-400,
 body.theme-birthday .text-indigo-600 {
   color: #ec4899 !important;
 }
 
-body.theme-birthday .bg-gray-50 {
-  background-color: #fdf4ff !important;
+body.theme-birthday .text-emerald-100,
+body.theme-birthday .text-emerald-200 {
+  color: #fce7f3 !important;
 }
 
-/* New Year Theme */
+body.theme-birthday .border-emerald-600,
+body.theme-birthday .border-emerald-500,
+body.theme-birthday .border-indigo-600 {
+  border-color: #ec4899 !important;
+}
+
+body.theme-birthday .border-emerald-500\/20 {
+  border-color: rgba(236, 72, 153, 0.2) !important;
+}
+
+body.theme-birthday .bg-emerald-500\/20 {
+  background-color: rgba(236, 72, 153, 0.2) !important;
+}
+
+body.theme-birthday .hover\:border-emerald-500:hover {
+  border-color: #ec4899 !important;
+}
+
+body.theme-birthday .hover\:text-emerald-400:hover {
+  color: #f472b6 !important;
+}
+
+body.theme-birthday input:focus,
+body.theme-birthday textarea:focus,
+body.theme-birthday select:focus {
+  border-color: #ec4899 !important;
+  box-shadow: 0 0 0 3px rgba(236, 72, 153, 0.1) !important;
+}
+
+body.theme-birthday .bg-slate-800\/50 {
+  background-color: rgba(255, 255, 255, 0.8) !important;
+}
+
+body.theme-birthday .border-slate-700\/50 {
+  border-color: rgba(236, 72, 153, 0.3) !important;
+}
+
+/* ===== NEW YEAR THEME ===== */
+body.theme-newyear {
+  background: linear-gradient(to bottom, #eff6ff 0%, #eff6ff 50%, #dbeafe 80%, #bfdbfe 100%) !important;
+  color: #1e3a8a !important;
+}
+
+body.theme-newyear .bg-white,
+body.theme-newyear .bg-gray-50,
+body.theme-newyear .bg-gray-100 {
+  background-color: #ffffff !important;
+}
+
+body.theme-newyear .bg-gray-200 {
+  background-color: #f3f4f6 !important;
+}
+
+body.theme-newyear .text-gray-900,
+body.theme-newyear .text-gray-800,
+body.theme-newyear .text-gray-700 {
+  color: #1e3a8a !important;
+}
+
+body.theme-newyear .text-gray-600 {
+  color: #1e40af !important;
+}
+
+body.theme-newyear .text-gray-500,
+body.theme-newyear .text-gray-400 {
+  color: #3b82f6 !important;
+}
+
+/* New Year - Emerald to Blue */
+body.theme-newyear .bg-emerald-500,
+body.theme-newyear .bg-emerald-600,
+body.theme-newyear .bg-emerald-400,
 body.theme-newyear .bg-indigo-600 {
   background-color: #1e40af !important;
 }
 
+body.theme-newyear .bg-emerald-700,
+body.theme-newyear .bg-emerald-800,
+body.theme-newyear .bg-emerald-900,
+body.theme-newyear .hover\:bg-emerald-700:hover,
 body.theme-newyear .hover\:bg-indigo-700:hover {
-  background-color: #1e3a8a !important;
+  background-color: #1d4ed8 !important;
 }
 
+body.theme-newyear .text-emerald-600,
+body.theme-newyear .text-emerald-500,
+body.theme-newyear .text-emerald-400,
 body.theme-newyear .text-indigo-600 {
-  color: #0891b2 !important;
+  color: #1e40af !important;
 }
 
-body.theme-newyear .bg-gray-50 {
-  background-color: #eff6ff !important;
+body.theme-newyear .text-emerald-100,
+body.theme-newyear .text-emerald-200 {
+  color: #dbeafe !important;
+}
+
+body.theme-newyear .border-emerald-600,
+body.theme-newyear .border-emerald-500,
+body.theme-newyear .border-indigo-600 {
+  border-color: #1e40af !important;
+}
+
+body.theme-newyear .border-emerald-500\/20 {
+  border-color: rgba(30, 64, 175, 0.2) !important;
+}
+
+body.theme-newyear .bg-emerald-500\/20 {
+  background-color: rgba(30, 64, 175, 0.2) !important;
+}
+
+body.theme-newyear .hover\:border-emerald-500:hover {
+  border-color: #1e40af !important;
+}
+
+body.theme-newyear .hover\:text-emerald-400:hover {
+  color: #60a5fa !important;
+}
+
+body.theme-newyear input:focus,
+body.theme-newyear textarea:focus,
+body.theme-newyear select:focus {
+  border-color: #1e40af !important;
+  box-shadow: 0 0 0 3px rgba(30, 64, 175, 0.1) !important;
+}
+
+body.theme-newyear .bg-slate-800\/50 {
+  background-color: rgba(255, 255, 255, 0.8) !important;
+}
+
+body.theme-newyear .border-slate-700\/50 {
+  border-color: rgba(30, 64, 175, 0.3) !important;
 }
