@@ -2,12 +2,12 @@ import Link from "next/link"
 
 export default function Footer() {
   return (
-    <footer className="text-gray-300 bg-[#16213e]">
+    <footer className="text-gray-300">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
           {/* Brand */}
           <div className="md:col-span-1">
-            <h3 className="text-2xl font-bold text-white mb-4">Community Pledges</h3>
+            <h3 className="text-2xl font-bold text-white mb-4 uppercase">Community Pledges</h3>
             <p className="text-sm text-gray-400 leading-relaxed">
               Keeping community servers alive since 2025. Share the cost with your community or 
               simply pledge to your favorite community server.
@@ -16,7 +16,7 @@ export default function Footer() {
 
           {/* Platform */}
           <div>
-            <h4 className="text-white font-semibold mb-4">Platform</h4>
+            <h4 className="text-white font-semibold mb-4 uppercase">Platform</h4>
             <ul className="space-y-2">
               <li>
                 <Link href="/servers" className="hover:text-emerald-400 transition">
@@ -43,7 +43,7 @@ export default function Footer() {
 
           {/* Support */}
           <div>
-            <h4 className="text-white font-semibold mb-4">Support</h4>
+            <h4 className="text-white font-semibold mb-4 uppercase">Support</h4>
             <ul className="space-y-2">
               <li>
                 <Link href="/help" className="hover:text-emerald-400 transition">
@@ -65,7 +65,7 @@ export default function Footer() {
 
           {/* Legal */}
           <div>
-            <h4 className="text-white font-semibold mb-4">Legal</h4>
+            <h4 className="text-white font-semibold mb-4 uppercase">Legal</h4>
             <ul className="space-y-2">
               <li>
                 <Link href="/privacy" className="hover:text-emerald-400 transition">
