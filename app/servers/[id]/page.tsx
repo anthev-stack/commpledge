@@ -6,6 +6,7 @@ import Link from "next/link"
 import Image from "next/image"
 import PledgeModal from "@/components/PledgeModal"
 import ServerStats from "@/components/ServerStats"
+import { Price } from "@/components/Price"
 
 export const dynamic = 'force-dynamic'
 
@@ -295,11 +296,11 @@ export default function ServerPage({ params }: { params: Promise<{ id: string }>
                           </span>
                           <div className="text-right">
                             <span className="text-indigo-600 font-semibold block">
-                              ${pledge.amount.toFixed(2)}/mo
+                              <Price amountUSD={pledge.amount} showCode={false} />/mo
                             </span>
                             {pledge.optimizedAmount && pledge.optimizedAmount < pledge.amount && (
                               <span className="text-green-600 text-xs">
-                                pays ${pledge.optimizedAmount.toFixed(2)}
+                                pays <Price amountUSD={pledge.optimizedAmount} showCode={false} />
                               </span>
                             )}
                           </div>
@@ -327,14 +328,14 @@ export default function ServerPage({ params }: { params: Promise<{ id: string }>
               {/* Stats */}
               <div className="mb-6">
                 <div className="text-3xl font-bold text-gray-900 mb-1">
-                  ${server.totalPledged.toFixed(2)}
+                  <Price amountUSD={server.totalPledged} showCode={true} />
                 </div>
                 <p className="text-sm text-gray-600">
                   pledged by {server.pledgerCount} {server.pledgerCount === 1 ? "person" : "people"}
                 </p>
                 {server.totalOptimized > 0 && server.totalOptimized < server.totalPledged && (
                   <p className="text-sm text-green-600 font-semibold mt-1">
-                    💰 Optimized to ${server.totalOptimized.toFixed(2)}/mo
+                    💰 Optimized to <Price amountUSD={server.totalOptimized} showCode={false} />/mo
                   </p>
                 )}
               </div>
@@ -343,7 +344,7 @@ export default function ServerPage({ params }: { params: Promise<{ id: string }>
               <div className="mb-6">
                 <div className="flex justify-between text-sm text-gray-600 mb-2">
                   <span>{progressPercentage.toFixed(0)}% funded</span>
-                  <span>${server.cost.toFixed(2)}/mo needed</span>
+                  <span><Price amountUSD={server.cost} showCode={false} />/mo needed</span>
                 </div>
                 <div className="w-full bg-gray-200 rounded-full h-3">
                   <div

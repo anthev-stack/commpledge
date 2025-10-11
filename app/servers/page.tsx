@@ -6,6 +6,7 @@ import Image from "next/image"
 import { REGIONS } from "@/lib/game-tags"
 import { SUPPORTED_GAMES } from "@/lib/supported-games"
 import { getTagsForGame } from "@/lib/game-tags"
+import { Price } from "@/components/Price"
 
 interface Server {
   id: string
@@ -541,8 +542,8 @@ export default function ServersPage() {
                       {/* Progress Bar */}
                       <div className="mb-3">
                         <div className="flex justify-between text-xs text-gray-600 mb-1">
-                          <span>${server.totalPledged.toFixed(2)} pledged</span>
-                          <span>${server.cost.toFixed(2)} needed</span>
+                          <span><Price amountUSD={server.totalPledged} /> pledged</span>
+                          <span><Price amountUSD={server.cost} /> needed</span>
                         </div>
                         <div className="w-full bg-slate-700/50 rounded-full h-2">
                           <div
@@ -554,7 +555,7 @@ export default function ServersPage() {
                         </div>
                         {server.totalOptimized > 0 && server.totalOptimized < server.totalPledged && (
                           <p className="text-xs text-green-600 mt-1">
-                            💰 Optimized to ${server.totalOptimized.toFixed(2)}/month
+                            💰 Optimized to <Price amountUSD={server.totalOptimized} />/month
                           </p>
                         )}
                       </div>

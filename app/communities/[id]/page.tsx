@@ -5,6 +5,7 @@ import { useParams, useRouter } from "next/navigation"
 import Link from "next/link"
 import Image from "next/image"
 import { useSession } from "next-auth/react"
+import { Price } from "@/components/Price"
 
 interface Server {
   id: string
@@ -334,7 +335,7 @@ export default function CommunityDetailPage() {
                       {server._count.pledges} {server._count.pledges === 1 ? 'pledger' : 'pledgers'}
                     </div>
                     <div className="text-gray-500">
-                      ${server.cost}/mo
+                      <Price amountUSD={server.cost} />/mo
                     </div>
                   </div>
 

@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation"
 import Link from "next/link"
 import { useState, useEffect } from "react"
 import Image from "next/image"
+import { Price } from "@/components/Price"
 
 interface Server {
   id: string
@@ -355,7 +356,7 @@ export default function DashboardPage() {
               <div>
                 <p className="text-sm text-gray-600 mb-1">Total Pledged</p>
                 <p className="text-3xl font-bold text-gray-900">
-                  ${stats?.totalPledged.toFixed(2) || "0.00"}
+                  {stats?.totalPledged ? <Price amountUSD={stats.totalPledged} showCode={true} /> : "$0.00"}
                 </p>
               </div>
               <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center">
