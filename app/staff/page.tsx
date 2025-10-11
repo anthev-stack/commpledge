@@ -222,6 +222,46 @@ export default function StaffDashboardPage() {
     }
   }
 
+  const handleGifUpload = async (event: React.ChangeEvent<HTMLInputElement>, type: 'bat' | 'snowflake') => {
+    const file = event.target.files?.[0]
+    if (!file) return
+
+    // Validate file type
+    if (!file.type.startsWith('image/gif')) {
+      alert('Please upload a GIF file')
+      return
+    }
+
+    // Validate file size (max 100KB)
+    if (file.size > 100000) {
+      alert('File size must be under 100KB for optimal performance')
+      return
+    }
+
+    const formData = new FormData()
+    formData.append('file', file)
+    formData.append('type', type)
+
+    try {
+      const response = await fetch('/api/admin/upload-gif', {
+        method: 'POST',
+        body: formData
+      })
+
+      if (response.ok) {
+        alert(`${type === 'bat' ? 'Bat' : 'Snowflake'} GIF uploaded successfully!`)
+        // Reload to show new GIF
+        window.location.reload()
+      } else {
+        const data = await response.json()
+        alert(data.error || 'Failed to upload GIF')
+      }
+    } catch (error) {
+      console.error('Failed to upload GIF:', error)
+      alert('Failed to upload GIF')
+    }
+  }
+
   const handleRoleChange = async (userId: string, newRole: string, userName: string) => {
     const roleActions: Record<string, string> = {
       suspended: "suspend",
@@ -864,6 +904,118 @@ export default function StaffDashboardPage() {
                       <p className="text-sm text-blue-800">
                         Changing the theme will affect all users immediately. Users will see the new theme on their next page load or refresh.
                       </p>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Theme Animation GIF Uploader */}
+                <div className="mt-12">
+                  <h2 className="text-2xl font-bold text-gray-900 mb-6">Theme Animation GIFs</h2>
+                  <p className="text-gray-600 mb-6">Upload custom animated GIFs for Halloween and Christmas themes. These will appear as flying animations across the screen.</p>
+                  
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    {/* Halloween Bat GIF */}
+                    <div className="bg-slate-800/50 backdrop-blur-sm border border-slate-700/50 rounded-lg shadow-lg p-6">
+                      <div className="flex items-center mb-4">
+                        <span className="text-2xl mr-3">🎃</span>
+                        <h3 className="text-lg font-semibold text-white">Halloween Bat Animation</h3>
+                      </div>
+                      <p className="text-gray-300 text-sm mb-4">
+                        Upload a small animated GIF of a flying bat (recommended: 25x25px, transparent background)
+                      </p>
+                      <div className="space-y-4">
+                        <div className="flex items-center space-x-4">
+                          <div className="w-12 h-12 bg-orange-500/20 rounded-full flex items-center justify-center">
+                            <img src="/images/bat.gif" alt="Current bat" className="w-8 h-8" />
+                          </div>
+                          <div>
+                            <p className="text-sm text-gray-300">Current: bat.gif</p>
+                            <p className="text-xs text-gray-400">15 bats flying at 2x speed</p>
+                          </div>
+                        </div>
+                        <div className="flex space-x-2">
+                          <input
+                            type="file"
+                            accept=".gif"
+                            className="hidden"
+                            id="bat-upload"
+                            onChange={(e) => handleGifUpload(e, 'bat')}
+                          />
+                          <label
+                            htmlFor="bat-upload"
+                            className="flex-1 bg-orange-600 hover:bg-orange-700 text-white px-4 py-2 rounded-lg cursor-pointer text-center text-sm font-medium transition"
+                          >
+                            Upload New Bat GIF
+                          </label>
+                          <button
+                            onClick={() => window.open('/images/bat.gif', '_blank')}
+                            className="px-4 py-2 bg-gray-600 hover:bg-gray-700 text-white rounded-lg text-sm font-medium transition"
+                          >
+                            View Current
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Christmas Snowflake GIF */}
+                    <div className="bg-slate-800/50 backdrop-blur-sm border border-slate-700/50 rounded-lg shadow-lg p-6">
+                      <div className="flex items-center mb-4">
+                        <span className="text-2xl mr-3">❄️</span>
+                        <h3 className="text-lg font-semibold text-white">Christmas Snowflake Animation</h3>
+                      </div>
+                      <p className="text-gray-300 text-sm mb-4">
+                        Upload a small animated GIF of a falling snowflake (recommended: 20x20px, transparent background)
+                      </p>
+                      <div className="space-y-4">
+                        <div className="flex items-center space-x-4">
+                          <div className="w-12 h-12 bg-blue-500/20 rounded-full flex items-center justify-center">
+                            <img src="/images/snowflake.gif" alt="Current snowflake" className="w-8 h-8" />
+                          </div>
+                          <div>
+                            <p className="text-sm text-gray-300">Current: snowflake.gif</p>
+                            <p className="text-xs text-gray-400">25 snowflakes falling at 1.5x speed</p>
+                          </div>
+                        </div>
+                        <div className="flex space-x-2">
+                          <input
+                            type="file"
+                            accept=".gif"
+                            className="hidden"
+                            id="snowflake-upload"
+                            onChange={(e) => handleGifUpload(e, 'snowflake')}
+                          />
+                          <label
+                            htmlFor="snowflake-upload"
+                            className="flex-1 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg cursor-pointer text-center text-sm font-medium transition"
+                          >
+                            Upload New Snowflake GIF
+                          </label>
+                          <button
+                            onClick={() => window.open('/images/snowflake.gif', '_blank')}
+                            className="px-4 py-2 bg-gray-600 hover:bg-gray-700 text-white rounded-lg text-sm font-medium transition"
+                          >
+                            View Current
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="mt-6 p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
+                    <div className="flex items-start">
+                      <svg className="w-5 h-5 text-yellow-600 mt-0.5 mr-3" fill="currentColor" viewBox="0 0 20 20">
+                        <path fillRule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
+                      </svg>
+                      <div>
+                        <h4 className="text-sm font-semibold text-yellow-900 mb-1">GIF Upload Guidelines</h4>
+                        <ul className="text-sm text-yellow-800 space-y-1">
+                          <li>• Keep GIFs small (under 50KB) for better performance</li>
+                          <li>• Use transparent backgrounds for best visual effect</li>
+                          <li>• Recommended sizes: 20-30px for optimal performance</li>
+                          <li>• Test the animation on different screen sizes</li>
+                          <li>• Consider creating new GIFs each year for variety</li>
+                        </ul>
+                      </div>
                     </div>
                   </div>
                 </div>
