@@ -68,7 +68,7 @@ export default async function Home() {
             <div className="bg-emerald-500/20 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
               <DollarSign className="w-8 h-8 text-emerald-400" />
             </div>
-            <h3 className="text-xl font-semibold mb-2 text-white uppercase">Split Cost Sharing</h3>
+            <h3 className="text-xl font-semibold mb-2 text-white">Split cost sharing</h3>
             <p className="text-gray-300">
               Pay only what you pledged or less. We optimize costs to reduce everyone&apos;s payments 
               when others pledge alongside you respecting your pledge limit.
@@ -79,7 +79,7 @@ export default async function Home() {
             <div className="bg-emerald-500/20 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
               <Users className="w-8 h-8 text-emerald-400" />
             </div>
-            <h3 className="text-xl font-semibold mb-2 text-white uppercase">Community Driven</h3>
+            <h3 className="text-xl font-semibold mb-2 text-white">Community driven</h3>
             <p className="text-gray-300">
               Join forces with other community members to make server costs 
               more affordable for server owners.
@@ -90,7 +90,7 @@ export default async function Home() {
             <div className="bg-emerald-500/20 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
               <Heart className="w-8 h-8 text-emerald-400" />
             </div>
-            <h3 className="text-xl font-semibold mb-2 text-white uppercase">Transparent Process</h3>
+            <h3 className="text-xl font-semibold mb-2 text-white">Transparent process</h3>
             <p className="text-gray-300">
               See exactly what you&apos;ll pay and how your pledge helped reduce 
               costs for everyone else if you pledged more!
@@ -114,7 +114,7 @@ export default async function Home() {
                   1
                 </div>
                 <div>
-                  <h4 className="font-semibold text-white mb-2">Browse Servers to Play!</h4>
+                  <h4 className="font-semibold text-white mb-2">Browse servers to play!</h4>
                   <p className="text-sm text-gray-300">
                     Discover amazing gaming servers across Minecraft, Rust, Terraria, ARK, Valheim, and more. Find communities that match your interests.
                   </p>
@@ -126,7 +126,7 @@ export default async function Home() {
                   2
                 </div>
                 <div>
-                  <h4 className="font-semibold text-white mb-2">Pledge Your Support</h4>
+                  <h4 className="font-semibold text-white mb-2">Pledge your support</h4>
                   <p className="text-sm text-gray-300">
                     Choose how much you can afford to contribute monthly - whether it&apos;s $2, $5, or $10. Every pledge helps keep the server running.
                   </p>
@@ -138,7 +138,7 @@ export default async function Home() {
                   3
                 </div>
                 <div>
-                  <h4 className="font-semibold text-white mb-2">Pay Less Than You Pledged</h4>
+                  <h4 className="font-semibold text-white mb-2">Pay less than you pledged</h4>
                   <p className="text-sm text-gray-300">
                     When others join and pledge, costs get split! You&apos;ll often pay less than your pledged amount while still supporting the community.
                   </p>
@@ -150,7 +150,7 @@ export default async function Home() {
                   4
                 </div>
                 <div>
-                  <h4 className="font-semibold text-white mb-2">Enjoy & Connect</h4>
+                  <h4 className="font-semibold text-white mb-2">Enjoy & connect</h4>
                   <p className="text-sm text-gray-300">
                     Play on your chosen servers knowing you&apos;re helping keep them alive. Connect with like-minded gamers and build lasting friendships.
                   </p>
@@ -176,7 +176,7 @@ export default async function Home() {
                   1
                 </div>
                 <div>
-                  <h4 className="font-semibold text-white mb-2">Upload Your Server</h4>
+                  <h4 className="font-semibold text-white mb-2">Upload your server</h4>
                   <p className="text-sm text-gray-300">
                     Create your server listing with details about your community, game type, and monthly hosting costs. Set your server&apos;s unique personality.
                   </p>
@@ -188,7 +188,7 @@ export default async function Home() {
                   2
                 </div>
                 <div>
-                  <h4 className="font-semibold text-white mb-2">Invite Your Community</h4>
+                  <h4 className="font-semibold text-white mb-2">Invite your community</h4>
                   <p className="text-sm text-gray-300">
                     Share your server with your Discord community, friends, and social media. Let them know they can help support the server they love.
                   </p>
@@ -200,7 +200,7 @@ export default async function Home() {
                   3
                 </div>
                 <div>
-                  <h4 className="font-semibold text-white mb-2">Watch Pledges Come In</h4>
+                  <h4 className="font-semibold text-white mb-2">Watch pledges come in</h4>
                   <p className="text-sm text-gray-300">
                     See your community members pledge their support. Track how much of your hosting costs are being covered by the community.
                   </p>
@@ -212,7 +212,7 @@ export default async function Home() {
                   4
                 </div>
                 <div>
-                  <h4 className="font-semibold text-white mb-2">Focus on Your Community</h4>
+                  <h4 className="font-semibold text-white mb-2">Focus on your community</h4>
                   <p className="text-sm text-gray-300">
                     Spend less time worrying about hosting costs and more time building amazing experiences for your players. Let the community support what they love.
                   </p>
