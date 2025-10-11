@@ -32,7 +32,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     take: 1000, // Limit to prevent too large sitemap
     select: {
       id: true,
-      updatedAt: true,
+      createdAt: true,
     },
     orderBy: {
       createdAt: 'desc',
@@ -116,7 +116,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   // User profile pages
   const userPages = users.map((user) => ({
     url: `${baseUrl}/users/${user.id}`,
-    lastModified: user.updatedAt,
+    lastModified: user.createdAt,
     changeFrequency: 'weekly' as const,
     priority: 0.5,
   }))
