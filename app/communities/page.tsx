@@ -393,7 +393,7 @@ export default function CommunitiesPage() {
                           </span>
                         ))}
                         {community.gameTypes.length > 3 && (
-                          <span className="px-2 py-1 bg-gray-100 text-gray-700 text-xs font-medium rounded">
+                          <span className="px-2 py-1 bg-slate-700/50 text-gray-300 text-xs font-medium rounded">
                             +{community.gameTypes.length - 3} more
                           </span>
                         )}

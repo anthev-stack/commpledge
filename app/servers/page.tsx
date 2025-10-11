@@ -499,7 +499,7 @@ export default function ServersPage() {
                           </span>
                         ))}
                         {server.tags.length > 3 && (
-                          <span className="px-2 py-1 text-xs bg-gray-100 text-gray-600 rounded-full">
+                          <span className="px-2 py-1 text-xs bg-slate-700/50 text-gray-300 rounded-full">
                             +{server.tags.length - 3}
                           </span>
                         )}
@@ -544,9 +544,9 @@ export default function ServersPage() {
                           <span>${server.totalPledged.toFixed(2)} pledged</span>
                           <span>${server.cost.toFixed(2)} needed</span>
                         </div>
-                        <div className="w-full bg-gray-200 rounded-full h-2">
+                        <div className="w-full bg-slate-700/50 rounded-full h-2">
                           <div
-                            className="bg-indigo-600 h-2 rounded-full transition-all"
+                            className="bg-emerald-600 h-2 rounded-full transition-all"
                             style={{
                               width: `${Math.min((server.totalPledged / server.cost) * 100, 100)}%`,
                             }}

@@ -455,7 +455,7 @@ export default function DashboardPage() {
                         <div className="flex items-center space-x-2 mb-1">
                           <h3 className="text-xl font-bold text-gray-900">{server.name}</h3>
                           {server.isPrivate && (
-                            <span className="px-2 py-1 text-xs bg-gray-100 text-gray-700 rounded-full">
+                            <span className="px-2 py-1 text-xs bg-slate-700/70 text-gray-300 rounded-full">
                               Private
                             </span>
                           )}
@@ -505,12 +505,12 @@ export default function DashboardPage() {
 
                     <div className="flex space-x-2">
                       <Link href={`/servers/${server.id}`}>
-                        <button className="px-4 py-2 text-sm bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition">
+                        <button className="px-4 py-2 text-sm bg-slate-700/50 text-white rounded-lg hover:bg-slate-600 transition">
                           View
                         </button>
                       </Link>
                       <Link href={`/dashboard/server/${server.id}/edit`}>
-                        <button className="px-4 py-2 text-sm bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition">
+                        <button className="px-4 py-2 text-sm bg-emerald-600 text-white rounded-lg hover:bg-emerald-700 transition">
                           Edit
                         </button>
                       </Link>
@@ -597,7 +597,7 @@ export default function DashboardPage() {
                           </span>
                         ))}
                         {community.gameTypes.length > 3 && (
-                          <span className="px-2 py-1 bg-gray-100 text-gray-700 text-xs font-medium rounded">
+                          <span className="px-2 py-1 bg-slate-700/50 text-gray-300 text-xs font-medium rounded">
                             +{community.gameTypes.length - 3}
                           </span>
                         )}
@@ -623,12 +623,12 @@ export default function DashboardPage() {
                     {/* Action Buttons */}
                     <div className="flex space-x-2">
                       <Link href={`/communities/${community.id}`} className="flex-1">
-                        <button className="w-full px-4 py-2 text-sm bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition">
+                        <button className="w-full px-4 py-2 text-sm bg-slate-700/50 text-white rounded-lg hover:bg-slate-600 transition">
                           View
                         </button>
                       </Link>
                       <Link href={`/dashboard/community/${community.id}/edit`} className="flex-1">
-                        <button className="w-full px-4 py-2 text-sm bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition">
+                        <button className="w-full px-4 py-2 text-sm bg-emerald-600 text-white rounded-lg hover:bg-emerald-700 transition">
                           Edit
                         </button>
                       </Link>
