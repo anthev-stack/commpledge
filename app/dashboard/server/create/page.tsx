@@ -142,7 +142,7 @@ export default function CreateServerPage() {
 
   if (checkingStripe) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+      <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-600 mx-auto mb-4"></div>
           <p className="text-gray-600">Checking account status...</p>
@@ -153,7 +153,7 @@ export default function CreateServerPage() {
 
   if (!stripeStatus?.onboardingComplete) {
     return (
-      <div className="min-h-screen bg-gray-50 py-12 px-4">
+      <div className="min-h-screen py-12 px-4">
         <div className="max-w-2xl mx-auto">
           <div className="bg-white rounded-lg shadow-lg p-8">
             <div className="text-center">
@@ -188,7 +188,7 @@ export default function CreateServerPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 py-8">
+    <div className="min-h-screen py-8">
       <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="mb-6">
           <Link

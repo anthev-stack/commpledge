@@ -80,7 +80,7 @@ export default function CommunityDetailPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+      <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-600 mx-auto mb-4"></div>
           <p className="text-gray-600">Loading community...</p>
@@ -91,7 +91,7 @@ export default function CommunityDetailPage() {
 
   if (!community) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+      <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
           <p className="text-gray-600 text-lg mb-4">Community not found</p>
           <Link href="/communities" className="text-indigo-600 hover:text-indigo-700">
@@ -105,7 +105,7 @@ export default function CommunityDetailPage() {
   const isOwner = session?.user?.id === community.owner.id
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen">
       {/* Banner */}
       <div className="relative h-64 md:h-80 bg-gradient-to-r from-indigo-500 to-purple-600">
         {community.bannerUrl && (
