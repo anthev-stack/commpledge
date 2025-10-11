@@ -7,7 +7,7 @@ export default async function Home() {
   const session = await getServerSession(authOptions)
 
   return (
-    <div className="bg-white">
+    <div className="bg-[#16213e]">
       {/* Hero Section */}
       <section className="relative bg-gradient-to-br from-emerald-600 via-emerald-700 to-emerald-800 text-white overflow-hidden">
         <div className="absolute inset-0 bg-black opacity-10"></div>
@@ -55,7 +55,7 @@ export default async function Home() {
         {/* Wave Divider */}
         <div className="absolute bottom-0 left-0 right-0">
           <svg viewBox="0 0 1440 120" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-auto">
-            <path d="M0 120L60 105C120 90 240 60 360 45C480 30 600 30 720 37.5C840 45 960 60 1080 67.5C1200 75 1320 75 1380 75L1440 75V120H1380C1320 120 1200 120 1080 120C960 120 840 120 720 120C600 120 480 120 360 120C240 120 120 120 60 120H0Z" fill="white"/>
+            <path d="M0 120L60 105C120 90 240 60 360 45C480 30 600 30 720 37.5C840 45 960 60 1080 67.5C1200 75 1320 75 1380 75L1440 75V120H1380C1320 120 1200 120 1080 120C960 120 840 120 720 120C600 120 480 120 360 120C240 120 120 120 60 120H0Z" fill="#16213e"/>
           </svg>
         </div>
       </section>
@@ -216,26 +216,26 @@ export default async function Home() {
       </section>
 
       {/* CTA Section */}
-      <section className="bg-gradient-to-br from-emerald-600 via-emerald-700 to-emerald-800 py-20">
+      <section className="py-20">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">
             Ready to Keep Your Community Alive?
           </h2>
-          <p className="text-xl text-emerald-100 mb-10">
+          <p className="text-xl text-gray-300 mb-10">
             Join thousands of gamers sharing server costs and building amazing communities together.
           </p>
           <div className="flex flex-col sm:flex-row justify-center gap-4">
             {!session && (
               <Link
                 href="/register"
-                className="bg-white text-indigo-600 hover:bg-indigo-50 px-10 py-4 rounded-lg text-lg font-bold transition shadow-xl hover:shadow-2xl transform hover:-translate-y-1"
+                className="bg-emerald-600 hover:bg-emerald-700 text-white px-10 py-4 rounded-lg text-lg font-bold transition shadow-xl hover:shadow-2xl transform hover:-translate-y-1"
               >
                 Get Started Free
               </Link>
             )}
             <Link
               href="/servers"
-              className="bg-indigo-900 hover:bg-indigo-800 text-white px-10 py-4 rounded-lg text-lg font-bold transition shadow-xl hover:shadow-2xl transform hover:-translate-y-1 border-2 border-white"
+              className="bg-white hover:bg-gray-50 text-emerald-600 px-10 py-4 rounded-lg text-lg font-bold transition shadow-xl hover:shadow-2xl transform hover:-translate-y-1 border-2 border-emerald-600"
             >
               Browse Servers
             </Link>
@@ -243,110 +243,6 @@ export default async function Home() {
         </div>
       </section>
 
-      {/* Footer */}
-      <footer className="bg-gray-900 text-gray-300">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
-            {/* Brand */}
-            <div className="md:col-span-1">
-              <h3 className="text-2xl font-bold text-white mb-4">Community Pledges</h3>
-              <p className="text-sm text-gray-400 leading-relaxed">
-                Keeping community servers alive since 2025. Share the cost with your community or 
-                simply pledge to your favorite community server.
-              </p>
-            </div>
-
-            {/* Platform */}
-            <div>
-              <h4 className="text-white font-semibold mb-4">Platform</h4>
-              <ul className="space-y-2">
-                <li>
-                  <Link href="/servers" className="hover:text-indigo-400 transition">
-                    Browse Servers
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/users" className="hover:text-indigo-400 transition">
-                    Members
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/dashboard" className="hover:text-indigo-400 transition">
-                    Dashboard
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/settings" className="hover:text-indigo-400 transition">
-                    Settings
-                  </Link>
-                </li>
-              </ul>
-            </div>
-
-            {/* Support */}
-            <div>
-              <h4 className="text-white font-semibold mb-4">Support</h4>
-              <ul className="space-y-2">
-                <li>
-                  <Link href="/help" className="hover:text-indigo-400 transition">
-                    Help Center
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/tickets" className="hover:text-indigo-400 transition">
-                    Support Tickets
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/tickets/create" className="hover:text-indigo-400 transition">
-                    Create Ticket
-                  </Link>
-                </li>
-              </ul>
-            </div>
-
-            {/* Legal */}
-            <div>
-              <h4 className="text-white font-semibold mb-4">Legal</h4>
-              <ul className="space-y-2">
-                <li>
-                  <Link href="/privacy" className="hover:text-indigo-400 transition">
-                    Privacy Policy
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/terms" className="hover:text-indigo-400 transition">
-                    Terms of Service
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/refund" className="hover:text-indigo-400 transition">
-                    Refund Policy
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/security" className="hover:text-indigo-400 transition">
-                    Security
-                  </Link>
-                </li>
-              </ul>
-            </div>
-          </div>
-
-          {/* Bottom Bar */}
-          <div className="border-t border-gray-800 pt-8 flex flex-col md:flex-row justify-between items-center">
-            <p className="text-sm text-gray-400 mb-4 md:mb-0">
-              © 2025 Community Pledges. All rights reserved.
-            </p>
-            <div className="flex items-center space-x-2">
-              <svg className="w-5 h-5 text-indigo-400" fill="currentColor" viewBox="0 0 24 24">
-                <path d="M12 0C5.373 0 0 5.373 0 12c0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0112 5.803c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.627-5.373-12-12-12z"/>
-              </svg>
-              <span className="text-sm text-gray-400 font-medium">Stripe secure payments</span>
-            </div>
-          </div>
-        </div>
-      </footer>
     </div>
   )
 }
