@@ -204,7 +204,7 @@ export default function EditServerPage({ params }: { params: Promise<{ id: strin
           </Link>
         </div>
 
-        <div className="bg-white rounded-lg shadow-md p-6">
+        <div className="bg-slate-800/50 backdrop-blur-sm border border-slate-700/50 rounded-lg shadow-lg p-6">
           <h1 className="text-2xl font-bold text-gray-900 mb-6">Edit Server</h1>
 
           {pledgeCount > 0 && (

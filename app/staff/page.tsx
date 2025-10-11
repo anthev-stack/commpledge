@@ -394,7 +394,7 @@ export default function StaffDashboardPage() {
         </div>
 
         {/* Tabs */}
-        <div className="bg-white rounded-lg shadow-md mb-6">
+        <div className="bg-slate-800/50 backdrop-blur-sm border border-slate-700/50 rounded-lg shadow-lg mb-6">
           <div className="border-b border-gray-200">
             <div className="flex">
               <button

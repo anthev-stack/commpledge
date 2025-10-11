@@ -121,7 +121,7 @@ export default function CommunityDetailPage() {
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-16 relative z-10">
         {/* Community Header Card */}
-        <div className="bg-white rounded-lg shadow-lg p-6 mb-8">
+        <div className="bg-slate-800/50 backdrop-blur-sm border border-slate-700/50 rounded-lg shadow-2xl p-6 mb-8">
           <div className="flex flex-col md:flex-row items-start gap-6">
             {/* Community Image */}
             {community.imageUrl && (
@@ -276,7 +276,7 @@ export default function CommunityDetailPage() {
 
         {/* About Section */}
         {community.about && (
-          <div className="bg-white rounded-lg shadow-md p-6 mb-8">
+          <div className="bg-slate-800/50 backdrop-blur-sm border border-slate-700/50 rounded-lg shadow-lg p-6 mb-8">
             <h2 className="text-2xl font-bold text-gray-900 mb-4">About Us</h2>
             <div className="prose max-w-none text-gray-700 whitespace-pre-wrap">
               {community.about}
@@ -285,7 +285,7 @@ export default function CommunityDetailPage() {
         )}
 
         {/* Community Servers */}
-        <div className="bg-white rounded-lg shadow-md p-6 mb-8">
+        <div className="bg-slate-800/50 backdrop-blur-sm border border-slate-700/50 rounded-lg shadow-lg p-6 mb-8">
           <h2 className="text-2xl font-bold text-gray-900 mb-6">Our Servers</h2>
 
           {community.servers.length === 0 ? (

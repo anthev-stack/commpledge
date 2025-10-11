@@ -128,7 +128,7 @@ export default function CreateTicketPage() {
           </p>
         </div>
 
-        <form onSubmit={handleSubmit} className="bg-white rounded-lg shadow-md p-8">
+        <form onSubmit={handleSubmit} className="bg-slate-800/50 backdrop-blur-sm border border-slate-700/50 rounded-lg shadow-lg p-8">
           {/* Title */}
           <div className="mb-6">
             <label htmlFor="title" className="block text-sm font-medium text-gray-700 mb-2">

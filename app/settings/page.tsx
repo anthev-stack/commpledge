@@ -300,7 +300,7 @@ export default function SettingsPage() {
   return (
     <div className="min-h-screen py-8">
       <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="bg-white rounded-lg shadow-md">
+        <div className="bg-slate-800/50 backdrop-blur-sm border border-slate-700/50 rounded-lg shadow-lg">
           <div className="px-6 py-4 border-b border-gray-200">
             <h1 className="text-2xl font-bold text-gray-900">Profile Settings</h1>
             <p className="text-sm text-gray-600 mt-1">

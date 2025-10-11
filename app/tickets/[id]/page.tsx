@@ -196,7 +196,7 @@ export default function TicketPage({ params }: { params: Promise<{ id: string }>
         </div>
 
         {/* Ticket Details */}
-        <div className="bg-white rounded-lg shadow-md p-6 mb-6">
+        <div className="bg-slate-800/50 backdrop-blur-sm border border-slate-700/50 rounded-lg shadow-lg p-6 mb-6">
           <div className="mb-4">
             <h2 className="text-lg font-semibold text-gray-900 mb-2">Description</h2>
             <div className="prose max-w-none">
@@ -217,7 +217,7 @@ export default function TicketPage({ params }: { params: Promise<{ id: string }>
         </div>
 
         {/* Responses */}
-        <div className="bg-white rounded-lg shadow-md p-6 mb-6">
+        <div className="bg-slate-800/50 backdrop-blur-sm border border-slate-700/50 rounded-lg shadow-lg p-6 mb-6">
           <h2 className="text-lg font-semibold text-gray-900 mb-4">
             Responses ({ticket.responses.length})
           </h2>
@@ -261,7 +261,7 @@ export default function TicketPage({ params }: { params: Promise<{ id: string }>
 
         {/* Add Response */}
         {ticket.status !== "closed" && (
-          <div className="bg-white rounded-lg shadow-md p-6">
+          <div className="bg-slate-800/50 backdrop-blur-sm border border-slate-700/50 rounded-lg shadow-lg p-6">
             <h2 className="text-lg font-semibold text-gray-900 mb-4">Add Response</h2>
             <form onSubmit={handleSubmitResponse}>
               <textarea

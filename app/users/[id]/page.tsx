@@ -44,7 +44,7 @@ export default async function UserProfilePage({ params }: UserProfilePageProps) 
           Back to Users
         </Link>
 
-        <div className="bg-white rounded-lg shadow-md overflow-hidden">
+        <div className="bg-slate-800/50 backdrop-blur-sm border border-slate-700/50 rounded-lg shadow-lg overflow-hidden">
           {/* Header Section */}
           <div className="bg-gradient-to-r from-indigo-500 to-purple-600 h-32"></div>
           

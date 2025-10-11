@@ -268,7 +268,7 @@ export default function StaffTicketPage({ params }: { params: Promise<{ id: stri
           {/* Main Content */}
           <div className="lg:col-span-2 space-y-6">
             {/* Ticket Details */}
-            <div className="bg-white rounded-lg shadow-md p-6">
+            <div className="bg-slate-800/50 backdrop-blur-sm border border-slate-700/50 rounded-lg shadow-lg p-6">
               <h2 className="text-lg font-semibold text-gray-900 mb-4">Description</h2>
               <div className="prose max-w-none">
                 <p className="text-gray-700 whitespace-pre-wrap">{ticket.description}</p>
@@ -287,7 +287,7 @@ export default function StaffTicketPage({ params }: { params: Promise<{ id: stri
             </div>
 
             {/* Responses */}
-            <div className="bg-white rounded-lg shadow-md p-6">
+            <div className="bg-slate-800/50 backdrop-blur-sm border border-slate-700/50 rounded-lg shadow-lg p-6">
               <h2 className="text-lg font-semibold text-gray-900 mb-4">
                 Responses ({ticket.responses.length})
               </h2>
@@ -330,7 +330,7 @@ export default function StaffTicketPage({ params }: { params: Promise<{ id: stri
             </div>
 
             {/* Add Staff Response */}
-            <div className="bg-white rounded-lg shadow-md p-6">
+            <div className="bg-slate-800/50 backdrop-blur-sm border border-slate-700/50 rounded-lg shadow-lg p-6">
               <h2 className="text-lg font-semibold text-gray-900 mb-4">Staff Response</h2>
               <form onSubmit={handleSubmitResponse}>
                 <textarea
@@ -364,7 +364,7 @@ export default function StaffTicketPage({ params }: { params: Promise<{ id: stri
           {/* Sidebar */}
           <div className="space-y-6">
             {/* User Info */}
-            <div className="bg-white rounded-lg shadow-md p-6">
+            <div className="bg-slate-800/50 backdrop-blur-sm border border-slate-700/50 rounded-lg shadow-lg p-6">
               <h3 className="text-lg font-semibold text-gray-900 mb-4">User Information</h3>
               <div className="space-y-2">
                 <div>
@@ -391,7 +391,7 @@ export default function StaffTicketPage({ params }: { params: Promise<{ id: stri
             </div>
 
             {/* Ticket Info */}
-            <div className="bg-white rounded-lg shadow-md p-6">
+            <div className="bg-slate-800/50 backdrop-blur-sm border border-slate-700/50 rounded-lg shadow-lg p-6">
               <h3 className="text-lg font-semibold text-gray-900 mb-4">Ticket Information</h3>
               <div className="space-y-2 text-sm">
                 <div className="flex justify-between">

@@ -15,7 +15,7 @@ export default function StripeSetupHelpPage() {
           Back to Settings
         </Link>
 
-        <div className="bg-white rounded-lg shadow-md">
+        <div className="bg-slate-800/50 backdrop-blur-sm border border-slate-700/50 rounded-lg shadow-lg">
           <div className="px-6 py-4 border-b border-gray-200">
             <h1 className="text-3xl font-bold text-gray-900">How to Set Up Stripe Payouts</h1>
             <p className="text-gray-600 mt-2">
@@ -582,7 +582,7 @@ export default function StripeSetupHelpPage() {
                         <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Method</th>
                       </tr>
                     </thead>
-                    <tbody className="bg-white divide-y divide-gray-200">
+                    <tbody className="bg-slate-800/30 divide-y divide-slate-700/50">
                       <tr>
                         <td className="px-4 py-3 text-sm text-gray-900">🇦🇺 Australia</td>
                         <td className="px-4 py-3 text-sm text-gray-700">2-3 business days</td>
@@ -678,7 +678,7 @@ export default function StripeSetupHelpPage() {
                 <div className="space-y-3">
                   <div>
                     <p className="text-sm text-gray-700 mb-2">Example: Player donates <strong>$10.00 USD</strong></p>
-                    <div className="bg-white rounded-lg p-4 space-y-2 text-sm">
+                    <div className="bg-slate-800/50 backdrop-blur-sm border border-slate-700/50 rounded-lg p-4 space-y-2 text-sm">
                       <div className="flex justify-between">
                         <span className="text-gray-600">Donation amount:</span>
                         <span className="font-semibold">$10.00</span>
@@ -709,7 +709,7 @@ export default function StripeSetupHelpPage() {
                 <h3 className="text-xl font-semibold text-gray-900 mb-4">📅 Payout Schedule Explained</h3>
                 
                 <div className="space-y-4">
-                  <div className="bg-white border border-gray-200 rounded-lg p-4">
+                  <div className="bg-slate-800/50 backdrop-blur-sm border border-slate-700/50 rounded-lg p-4">
                     <h4 className="font-semibold text-gray-900 mb-2">Daily Payouts (Standard)</h4>
                     <p className="text-sm text-gray-700 mb-2">
                       Our platform is configured for <strong>daily automatic payouts</strong>:
@@ -728,7 +728,7 @@ export default function StripeSetupHelpPage() {
                     </div>
                   </div>
 
-                  <div className="bg-white border border-gray-200 rounded-lg p-4">
+                  <div className="bg-slate-800/50 backdrop-blur-sm border border-slate-700/50 rounded-lg p-4">
                     <h4 className="font-semibold text-gray-900 mb-2">Rolling Reserve (New Accounts)</h4>
                     <p className="text-sm text-gray-700 mb-2">
                       For the first 2-4 weeks, Stripe uses a <strong>rolling reserve</strong>:
@@ -946,7 +946,7 @@ export default function StripeSetupHelpPage() {
               </p>
               <Link
                 href="/settings"
-                className="inline-block bg-white text-indigo-600 px-6 py-3 rounded-lg font-medium hover:bg-gray-100 transition"
+                className="inline-block bg-emerald-600 text-white px-6 py-3 rounded-lg font-medium hover:bg-emerald-700 transition"
               >
                 Go to Settings
               </Link>

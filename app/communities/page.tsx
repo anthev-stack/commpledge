@@ -329,7 +329,7 @@ export default function CommunitiesPage() {
 
         {/* Communities Grid */}
         {filteredCommunities.length === 0 ? (
-          <div className="bg-white rounded-lg shadow-md p-12 text-center">
+          <div className="bg-slate-800/50 backdrop-blur-sm border border-slate-700/50 rounded-lg shadow-lg p-12 text-center">
             <p className="text-gray-500 text-lg mb-4">No communities found</p>
             <p className="text-gray-400">Try adjusting your filters</p>
           </div>
@@ -339,7 +339,7 @@ export default function CommunitiesPage() {
               <Link
                 key={community.id}
                 href={`/communities/${community.id}`}
-                className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-shadow"
+                className="bg-slate-800/50 backdrop-blur-sm border border-slate-700/50 rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-shadow"
               >
                 {/* Banner or Image */}
                 <div className="relative h-48 bg-gradient-to-r from-indigo-500 to-purple-600">

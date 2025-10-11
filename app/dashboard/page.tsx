@@ -350,7 +350,7 @@ export default function DashboardPage() {
 
         {/* Stats Overview */}
         <div className="grid gap-6 md:grid-cols-3 mb-8">
-          <div className="bg-white rounded-lg shadow-md p-6">
+          <div className="bg-slate-800/50 backdrop-blur-sm border border-slate-700/50 rounded-lg shadow-lg p-6">
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm text-gray-600 mb-1">Total Pledged</p>
@@ -366,7 +366,7 @@ export default function DashboardPage() {
             </div>
           </div>
 
-          <div className="bg-white rounded-lg shadow-md p-6">
+          <div className="bg-slate-800/50 backdrop-blur-sm border border-slate-700/50 rounded-lg shadow-lg p-6">
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm text-gray-600 mb-1">Active Pledges</p>
@@ -382,7 +382,7 @@ export default function DashboardPage() {
             </div>
           </div>
 
-          <div className="bg-white rounded-lg shadow-md p-6">
+          <div className="bg-slate-800/50 backdrop-blur-sm border border-slate-700/50 rounded-lg shadow-lg p-6">
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm text-gray-600 mb-1">Servers Created</p>
@@ -402,7 +402,7 @@ export default function DashboardPage() {
         <div className="grid gap-6 md:grid-cols-3 mb-12">
           {/* Create Server Card */}
           <Link href="/dashboard/server/create">
-            <div className="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition cursor-pointer">
+            <div className="bg-slate-800/50 backdrop-blur-sm border border-slate-700/50 p-6 rounded-lg shadow-lg hover:shadow-lg transition cursor-pointer">
               <h2 className="text-xl font-semibold text-gray-900 mb-2">Create Server</h2>
               <p className="text-gray-600">Set up a new game server and start receiving pledges</p>
             </div>
@@ -410,7 +410,7 @@ export default function DashboardPage() {
 
           {/* Create Community Card */}
           <Link href="/dashboard/community/create">
-            <div className="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition cursor-pointer">
+            <div className="bg-slate-800/50 backdrop-blur-sm border border-slate-700/50 p-6 rounded-lg shadow-lg hover:shadow-lg transition cursor-pointer">
               <h2 className="text-xl font-semibold text-gray-900 mb-2">Create Community</h2>
               <p className="text-gray-600">Share your community to attract new members</p>
             </div>
@@ -418,7 +418,7 @@ export default function DashboardPage() {
 
           {/* Settings Card */}
           <Link href="/settings">
-            <div className="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition cursor-pointer">
+            <div className="bg-slate-800/50 backdrop-blur-sm border border-slate-700/50 p-6 rounded-lg shadow-lg hover:shadow-lg transition cursor-pointer">
               <h2 className="text-xl font-semibold text-gray-900 mb-2">Settings</h2>
               <p className="text-gray-600">Manage your profile and payment settings</p>
             </div>
@@ -432,7 +432,7 @@ export default function DashboardPage() {
           
           <div className="space-y-4">
               {servers.map((server) => (
-                <div key={server.id} className="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition">
+                <div key={server.id} className="bg-slate-800/50 backdrop-blur-sm border border-slate-700/50 rounded-lg shadow-lg p-6 hover:shadow-lg transition">
                   <div className="flex items-start justify-between">
                     <div className="flex items-start space-x-4 flex-1">
                       {server.imageUrl ? (
@@ -556,7 +556,7 @@ export default function DashboardPage() {
           
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {communities.map((community) => (
-                <div key={community.id} className="bg-white rounded-lg shadow-md hover:shadow-lg transition overflow-hidden">
+                <div key={community.id} className="bg-slate-800/50 backdrop-blur-sm border border-slate-700/50 rounded-lg shadow-lg hover:shadow-lg transition overflow-hidden">
                   <div className="p-6">
                     <div className="flex items-start justify-between mb-4">
                       <div className="flex items-start space-x-4 flex-1">
@@ -644,7 +644,7 @@ export default function DashboardPage() {
         <div>
           <h2 className="text-2xl font-bold text-gray-900 mb-4">Activity</h2>
           
-          <div className="bg-white rounded-lg shadow-md">
+          <div className="bg-slate-800/50 backdrop-blur-sm border border-slate-700/50 rounded-lg shadow-lg">
             {/* Tabs */}
             <div className="border-b border-gray-200">
               <div className="flex">

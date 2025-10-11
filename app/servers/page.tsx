@@ -372,7 +372,7 @@ export default function ServersPage() {
             <p className="text-gray-600">Loading servers...</p>
           </div>
         ) : filteredServers.length === 0 ? (
-          <div className="bg-white rounded-lg shadow-md p-12 text-center">
+          <div className="bg-slate-800/50 backdrop-blur-sm border border-slate-700/50 rounded-lg shadow-lg p-12 text-center">
             <svg className="w-16 h-16 text-gray-400 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
             </svg>
@@ -397,7 +397,7 @@ export default function ServersPage() {
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
             {filteredServers.map((server) => (
               <Link key={server.id} href={`/servers/${server.id}`}>
-                <div className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition cursor-pointer h-full flex flex-col">
+                <div className="bg-slate-800/50 backdrop-blur-sm border border-slate-700/50 rounded-lg shadow-lg overflow-hidden hover:shadow-lg transition cursor-pointer h-full flex flex-col">
                   {/* Server Image/Icon */}
                   {server.imageUrl ? (
                     <div className="relative h-48 w-full">
@@ -423,7 +423,7 @@ export default function ServersPage() {
                           e.stopPropagation()
                           toggleFavorite(server.id)
                         }}
-                        className="absolute top-2 right-2 p-2 bg-white/80 hover:bg-white rounded-full transition-colors"
+                        className="absolute top-2 right-2 p-2 bg-slate-800/80 hover:bg-slate-700 rounded-full transition-colors"
                       >
                         <svg 
                           className={`w-5 h-5 ${favorites.has(server.id) ? 'text-red-500 fill-current' : 'text-gray-400'}`}
@@ -456,7 +456,7 @@ export default function ServersPage() {
                           e.stopPropagation()
                           toggleFavorite(server.id)
                         }}
-                        className="absolute top-2 right-2 p-2 bg-white/80 hover:bg-white rounded-full transition-colors"
+                        className="absolute top-2 right-2 p-2 bg-slate-800/80 hover:bg-slate-700 rounded-full transition-colors"
                       >
                         <svg 
                           className={`w-5 h-5 ${favorites.has(server.id) ? 'text-red-500 fill-current' : 'text-gray-400'}`}

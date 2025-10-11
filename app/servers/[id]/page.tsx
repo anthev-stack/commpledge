@@ -206,7 +206,7 @@ export default function ServerPage({ params }: { params: Promise<{ id: string }>
               </svg>
               Back to Servers
             </Link>
-            <span className="inline-block px-3 py-1 bg-white bg-opacity-90 text-indigo-800 text-sm font-semibold rounded">
+            <span className="inline-block px-3 py-1 bg-emerald-600/90 text-white text-sm font-semibold rounded">
               {server.gameType}
             </span>
             <h1 className="text-3xl md:text-4xl font-bold text-white mt-2">
@@ -221,7 +221,7 @@ export default function ServerPage({ params }: { params: Promise<{ id: string }>
           {/* Main Content */}
           <div className="lg:col-span-2 space-y-6">
             {/* Description */}
-            <div className="bg-white rounded-lg shadow-md p-6">
+            <div className="bg-slate-800/50 backdrop-blur-sm border border-slate-700/50 rounded-lg shadow-lg p-6">
               <h2 className="text-xl font-bold text-gray-900 mb-4">About This Server</h2>
               <p className="text-gray-700 whitespace-pre-wrap">
                 {server.description || "No description provided."}
@@ -237,7 +237,7 @@ export default function ServerPage({ params }: { params: Promise<{ id: string }>
 
             {/* Linked Community */}
             {server.community && (
-              <div className="bg-white rounded-lg shadow-md p-6">
+              <div className="bg-slate-800/50 backdrop-blur-sm border border-slate-700/50 rounded-lg shadow-lg p-6">
                 <h2 className="text-xl font-bold text-gray-900 mb-4">Part of Community</h2>
                 <Link
                   href={`/communities/${server.community.id}`}
@@ -267,7 +267,7 @@ export default function ServerPage({ params }: { params: Promise<{ id: string }>
             )}
 
             {/* Active Pledgers */}
-            <div className="bg-white rounded-lg shadow-md p-6">
+            <div className="bg-slate-800/50 backdrop-blur-sm border border-slate-700/50 rounded-lg shadow-lg p-6">
               <h2 className="text-xl font-bold text-gray-900 mb-4">Active Pledgers</h2>
               {server.pledges.length === 0 ? (
                 <p className="text-gray-500 text-center py-8">No pledges yet. Be the first!</p>
@@ -323,7 +323,7 @@ export default function ServerPage({ params }: { params: Promise<{ id: string }>
             )}
 
             {/* Pledge Card */}
-            <div className="bg-white rounded-lg shadow-md p-6 sticky top-6">
+            <div className="bg-slate-800/50 backdrop-blur-sm border border-slate-700/50 rounded-lg shadow-lg p-6 sticky top-6">
               {/* Stats */}
               <div className="mb-6">
                 <div className="text-3xl font-bold text-gray-900 mb-1">
@@ -438,7 +438,7 @@ export default function ServerPage({ params }: { params: Promise<{ id: string }>
             </div>
 
             {/* Server Owner Card */}
-            <div className="bg-white rounded-lg shadow-md p-6">
+            <div className="bg-slate-800/50 backdrop-blur-sm border border-slate-700/50 rounded-lg shadow-lg p-6">
               <h3 className="text-lg font-semibold text-gray-900 mb-4">Server Owner</h3>
               <div className="flex items-center">
                 {server.owner.image ? (
