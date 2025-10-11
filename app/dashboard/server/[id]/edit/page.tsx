@@ -30,6 +30,7 @@ export default function EditServerPage({ params }: { params: Promise<{ id: strin
     tags: [] as string[],
     communityId: "",
     discordWebhook: "",
+    isPrivate: false,
   })
   const [communities, setCommunities] = useState<any[]>([])
 
@@ -68,6 +69,7 @@ export default function EditServerPage({ params }: { params: Promise<{ id: strin
           tags: data.tags || [],
           communityId: data.communityId || "",
           discordWebhook: data.discordWebhook || "",
+          isPrivate: data.isPrivate || false,
         })
       } else {
         setError("Server not found")
@@ -454,6 +456,47 @@ export default function EditServerPage({ params }: { params: Promise<{ id: strin
                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
                 placeholder="https://example.com/image.jpg"
               />
+            </div>
+
+            {/* Private/Public Server */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-3">
+                Server Visibility
+              </label>
+              <div className="space-y-3">
+                <label className="flex items-center">
+                  <input
+                    type="radio"
+                    name="isPrivate"
+                    value="false"
+                    checked={!formData.isPrivate}
+                    onChange={(e) => setFormData({ ...formData, isPrivate: e.target.value === "true" })}
+                    className="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300"
+                  />
+                  <div className="ml-3">
+                    <div className="text-sm font-medium text-gray-700">Public Server</div>
+                    <div className="text-xs text-gray-500">
+                      Visible in server browser, can be boosted, discoverable by everyone
+                    </div>
+                  </div>
+                </label>
+                <label className="flex items-center">
+                  <input
+                    type="radio"
+                    name="isPrivate"
+                    value="true"
+                    checked={formData.isPrivate}
+                    onChange={(e) => setFormData({ ...formData, isPrivate: e.target.value === "true" })}
+                    className="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300"
+                  />
+                  <div className="ml-3">
+                    <div className="text-sm font-medium text-gray-700">Private Server</div>
+                    <div className="text-xs text-gray-500">
+                      Hidden from server browser, no boost option, share with friends via direct link
+                    </div>
+                  </div>
+                </label>
+              </div>
             </div>
 
             <div className="flex space-x-4 pt-4">

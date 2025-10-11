@@ -151,6 +151,7 @@ export async function PATCH(
         region: body.region !== undefined ? body.region : undefined,
         tags: body.tags !== undefined ? body.tags : undefined,
         communityId: body.communityId !== undefined ? (body.communityId || null) : undefined,
+        isPrivate: body.isPrivate !== undefined ? body.isPrivate : undefined,
       },
     })
 

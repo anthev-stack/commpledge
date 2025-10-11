@@ -34,6 +34,7 @@ export default function CreateServerPage() {
     tags: [] as string[],
     communityId: "",
     discordWebhook: "",
+    isPrivate: false,
   })
 
   useEffect(() => {
@@ -387,6 +388,47 @@ export default function CreateServerPage() {
                   Learn how to create a webhook →
                 </a>
               </p>
+            </div>
+
+            {/* Private/Public Server */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-3">
+                Server Visibility
+              </label>
+              <div className="space-y-3">
+                <label className="flex items-center">
+                  <input
+                    type="radio"
+                    name="isPrivate"
+                    value="false"
+                    checked={!formData.isPrivate}
+                    onChange={(e) => setFormData({ ...formData, isPrivate: e.target.value === "true" })}
+                    className="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300"
+                  />
+                  <div className="ml-3">
+                    <div className="text-sm font-medium text-gray-700">Public Server</div>
+                    <div className="text-xs text-gray-500">
+                      Visible in server browser, can be boosted, discoverable by everyone
+                    </div>
+                  </div>
+                </label>
+                <label className="flex items-center">
+                  <input
+                    type="radio"
+                    name="isPrivate"
+                    value="true"
+                    checked={formData.isPrivate}
+                    onChange={(e) => setFormData({ ...formData, isPrivate: e.target.value === "true" })}
+                    className="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300"
+                  />
+                  <div className="ml-3">
+                    <div className="text-sm font-medium text-gray-700">Private Server</div>
+                    <div className="text-xs text-gray-500">
+                      Hidden from server browser, no boost option, share with friends via direct link
+                    </div>
+                  </div>
+                </label>
+              </div>
             </div>
 
             {/* Server IP and Port */}

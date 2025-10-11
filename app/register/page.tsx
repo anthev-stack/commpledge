@@ -100,7 +100,7 @@ export default function RegisterPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-indigo-50 via-white to-purple-50 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-md w-full bg-white rounded-2xl shadow-xl p-8">
         <div>
           <h2 className="text-center text-3xl font-bold text-gray-900">
@@ -110,7 +110,7 @@ export default function RegisterPage() {
             Or{" "}
             <Link
               href="/login"
-              className="font-medium text-indigo-600 hover:text-indigo-500"
+              className="font-medium text-emerald-600 hover:text-emerald-500"
             >
               sign in to existing account
             </Link>

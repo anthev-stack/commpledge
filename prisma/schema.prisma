@@ -116,6 +116,7 @@ model Server {
   region         String?  // Server region: "North America", "Europe", etc.
   tags           String[] @default([]) // Game-specific tags: ["Survival", "PvP", etc.]
   discordWebhook String?  // Optional Discord webhook URL for pledge notifications
+  isPrivate      Boolean  @default(false) // Private servers don't appear in public browser
   
   ownerId        String
   owner          User     @relation(fields: [ownerId], references: [id], onDelete: Cascade)

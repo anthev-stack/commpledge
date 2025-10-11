@@ -17,6 +17,7 @@ interface Server {
   createdAt: string
   isBoosted: boolean
   boostExpiresAt: string | null
+  isPrivate: boolean
   _count: {
     pledges: number
     favorites: number
@@ -208,7 +209,7 @@ export default function DashboardPage() {
 
   if (status === "loading") {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+      <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-600 mx-auto"></div>
           <p className="mt-4 text-gray-600">Loading...</p>
@@ -343,7 +344,7 @@ export default function DashboardPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 py-8">
+    <div className="min-h-screen py-8">
       <div className="max-w-6xl mx-auto px-4">
         <h1 className="text-3xl font-bold text-gray-900 mb-8">Dashboard</h1>
 
@@ -453,6 +454,11 @@ export default function DashboardPage() {
                       <div className="flex-1">
                         <div className="flex items-center space-x-2 mb-1">
                           <h3 className="text-xl font-bold text-gray-900">{server.name}</h3>
+                          {server.isPrivate && (
+                            <span className="px-2 py-1 text-xs bg-gray-100 text-gray-700 rounded-full">
+                              Private
+                            </span>
+                          )}
                           {!server.isActive && (
                             <span className="px-2 py-1 text-xs bg-red-100 text-red-700 rounded-full">
                               Inactive
@@ -508,25 +514,27 @@ export default function DashboardPage() {
                           Edit
                         </button>
                       </Link>
-                      <button
-                        onClick={() => handleBoostServer(server.id, server.name)}
-                        disabled={boostingServer === server.id || server.isBoosted}
-                        className={`px-4 py-2 text-sm rounded-lg transition ${
-                          server.isBoosted
-                            ? "bg-yellow-100 text-yellow-700 cursor-not-allowed"
-                            : boostingServer === server.id
-                            ? "bg-gray-300 text-gray-500 cursor-not-allowed"
-                            : "bg-yellow-600 text-white hover:bg-yellow-700"
-                        }`}
-                      >
-                        {boostingServer === server.id ? (
-                          "Boosting..."
-                        ) : server.isBoosted ? (
-                          "Boosted"
-                        ) : (
-                          "Boost ($3)"
-                        )}
-                      </button>
+                      {!server.isPrivate && (
+                        <button
+                          onClick={() => handleBoostServer(server.id, server.name)}
+                          disabled={boostingServer === server.id || server.isBoosted}
+                          className={`px-4 py-2 text-sm rounded-lg transition ${
+                            server.isBoosted
+                              ? "bg-yellow-100 text-yellow-700 cursor-not-allowed"
+                              : boostingServer === server.id
+                              ? "bg-gray-300 text-gray-500 cursor-not-allowed"
+                              : "bg-yellow-600 text-white hover:bg-yellow-700"
+                          }`}
+                        >
+                          {boostingServer === server.id ? (
+                            "Boosting..."
+                          ) : server.isBoosted ? (
+                            "Boosted"
+                          ) : (
+                            "Boost ($3)"
+                          )}
+                        </button>
+                      )}
                       <button
                         onClick={() => handleDelete(server.id, server.name)}
                         className="px-4 py-2 text-sm bg-red-600 text-white rounded-lg hover:bg-red-700 transition"

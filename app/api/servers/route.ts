@@ -9,6 +9,7 @@ export async function GET() {
     const servers = await prisma.server.findMany({
       where: {
         status: "active",
+        isPrivate: false, // Only show public servers in browser
       },
       include: {
         owner: {
@@ -97,7 +98,7 @@ export async function POST(request: Request) {
     }
 
     const body = await request.json()
-    const { name, description, gameType, serverIp, playerCount, cost, withdrawalDay, imageUrl } = body
+    const { name, description, gameType, serverIp, playerCount, cost, withdrawalDay, imageUrl, isPrivate } = body
 
     if (!name || !gameType || !cost) {
       return NextResponse.json(
@@ -149,6 +150,7 @@ export async function POST(request: Request) {
         tags: body.tags || [],
         communityId: body.communityId || null,
         discordWebhook: body.discordWebhook || null,
+        isPrivate: isPrivate || false,
         ownerId: session.user.id,
       },
       include: {
