@@ -45,7 +45,7 @@ export default function DiscordWebhooksPage() {
             <li><a href="#what-is" className="hover:text-emerald-400 transition">1. What is a Discord Webhook?</a></li>
             <li><a href="#create-webhook" className="hover:text-emerald-400 transition">2. Creating a Webhook in Discord</a></li>
             <li><a href="#add-to-server" className="hover:text-emerald-400 transition">3. Adding Webhook to Your Server</a></li>
-            <li><a href="#what-notifications" className="hover:text-emerald-400 transition">4. What Notifications You'll Receive</a></li>
+            <li><a href="#what-notifications" className="hover:text-emerald-400 transition">4. What Notifications You&apos;ll Receive</a></li>
             <li><a href="#troubleshooting" className="hover:text-emerald-400 transition">5. Troubleshooting</a></li>
           </ul>
         </div>
