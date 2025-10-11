@@ -1,5 +1,12 @@
 import Link from "next/link"
 import { SUPPORTED_COUNTRIES } from "@/lib/countries"
+import { Metadata } from "next"
+
+export const metadata: Metadata = {
+  title: "Stripe Payout Setup Guide - Community Pledges | How to Receive Payments",
+  description: "Complete guide to setting up Stripe Connect for receiving payouts from server pledges. Learn about daily payouts, country requirements, tax reporting, and troubleshooting.",
+  keywords: "stripe setup, stripe connect, receive payouts, gaming server payments, stripe individual account, daily payouts, stripe onboarding",
+}
 
 export default function StripeSetupHelpPage() {
   return (

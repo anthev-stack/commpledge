@@ -1,0 +1,27 @@
+# Allow all search engines to crawl the site
+User-agent: *
+Allow: /
+
+# Sitemap location
+Sitemap: https://commpledge.vercel.app/sitemap.xml
+
+# Disallow admin and API routes
+Disallow: /api/
+Disallow: /dashboard/
+Disallow: /settings/
+Disallow: /staff/
+Disallow: /tickets/
+
+# Allow public pages
+Allow: /
+Allow: /servers
+Allow: /servers/*
+Allow: /communities
+Allow: /communities/*
+Allow: /users
+Allow: /users/*
+Allow: /help
+Allow: /help/*
+Allow: /login
+Allow: /register
+
