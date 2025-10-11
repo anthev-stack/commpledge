@@ -18,12 +18,12 @@ export default function FlyingAnimation({
   enabled = true 
 }: FlyingAnimationProps) {
   const containerRef = useRef<HTMLDivElement>(null)
+  const animationIdRef = useRef<number>()
 
   useEffect(() => {
     if (!enabled || !containerRef.current) return
 
     const container = containerRef.current
-    const animationId = useRef<number>()
 
     // Create flying elements
     const elements: Array<{
@@ -94,15 +94,15 @@ export default function FlyingAnimation({
         }
       })
 
-      animationId.current = requestAnimationFrame(animate)
+      animationIdRef.current = requestAnimationFrame(animate)
     }
 
     animate()
 
     // Cleanup
     return () => {
-      if (animationId.current) {
-        cancelAnimationFrame(animationId.current)
+      if (animationIdRef.current) {
+        cancelAnimationFrame(animationIdRef.current)
       }
       elements.forEach(element => {
         if (element.element.parentNode) {
